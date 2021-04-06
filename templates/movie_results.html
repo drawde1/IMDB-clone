@@ -1,0 +1,15 @@
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% if results %}
+    <h1>Movie Search Results</h1>
+
+    <ol>
+        {% for result in results %} 
+            <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        {% endfor %}
+    </ol>
+{% endif %}

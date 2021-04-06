@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ data.title}}</h1>
+
+<img src="https://image.tmdb.org/t/p/w342{{data.poster_path}}" alt="{{data.title}}">
+
+<h3>Release Date: {{ data.release_date }}</h3>
+
+<h3>Runtime: {{ data.runtime }} minutes</h3>
+
+<h3>Genre: 
+    <ul>
+        {% for genre in data.genres %}
+            <li>{{ genre.name }}</li>
+        {% endfor %}
+    </ul>
+</h3>
+
+<h3>Overview:</h3>
+<h3>{{ data.overview }}</h3>
+
+{% endblock %}
