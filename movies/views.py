@@ -25,8 +25,12 @@ def index(request):
 
 def movie_detail(request, movie_id):
     movie_path = f'/movie/{movie_id}'
-    endpoint = f'{base_url}{movie_path}?api_key={api_key}'
-    movie_request = requests.get(endpoint)
+    reviews_path = f'/movie/{movie_id}/reviews'
+    movie_endpoint = f'{base_url}{movie_path}?api_key={api_key}'
+    reviews_endpoint = f'{base_url}{reviews_path}?api_key={api_key}'
+    movie_request = requests.get(movie_endpoint)
+    reviews_request = requests.get(reviews_endpoint)
     if movie_request.status_code in range(200, 299):
-        request_data = movie_request.json()
-        return render(request, 'movies/movie_detail.html', {'data': request_data})
+        movie_data = movie_request.json()
+        reviews_data = reviews_request.json()
+        return render(request, 'movies/movie_detail.html', {'data': movie_data, 'reviews': reviews_data })
