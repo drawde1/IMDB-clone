@@ -7,8 +7,7 @@ import requests
 base_url = 'https://api.themoviedb.org/3'
 api_key = 'ea3f0ae618db2e67cd3f57ba270936c4'
 
-def movie_search(request):
-    search_results = {}
+def index(request):
     if request.method == 'POST':
         form = MovieSearchForm(request.POST)
         if form.is_valid():
@@ -20,10 +19,9 @@ def movie_search(request):
             if id_request.status_code in range(200, 299):
                 request_data = id_request.json()
                 results = request_data['results']
-                search_results.update({'results': results})
+                return render(request, 'movies/movie_results.html', {'results': results})
     form = MovieSearchForm()
-    search_results.update({'form': form})
-    return render(request, 'movie_results.html', search_results)
+    return render(request, 'general_form.html', {'form': form})
 
 def movie_detail(request, movie_id):
     movie_path = f'/movie/{movie_id}'
@@ -31,4 +29,4 @@ def movie_detail(request, movie_id):
     movie_request = requests.get(endpoint)
     if movie_request.status_code in range(200, 299):
         request_data = movie_request.json()
-        return render(request, 'movie_detail.html', {'data': request_data})
+        return render(request, 'movies/movie_detail.html', {'data': request_data})
