@@ -1,5 +1,3 @@
-
-
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
@@ -8,6 +6,8 @@
 </form>
 <ul>
     {% for review in reviews %}
-    <li>{{review.text}}</li>
+    <li><p>user: {{review.user}}</p></li>
+    <p>{{review.text}}</p>
+    <p>created at: {{review.creation_time}}</p>
     {% endfor %}
 </ul>

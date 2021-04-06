@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from reviews.views import reviews
 from movies import views
-
-
+from IMDB_user.views import add_seen, add_watchlist
 
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('movies/', include('movies.urls')),
     path('admin/', admin.site.urls),
-    path('reviews/', reviews)
+    path('reviews/<str:imbd_id>/', reviews),
+    path('seen/<str:imbd_id>/', add_seen),
+    path('watchlist/<str:imbd_id>/', add_watchlist)
 ]
