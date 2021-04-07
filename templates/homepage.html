@@ -5,5 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Welcome</h1>
+
+<h2>In Theaters</h2>
+<ul>
+    {% for result in latest.results %}
+        <li>{{ result.title }}</li>
+    {% endfor %}
+</ul>
+
 {% endblock %}

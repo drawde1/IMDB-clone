@@ -10,7 +10,12 @@ omdb_base_url = 'http://www.omdbapi.com/'
 omdb_key = 'd361bf3'
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    latest_path = '/movie/now_playing'
+    latest_endpoint = f'{tmdb_base_url}{latest_path}?api_key={tmdb_key}'
+    latest_request = requests.get(latest_endpoint)
+    latest_data = latest_request.json()
+    return render(request, 'homepage.html', {'latest': latest_data})
+
 
 def search_movie(request):
     if request.method == 'POST':
