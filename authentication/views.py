@@ -8,11 +8,6 @@ from IMDB_user.models import MyCustomUser
 # Create your views here.
 
 
-@login_required
-def index(request):
-    return render(request, 'index.html')
-
-
 class SignupView(View):
     template_name = "general_form.html"
     form = SignupForm

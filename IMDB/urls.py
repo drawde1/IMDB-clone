@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from reviews.views import ReviewView
-from movies import views
+from movies.views import homepage
 from IMDB_user.views import profile_view, add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', homepage, name='homepage'),
+    path('movies/', include('movies.urls')),
     path('movies/', include('movies.urls')),
     path('admin/', admin.site.urls),
     path('reviews/<str:imbd_id>/', ReviewView.as_view()),

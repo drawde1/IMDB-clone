@@ -1,5 +1,8 @@
 
 {% extends 'base.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
 {% block content %}
 <h1>{{request.user}}'s profile</h1>
 <p>total reviews: {{reviews.count}}</p>
@@ -87,7 +90,6 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
-
 </ul>
     <!-- </div>
   </div>

@@ -23,7 +23,7 @@ def profile_view(request):
         if movie_request.status_code in range(200, 299):
             movie_data = movie_request.json()
             watch_list_movies.append(movie_data)
-            movie_id =movie_data['id']
+            movie_id = movie_data['id']
             recomendations_path = f'/movie/{movie_id}/recommendations'
             recomendations_endpoint = f'{base_url}{recomendations_path}?api_key={api_key}'
             recomendations_endpoint_request = requests.get(recomendations_endpoint)
@@ -32,4 +32,4 @@ def profile_view(request):
                     for recomendations_data in recomendations_data['results']:
                         recomendations.append(recomendations_data)
     reviews = Review.objects.filter(user=request.user)
-    return render(request, 'profile.html', {'reviews': reviews, 'watch_list': watch_list_movies, 'recomendations': recomendations, 'test': watch_list_movies[0], 'test2': recomendations[0] })
+    return render(request, 'profile.html', {'reviews': reviews, 'watch_list': watch_list_movies, 'recomendations': recomendations, 'test': watch_list_movies[0], 'test2': recomendations[0] or '' })
