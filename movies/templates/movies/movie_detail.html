@@ -7,18 +7,36 @@
 {% block content %}
 
 <h1>{{ data.title}}</h1>
+<p>Rated: {{ omdb.Rated }}</p>
+{% if data.vote_average %}
+    <h3>IMDB Rating: {{ data.vote_average }}</h3>
+{% endif %}
 
+<h3>Rotten Tomatoes: {{ rotten_tomatoes.Value }}</h3>
+
+<p><a href='/watchlist/{{data.id}}/'>add favorites</a></p>
 {% if data.poster_path %}
     <img src="https://image.tmdb.org/t/p/w342{{data.poster_path}}" alt="{{data.title}}">
 {% endif %}
 
+
+<h3><a href="https://www.youtube.com/watch?v={{video.key}}" target="_blank">Watch the Trailer</a></h3>
+
+
+<h3><a href="#">Add to Watchlist</a></h3>
+
 {% if data.release_date %}
-    <h3>Release Date: {{ data.release_date }}</h3>
+    <h3>Release Date: {{ omdb.Released }}</h3>
 {% endif %}
 
 {% if data.runtime %}
     <h3>Runtime: {{ data.runtime }} minutes</h3>
 {% endif %}
+
+<h3>Director: {{ omdb.Director }}</h3>
+<h3>Writer: {{ omdb.Writer }}</h3>
+<h3>Stars: {{ omdb.Actors }}</h3>
+
 
 {% if data.genres %}
     <h3>Genre: 
@@ -31,12 +49,12 @@
 {% endif %}
 
 {% if data.overview %}
-    <h3>Overview:</h3>
+    <h3>Storyline:</h3>
     <h3>{{ data.overview }}</h3>
 {% endif %}
 
 {% if reviews.results %}
-    <h3>IMDB Reviews</h3>
+    <h3>Critique Reviews</h3>
     <ol>
         {% for review in reviews.results %}
             <li>User: {{ review.author }}</li>
