@@ -12,6 +12,13 @@ class Review(models.Model):
         Movie, on_delete=models.CASCADE, related_name='movie')
     text = models.TextField()
     creation_time = models.DateTimeField(default=timezone.now)
+    upvote = models.IntegerField(default=0)
+    downvote = models.IntegerField(default=0)
+
 
     def __str__(self):
         return f'review: {self.id}'
+
+    @property
+    def vote_total(self):
+        return self.upvote - self.downvote
