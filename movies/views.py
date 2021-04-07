@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from movies.models import Movie
 from movies.forms import MovieSearchForm
 import requests
 
@@ -33,4 +33,7 @@ def movie_detail(request, movie_id):
     if movie_request.status_code in range(200, 299):
         movie_data = movie_request.json()
         reviews_data = reviews_request.json()
-        return render(request, 'movies/movie_detail.html', {'data': movie_data, 'reviews': reviews_data })
+        if not Movie.objects.filter(imbd_id=movie_id).exists():
+            Movie.objects.create(imbd_id=movie_id)
+
+        return render(request, 'movies/movie_detail.html', {'data': movie_data, 'reviews': reviews_data})

@@ -15,18 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from reviews.views import reviews
+from reviews.views import ReviewView
 from movies import views
-from IMDB_user.views import add_seen, add_watchlist
+from IMDB_user.views import profile_view, add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 urlpatterns = [
     path('', views.index, name='index'),
     path('movies/', include('movies.urls')),
     path('admin/', admin.site.urls),
-    path('reviews/<str:imbd_id>/', reviews),
-    path('seen/<str:imbd_id>/', add_seen),
+    path('reviews/<str:imbd_id>/', ReviewView.as_view()),
     path('watchlist/<str:imbd_id>/', add_watchlist),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
+    path('profile/', profile_view)
 ]
