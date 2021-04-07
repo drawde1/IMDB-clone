@@ -22,11 +22,11 @@ from authentication.views import LoginView, logout_view, SignupView
 urlpatterns = [
     path('', homepage, name='homepage'),
     path('movies/', include('movies.urls')),
-    path('admin/', admin.site.urls),
     path('reviews/<str:imbd_id>/', reviews),
     path('seen/<str:imbd_id>/', add_seen),
     path('watchlist/<str:imbd_id>/', add_watchlist),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
+    path('admin/', admin.site.urls),
 ]
