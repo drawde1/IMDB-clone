@@ -22,6 +22,7 @@ from authentication.views import LoginView, logout_view, SignupView
 urlpatterns = [
     path('', homepage, name='homepage'),
     path('movies/', include('movies.urls')),
+    path('actors/', include('actors.urls')),
     path('reviews/<str:imbd_id>/', reviews),
     path('seen/<str:imbd_id>/', add_seen),
     path('watchlist/<str:imbd_id>/', add_watchlist),
