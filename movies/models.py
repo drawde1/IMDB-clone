@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Movie(models.Model):
-    imbd_id = models.CharField(max_length=20, default='')
+    imdb_id = models.CharField(max_length=20, default='')
     name = models.CharField(max_length=50, default='')
     poster_url = models.URLField(default='')
 

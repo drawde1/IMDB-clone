@@ -6,6 +6,30 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+    <h1>Hello {{ user.displayname }}!</h1>
+{% endif %}
+
+{% if favorites %}
+    <h2>Favorites</h2>
+    <ul>
+        {% for favorite in favorites %}
+            <li><a href="{% url 'movie_detail' movie_id=favorite.imdb_id %}">{{ favorite.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- {{recommendations}} -->
+
+{% if recommendations %}
+    <h2>Because You Liked {{ fave_movie.name }}</h2>
+    <ul>
+        {% for recommendation in recommendations.results %}
+            <li><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <h2>Popular</h2>
 <ul>
     {% for result in popular.results %}
