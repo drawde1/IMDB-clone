@@ -36,7 +36,7 @@ def homepage(request):
             fave_movie = random.choice(favorites)
             movie_id = fave_movie.id
             recommendations_path = f'/movie/{movie_id}/recommendations'
-            recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={tmdb_key}'
+            recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
             recommendations_request = requests.get(recommendations_endpoint)
             if recommendations_request.status_code in range(200, 299):
                 recommendations_data = recommendations_request.json()
