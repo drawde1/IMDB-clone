@@ -17,7 +17,8 @@ class CustomUserAdmin(UserAdmin):
             {
                 'fields': [
                     'displayname',
-                    'watch_list'
+                    'watch_list',
+                    'favorites_list'
                 ]
             }
         )
