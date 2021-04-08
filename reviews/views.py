@@ -30,17 +30,14 @@ class ReviewView(View):
         form = ReviewForm()
         if Movie.objects.filter(imbd_id=imbd_id).exists():
             movie = Movie.objects.get(imbd_id=imbd_id)
-        else:
-            movie = Movie.objects.create(imbd_id=imbd_id)
         reviews = Review.objects.filter(movie=movie)
-        return render(request, 'reviews.html', {'reviews': reviews, 'form': form})
-    
+        return render(
+            request, 'reviews.html', {'reviews': reviews, 'form': form, 'movie': movie})
+
     def post(self, request, imbd_id):
         form = ReviewForm(request.POST)
         if Movie.objects.filter(imbd_id=imbd_id).exists():
             movie = Movie.objects.get(imbd_id=imbd_id)
-        else:
-            movie = Movie.objects.create(imbd_id=imbd_id)
         if form.is_valid():
             data = form.cleaned_data
             Review.objects.create(
@@ -48,5 +45,8 @@ class ReviewView(View):
                 movie=movie,
                 text=data['text']
             )
+            request.user.karma_score += 100
+            request.user.save()
         reviews = Review.objects.filter(movie=movie)
-        return render(request, 'reviews.html', {'reviews': reviews, 'form': form})
+        return render(
+            request, 'reviews.html', {'reviews': reviews, 'form': form, 'movie': movie})

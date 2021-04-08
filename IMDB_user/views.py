@@ -6,11 +6,13 @@ import requests
 base_url = 'https://api.themoviedb.org/3'
 api_key = 'ea3f0ae618db2e67cd3f57ba270936c4'
 
+
 def add_watchlist(request, imbd_id):
     user = request.user
     movie = Movie.objects.get(imbd_id=imbd_id)
     user.watch_list.add(movie)
-    return redirect('/')
+    return redirect(f'/movies/{imbd_id}/')
+
 
 def profile_view(request):
     watch_list_movies = []
@@ -26,10 +28,23 @@ def profile_view(request):
             movie_id = movie_data['id']
             recomendations_path = f'/movie/{movie_id}/recommendations'
             recomendations_endpoint = f'{base_url}{recomendations_path}?api_key={api_key}'
-            recomendations_endpoint_request = requests.get(recomendations_endpoint)
+            recomendations_endpoint_request = requests.get(
+                recomendations_endpoint)
             if recomendations_endpoint_request.status_code in range(200, 299):
                     recomendations_data = recomendations_endpoint_request.json()
                     for recomendations_data in recomendations_data['results']:
-                        recomendations.append(recomendations_data)
+                        if not request.user.watch_list.filter(name=recomendations_data['title']):
+                            recomendations.append(recomendations_data)
     reviews = Review.objects.filter(user=request.user)
-    return render(request, 'profile.html', {'reviews': reviews, 'watch_list': watch_list_movies, 'recomendations': recomendations, 'test': watch_list_movies[0], 'test2': recomendations[0] or '' })
+    context = {
+            'reviews': reviews,
+            'watch_list': watch_list_movies,
+            'recomendations': recomendations}
+    if watch_list_movies:
+        context.update({'test': watch_list_movies[0]})
+    if recomendations:
+        context.update({'test2': recomendations[0]})
+    return render(
+        request,
+        'profile.html',
+        context)
