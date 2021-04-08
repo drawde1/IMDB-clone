@@ -6,17 +6,17 @@
 
 {% block content %}
 
-<h2>In Theaters</h2>
-<ul>
-    {% for result in latest.results %}
-        <li><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></li>
-    {% endfor %}
-</ul>
-
 <h2>Popular</h2>
 <ul>
     {% for result in popular.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+    {% endfor %}
+</ul>
+
+<h2>In Theaters</h2>
+<ul>
+    {% for result in latest.results %}
+        <li><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></li>
     {% endfor %}
 </ul>
 
