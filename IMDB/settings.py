@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm3b$b9_i8dljwqs)c@p*q=c*e#&30jo9@y&fa0-4gy7*#q6gnb'
+SECRET_KEY = env('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -127,3 +134,7 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = 'IMDB_user.MyCustomUser'
+
+TMDB_KEY = env('TMDB_KEY')
+
+OMDB_KEY = env('OMDB_KEY')
