@@ -42,4 +42,10 @@ def add_favorites(request, movie_id):
         current_user.save()
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
+def remove_favorites(request, movie_id):
+    current_user = MyCustomUser.objects.get(id=request.user.id)
+    movie = Movie.objects.get(imdb_id=movie_id)
+    current_user.favorites_list.remove(movie)
+    current_user.save()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
     
