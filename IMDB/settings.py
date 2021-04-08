@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'reviews',
     'movies',
     'authentication',
+    'karma'
 ]
 
 MIDDLEWARE = [

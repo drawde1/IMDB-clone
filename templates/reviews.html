@@ -41,6 +41,8 @@
     </div>
    
   </div>
+  <br/>
+<div class = 'scroll'>
 {% for review in reviews %}
 <div class="card mb-3">
     <div class="card-body">
@@ -59,5 +61,12 @@
     </div>
   </div>
 {% endfor %}
-
+</div>
+<style>
+    .scroll {
+    overflow: scroll;
+    height: 700px;
+    cursor: url(https://cdn.custom-cursor.com/db/4828/32/arrow2747.png), auto;
+  }
+</style>
 {% endblock %}
