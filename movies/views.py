@@ -1,7 +1,10 @@
 from django.shortcuts import render
+
+from IMDB_user.models import MyCustomUser
 from IMDB.settings import TMDB_KEY, OMDB_KEY
 from movies.forms import MovieSearchForm
 import requests
+import random
 
 # Create your views here.
 tmdb_base_url = 'https://api.themoviedb.org/3'
@@ -9,6 +12,7 @@ omdb_base_url = 'http://www.omdbapi.com/'
 
 
 def homepage(request):
+    details = {}
     latest_path = '/movie/now_playing'
     popular_path = '/movie/popular'
     top_path = '/movie/top_rated'
@@ -25,12 +29,27 @@ def homepage(request):
     popular_data = popular_request.json()
     top_data = top_request.json()
     upcoming_data = upcoming_request.json()
-    return render(request, 'homepage.html',{
+    if request.user.is_authenticated:
+        current_user = MyCustomUser.objects.get(id=request.user.id)
+        if current_user.favorites_list.all() :
+            favorites = current_user.favorites_list.all()
+            fave_movie = random.choice(favorites)
+            movie_id = fave_movie.id
+            recommendations_path = f'/movie/{movie_id}/recommendations'
+            recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
+            recommendations_request = requests.get(recommendations_endpoint)
+            if recommendations_request.status_code in range(200, 299):
+                recommendations_data = recommendations_request.json()
+                if not recommendations_data['results'] == []:
+                    details.update({'fave_movie': fave_movie, 'recommendations': recommendations_data})
+            details.update({'favorites': favorites })
+    details.update({
         'latest': latest_data,
         'popular': popular_data,
         'top': top_data,
         'upcoming': upcoming_data
     })
+    return render(request, 'homepage.html', details)
 
 
 def search_movie(request):
@@ -50,6 +69,7 @@ def search_movie(request):
     return render(request, 'general_form.html', {'form': form})
 
 def movie_detail(request, movie_id):
+    details = {}
     movie_path = f'/movie/{movie_id}'
     video_path = f'/movie/{movie_id}/videos'
     reviews_path = f'/movie/{movie_id}/reviews'
@@ -66,12 +86,23 @@ def movie_detail(request, movie_id):
     omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={OMDB_KEY}'
     omdb_request = requests.get(omdb_endpoint)
     omdb_data = omdb_request.json()
-    rotten_tomatoes = omdb_data['Ratings'][1]
-    video = video_data['results'][0]
-    return render(request, 'movies/movie_detail.html',{
+    video = {}
+    if not video_data['results'] == []:
+        video = video_data['results'][0]
+        details.update({'video': video})
+    rotten_tomatoes = ''
+    if omdb_data['Ratings']:
+        for rating in omdb_data['Ratings']:
+            if rating['Source'] == 'Rotten Tomatoes':
+                rotten_tomatoes = rating['Value']
+                details.update({'rotten_tomatoes': rotten_tomatoes})
+    if request.user.is_authenticated:
+        current_user = MyCustomUser.objects.get(id=request.user.id)
+        is_favorited = current_user.favorites_list.filter(tmdb_id=movie_id).exists()
+        details.update({'is_favorited': is_favorited})
+    details.update({
         'data': movie_data,
         'reviews': reviews_data,
-        'video': video,
-        'omdb': omdb_data,
-        'rotten_tomatoes': rotten_tomatoes
+        'omdb': omdb_data
     })
+    return render(request, 'movies/movie_detail.html', details)

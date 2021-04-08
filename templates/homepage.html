@@ -6,10 +6,35 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+    <h1>Hello {{ user.displayname }}!</h1>
+{% endif %}
+
+{% if favorites %}
+    <h2>Watch Again</h2>
+    <ul>
+        {% for favorite in favorites %}
+            <li><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></li>
+            <img src="{{favorite.poster_url}}" alt="{{favorite.title}}" width=154>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if recommendations %}
+    <h2>Because You Watched {{ fave_movie.name }}</h2>
+    <ul>
+        {% for recommendation in recommendations.results %}
+            <li><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></li>
+            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}">
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <h2>Popular</h2>
 <ul>
     {% for result in popular.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 
@@ -17,6 +42,7 @@
 <ul>
     {% for result in latest.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 
@@ -24,6 +50,7 @@
 <ul>
     {% for result in top.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 
@@ -31,6 +58,7 @@
 <ul>
     {% for result in upcoming.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 {% endblock %}
