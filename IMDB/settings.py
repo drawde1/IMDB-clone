@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'IMDB_user',
     'reviews',
     'movies',
+    'actors',
     'authentication',
 ]
 

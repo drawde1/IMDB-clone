@@ -23,6 +23,7 @@ urlpatterns = [
     path('', homepage, name='homepage'),
     path('users/', include('IMDB_user.urls')),
     path('movies/', include('movies.urls')),
+    path('actors/', include('actors.urls')),
     path('reviews/<str:imbd_id>/', reviews),
     # path('watchlist/<str:imbd_id>/', add_watchlist),
     path("logout/", logout_view, name="logout"),
