@@ -11,10 +11,27 @@ omdb_key = 'd361bf3'
 
 def homepage(request):
     latest_path = '/movie/now_playing'
+    popular_path = '/movie/popular'
+    top_path = '/movie/top_rated'
+    upcoming_path = '/movie/upcoming'
     latest_endpoint = f'{tmdb_base_url}{latest_path}?api_key={tmdb_key}'
+    popular_endpoint = f'{tmdb_base_url}{popular_path}?api_key={tmdb_key}'
+    top_endpoint = f'{tmdb_base_url}{top_path}?api_key={tmdb_key}'
+    upcoming_endpoint = f'{tmdb_base_url}{upcoming_path}?api_key={tmdb_key}'
     latest_request = requests.get(latest_endpoint)
+    popular_request = requests.get(popular_endpoint)
+    top_request = requests.get(top_endpoint)
+    upcoming_request = requests.get(upcoming_endpoint)
     latest_data = latest_request.json()
-    return render(request, 'homepage.html', {'latest': latest_data})
+    popular_data = popular_request.json()
+    top_data = top_request.json()
+    upcoming_data = upcoming_request.json()
+    return render(request, 'homepage.html',{
+        'latest': latest_data,
+        'popular': popular_data,
+        'top': top_data,
+        'upcoming': upcoming_data
+    })
 
 
 def search_movie(request):
@@ -52,4 +69,10 @@ def movie_detail(request, movie_id):
     omdb_data = omdb_request.json()
     rotten_tomatoes = omdb_data['Ratings'][1]
     video = video_data['results'][0]
-    return render(request, 'movies/movie_detail.html', {'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })
+    return render(request, 'movies/movie_detail.html',{
+        'data': movie_data,
+        'reviews': reviews_data,
+        'video': video,
+        'omdb': omdb_data,
+        'rotten_tomatoes': rotten_tomatoes
+    })
