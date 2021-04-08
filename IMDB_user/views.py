@@ -19,10 +19,10 @@ omdb_key = 'd361bf3'
 
 
 def add_favorites(request, movie_id):
-    if Movie.objects.filter(imdb_id=movie_id).exists():
-        movie = Movie.objects.get(imdb_id=movie_id)
+    if Movie.objects.filter(tmdb_id=movie_id).exists():
+        movie = Movie.objects.get(tmdb_id=movie_id)
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        if not current_user.favorites_list.filter(imdb_id=movie_id).exists():
+        if not current_user.favorites_list.filter(tmdb_id=movie_id).exists():
             current_user.favorites_list.add(movie)
             current_user.save()
             return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -33,9 +33,10 @@ def add_favorites(request, movie_id):
         movie_data = movie_request.json()
         poster = movie_data['poster_path']
         movie = Movie.objects.create(
-            imdb_id = movie_data['id'],
+            tmdb_id = movie_data['id'],
             name = movie_data['title'],
             poster_url = f'https://image.tmdb.org/t/p/w342{poster}'
+            
         )
         current_user = MyCustomUser.objects.get(id=request.user.id)
         current_user.favorites_list.add(movie)
@@ -44,7 +45,7 @@ def add_favorites(request, movie_id):
 
 def remove_favorites(request, movie_id):
     current_user = MyCustomUser.objects.get(id=request.user.id)
-    movie = Movie.objects.get(imdb_id=movie_id)
+    movie = Movie.objects.get(tmdb_id=movie_id)
     current_user.favorites_list.remove(movie)
     current_user.save()
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))

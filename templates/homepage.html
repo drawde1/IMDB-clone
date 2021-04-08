@@ -11,21 +11,21 @@
 {% endif %}
 
 {% if favorites %}
-    <h2>Favorites</h2>
+    <h2>Watch Again</h2>
     <ul>
         {% for favorite in favorites %}
-            <li><a href="{% url 'movie_detail' movie_id=favorite.imdb_id %}">{{ favorite.name }}</a></li>
+            <li><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></li>
+            <img src="{{favorite.poster_url}}" alt="{{favorite.title}}" width=154>
         {% endfor %}
     </ul>
 {% endif %}
 
-<!-- {{recommendations}} -->
-
 {% if recommendations %}
-    <h2>Because You Liked {{ fave_movie.name }}</h2>
+    <h2>Because You Watched {{ fave_movie.name }}</h2>
     <ul>
         {% for recommendation in recommendations.results %}
             <li><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></li>
+            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}">
         {% endfor %}
     </ul>
 {% endif %}
@@ -34,6 +34,7 @@
 <ul>
     {% for result in popular.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 
@@ -41,6 +42,7 @@
 <ul>
     {% for result in latest.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 
@@ -48,6 +50,7 @@
 <ul>
     {% for result in top.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 
@@ -55,6 +58,7 @@
 <ul>
     {% for result in upcoming.results %}
         <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}">
     {% endfor %}
 </ul>
 {% endblock %}

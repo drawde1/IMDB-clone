@@ -83,10 +83,13 @@ def movie_detail(request, movie_id):
     imdb_id = movie_data['imdb_id']
     video_data = video_request.json()
     reviews_data = reviews_request.json()
-    video = video_data['results'][0]
     omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={omdb_key}'
     omdb_request = requests.get(omdb_endpoint)
     omdb_data = omdb_request.json()
+    video = {}
+    if not video_data['results'] == []:
+        video = video_data['results'][0]
+        details.update({'video': video})
     rotten_tomatoes = ''
     if omdb_data['Ratings']:
         for rating in omdb_data['Ratings']:
@@ -95,12 +98,11 @@ def movie_detail(request, movie_id):
                 details.update({'rotten_tomatoes': rotten_tomatoes})
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        is_favorited = current_user.favorites_list.filter(imdb_id=movie_id).exists()
+        is_favorited = current_user.favorites_list.filter(tmdb_id=movie_id).exists()
         details.update({'is_favorited': is_favorited})
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
-        'video': video,
         'omdb': omdb_data
     })
     return render(request, 'movies/movie_detail.html', details)
