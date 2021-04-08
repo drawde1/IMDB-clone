@@ -31,17 +31,18 @@ def homepage(request):
     upcoming_data = upcoming_request.json()
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        favorites = current_user.favorites_list.all()
-        fave_movie = random.choice(favorites)
-        movie_id = fave_movie.id
-        recommendations_path = f'/movie/{movie_id}/recommendations'
-        recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={tmdb_key}'
-        recommendations_request = requests.get(recommendations_endpoint)
-        if recommendations_request.status_code in range(200, 299):
-            recommendations_data = recommendations_request.json()
-            if not recommendations_data['results'] == []:
-                details.update({'fave_movie': fave_movie, 'recommendations': recommendations_data})
-        details.update({'favorites': favorites })
+        if current_user.favorites_list.all() :
+            favorites = current_user.favorites_list.all()
+            fave_movie = random.choice(favorites)
+            movie_id = fave_movie.id
+            recommendations_path = f'/movie/{movie_id}/recommendations'
+            recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={tmdb_key}'
+            recommendations_request = requests.get(recommendations_endpoint)
+            if recommendations_request.status_code in range(200, 299):
+                recommendations_data = recommendations_request.json()
+                if not recommendations_data['results'] == []:
+                    details.update({'fave_movie': fave_movie, 'recommendations': recommendations_data})
+            details.update({'favorites': favorites })
     details.update({
         'latest': latest_data,
         'popular': popular_data,

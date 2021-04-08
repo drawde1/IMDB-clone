@@ -17,5 +17,7 @@ class MyCustomUser(AbstractUser):
         related_name='favorites'
     )
 
+    REQUIRED_FIELDS = ['displayname']
+
     def __str__(self):
         return self.username
