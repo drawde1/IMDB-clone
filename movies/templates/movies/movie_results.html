@@ -5,11 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<h1>Movie Search Results</h1>
-
+<h5 class="list-title">Movie Search Results</h5>
+<div class="carousel">
     <ol>
         {% for result in results %} 
-            <li><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></li>
+            <div class="carousel-item">
+                <a href="{% url 'movie_detail' movie_id=result.id %}">
+                    <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                </a>
+                <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
+            </div>
         {% endfor %}
     </ol>
+</div>
 {% endblock %}

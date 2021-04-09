@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #e6ba41;
+}
+
+.container {
+    color: #ffffff;
+    background-color: #000000;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    width: 90%;
+}
+
+.list-title {
+    color: #e6ba41;
+    font-weight: bold;
+    margin-left: 40px;
+}
+
+ol {
+    list-style-type: none;
+}
+
+.carousel {
+    margin-top: -100px;
+    height: 600px;
+    perspective: 2000px;
+}
+
+.carousel .carousel-item {
+    width: 250px;
+}
+
+/* .carousel .carousel-item img {
+    width: 100%;
+} */
+
+.carousel .carousel-item h6 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    padding: 10px 5px;
+    text-align: center;
+    width: 200px;
+}
+
