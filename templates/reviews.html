@@ -1,13 +1,72 @@
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type ="submit" value="submit">
+{% extends 'base.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+{% block content %}
 
-</form>
-<ul>
-    {% for review in reviews %}
-    <li><p>user: {{review.user}}</p></li>
-    <p>{{review.text}}</p>
-    <p>created at: {{review.creation_time}}</p>
-    {% endfor %}
-</ul>
+
+
+
+
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+      <div class="card">
+        <img src="{{movie.poster_url}}" height= 700 class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <!-- <p class="card-text"></p> -->
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+        <div class = container>
+          <h2 class="card-title display-1">Post a Review</h2>
+        </div>
+          <br/>
+          <br/>
+          <p class="card-text">{% include 'general_form.html'%}</p>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+  <br/>
+<div class = 'scroll'>
+{% for review in reviews %}
+<div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{review.user}}{{review.user.emoji}}</h5>
+      <p class="card-text">{{review.text}}</p>
+      <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
+      
+      {% if request.user in review.likedby.all %}
+       <p><small class="text-muted">you've already voted on this post</small></p>
+       
+      {% else %}
+      <a href='/vote/{{review.id}}/{{1}}/' class="btn btn-lg btn-primary">helpful</a>
+      <a href='/vote/{{review.id}}/{{0}}/' class="btn btn-lg btn-primary">unhelpful</a>
+      {% endif %}
+      {{review.vote_total}} user's have found this helpful
+    </div>
+  </div>
+{% endfor %}
+</div>
+<style>
+    .scroll {
+    overflow: scroll;
+    height: 700px;
+    cursor: url(https://cdn.custom-cursor.com/db/4828/32/arrow2747.png), auto;
+  }
+</style>
+{% endblock %}
