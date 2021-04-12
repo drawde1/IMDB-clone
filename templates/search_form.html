@@ -1,0 +1,14 @@
+{% block form %}
+
+<form action="" method="post" class="search_field">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="text" class="input" placeholder="Search" id="formControl">
+    <button type="submit" class="fabutton">
+        <i class="fas fa-search"></i>
+    </button>
+</form>
+
+{% endblock %}
+
+

@@ -66,7 +66,7 @@ def search_movie(request):
                 results = request_data['results']
                 return render(request, 'movies/movie_results.html', {'results': results})
     form = MovieSearchForm()
-    return render(request, 'general_form.html', {'form': form})
+    return render(request, 'search_form.html', {'form': form})
 
 def movie_detail(request, movie_id):
     details = {}
@@ -86,10 +86,24 @@ def movie_detail(request, movie_id):
     omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={OMDB_KEY}'
     omdb_request = requests.get(omdb_endpoint)
     omdb_data = omdb_request.json()
+    actors = omdb_data['Actors'].split(",")
+    directors = omdb_data['Director'].split(",")
+    writers = omdb_data['Writer'].split(",")
+    recommendations_path = f'/movie/{movie_id}/recommendations'
+    recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
+    recommendations_request = requests.get(recommendations_endpoint)
+    if recommendations_request.status_code in range(200, 299):
+        recommendations_data = recommendations_request.json()
+        if not recommendations_data['results'] == []:
+            details.update({'recommendations': recommendations_data})
     video = {}
+    related_videos = []
     if not video_data['results'] == []:
         video = video_data['results'][0]
         details.update({'video': video})
+    if len(video_data['results']) > 1:
+        related_videos = video_data['results'][1:]
+        details.update({'videos': related_videos})
     rotten_tomatoes = ''
     if omdb_data['Ratings']:
         for rating in omdb_data['Ratings']:
@@ -103,6 +117,9 @@ def movie_detail(request, movie_id):
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
-        'omdb': omdb_data
+        'omdb': omdb_data,
+        'actors': actors,
+        'directors': directors,
+        'writers': writers
     })
     return render(request, 'movies/movie_detail.html', details)

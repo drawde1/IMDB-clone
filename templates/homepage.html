@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block navbar %}
     {% include 'navbar.html' %}
@@ -6,9 +7,6 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-    <h4 class="list-title">Hello {{ user.displayname }}!</h4>
-{% endif %}
 
 {% if favorites %}
     <h5 class="list-title">Watch Again</h5>
