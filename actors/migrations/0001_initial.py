@@ -12,12 +12,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Movie',
+            name='Actor',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tmdb_id', models.CharField(default='', max_length=20)),
-                ('name', models.CharField(default='', max_length=50)),
-                ('poster_url', models.URLField(default='')),
+                ('imbd_id', models.CharField(max_length=20)),
+                ('name', models.BooleanField(default=False)),
+                ('popularity', models.IntegerField(default=0)),
+                ('bio', models.CharField(max_length=280)),
             ],
         ),
     ]

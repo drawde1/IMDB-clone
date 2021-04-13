@@ -254,6 +254,15 @@ body {
    padding-top: 15px;
 }
 
+.cast a {
+    color: #fff;
+}
+
+.cast a:hover {
+    text-decoration: underline;
+}
+
+
 
 .ratings-container {
     margin-left: 96px;
@@ -329,6 +338,10 @@ body {
 
 .about-container a {
     color: #fff;
+}
+
+.about-container a:hover {
+    text-decoration: underline;
 }
 
 .about-text {

@@ -3,6 +3,7 @@ from django.shortcuts import render
 from IMDB_user.models import MyCustomUser
 from IMDB.settings import TMDB_KEY, OMDB_KEY
 from movies.forms import MovieSearchForm, AllSearchForm
+from movies.models import Movie
 import requests
 import random
 
@@ -145,4 +146,15 @@ def movie_detail(request, movie_id):
         'directors': directors,
         'writers': writers
     })
+   
+    rotten_tomatoes = omdb_data['Ratings'][0]
+    video = video_data['results'][0]
+    poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
+    if not Movie.objects.filter(tmdb_id=movie_id).exists():
+        Movie.objects.create(
+            tmdb_id=movie_id,
+            name=movie_data['title'],
+            poster_url=poster_url
+        )
     return render(request, 'movies/movie_detail.html', details)
+    # return render(request, 'movies/movie_detail.html', {'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })
