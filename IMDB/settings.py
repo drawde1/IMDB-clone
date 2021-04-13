@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 import environ
 
 # Initialise environment variables
@@ -133,6 +133,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/images/'
+
 LOGIN_URL = '/login/'
 
 AUTH_USER_MODEL = 'IMDB_user.MyCustomUser'
@@ -140,3 +142,7 @@ AUTH_USER_MODEL = 'IMDB_user.MyCustomUser'
 TMDB_KEY = env('TMDB_KEY')
 
 OMDB_KEY = env('OMDB_KEY')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]

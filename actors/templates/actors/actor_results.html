@@ -5,11 +5,17 @@
 {% endblock %}
 
 {% block content %}
-<h1>Actor Search Results</h1>
-
+<h5 class="list-title">Actor Search Results</h5>
+<div class="carousel">
     <ol>
         {% for result in results %} 
-            <li><a href="{% url 'actor_detail' actor_id=result.id %}">{{ result.name }}</a></li>
+            <div class="carousel-item">
+                <a href="{% url 'actor_detail' actor_id=result.id %}">
+                    <img src="https://image.tmdb.org/t/p/w154{{result.profile_path}}" alt="{{result.name}}" width=220>
+                </a>
+                <h6><a href="{% url 'actor_detail' actor_id=result.id %}">{{ result.name }}</a></h6>
+            </div>
         {% endfor %}
     </ol>
+</div>
 {% endblock %}

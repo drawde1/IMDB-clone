@@ -1,13 +1,40 @@
+{% load static %}
+
 {% block navbar %}
-    <a href="{% url 'homepage' %}">Home</a>
-    <a href="{% url 'search_movie' %}">Search Movie</a>
-    <a href="{% url 'search_actor' %}">Search Actor</a>
-    <a href="{% url 'search_movie' %}">Search</a>
-    <a href="{% url 'profile' %}">Profile</a>
-    {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
-    {% endif %}
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper nav-custom">
+            <a href="{% url 'homepage' %}" class="brand-logo logo-custom">
+                <img src="{% static 'images/logo.png' %}" alt="logo" class="img-custom">
+            </a>
+            <div class="wrapper">
+                <div class="search_box">
+                    <div class="dropdown">
+                        <div class="default_option">All</div>
+                        <ul>
+                            <li id="all" class="li-all">All</li>
+                            <li id="movies" class="li-movies">Movies</li>
+                            <li id="actors" class="li-actors">Actors</li>
+                        </ul>
+                    </div>
+                    {% block form %}
+                        {% include 'search_form.html' %}
+                    {% endblock %}
+                </div>
+            </div>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}" class="page-custom">{{user.displayname}}</a></li>
+                    <li><a href="{% url 'logout' %}" class="page-custom">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="page-custom">Login</a></li>
+                    <li><a href="{% url 'signup' %}" class="page-custom">Signup</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</div>
 {% endblock %}
+     
+
+

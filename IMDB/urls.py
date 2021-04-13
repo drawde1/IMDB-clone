@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from reviews.views import reviews
+from movies.views import homepage, search_all
 from reviews.views import ReviewView
-from movies.views import homepage
-# from IMDB_user.views import add_watchlist
 from IMDB_user.views import profile_view, add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
@@ -26,15 +26,16 @@ urlpatterns = [
     path('users/', include('IMDB_user.urls')),
     path('movies/', include('movies.urls')),
     path('actors/', include('actors.urls')),
-    # path('watchlist/<str:tmdb_id>/', add_watchlist),
+    path('search/all/', search_all, name="search_all"),
+    # path('reviews/<str:imbd_id>/', reviews),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
     path('admin/', admin.site.urls),
     path('movies/', include('movies.urls')),
     path('admin/', admin.site.urls),
-    path('reviews/<str:tmdb_id>/', ReviewView.as_view()),
-    path('watchlist/<str:tmdb_id>/', add_watchlist),
+    path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
+    path('watchlist/<str:tmdb_id>/', add_watchlist, name="add_watchlist"),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
