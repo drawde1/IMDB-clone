@@ -9,14 +9,20 @@
 <div class="carousel">
     <ol>
         {% for result in results %} 
-            {% if result.poster_path %}
-                <div class="carousel-item">
+            <div class="carousel-item">
+                {% if result.media_type == "movie" %}
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
-                </div>
-            {% endif %}
+                {% endif %}
+                {% if result.media_type == "person" %}
+                    <a href="{% url 'actor_detail' actor_id=result.id %}">
+                        <img src="https://image.tmdb.org/t/p/w154{{result.profile_path}}" alt="{{result.name}}" width=220>
+                    </a>
+                    <h6><a href="{% url 'actor_detail' actor_id=result.id %}">{{ result.name }}</a></h6>
+                {% endif %}
+            </div>
         {% endfor %}
     </ol>
 </div>

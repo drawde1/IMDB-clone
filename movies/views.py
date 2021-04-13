@@ -51,6 +51,21 @@ def homepage(request):
     })
     return render(request, 'homepage.html', details)
 
+def search_all(request):
+    if request.method == 'POST':
+        form = MovieSearchForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            search_keyword = data['search_all']
+            search_path = f'/search/multi'
+            endpoint = f'{tmdb_base_url}{search_path}?api_key={TMDB_KEY}&query={search_keyword}'
+            search_request = requests.get(endpoint)
+            if id_request.status_code in range(200, 299):
+                request_data = search_request.json()
+                results = request_data['results']
+                return render(request, 'movies/all_results.html', {'results': results})
+    form = MovieSearchForm()
+    return render(request, 'homepage.html', {'form': form})
 
 def search_movie(request):
     if request.method == 'POST':
@@ -66,7 +81,7 @@ def search_movie(request):
                 results = request_data['results']
                 return render(request, 'movies/movie_results.html', {'results': results})
     form = MovieSearchForm()
-    return render(request, 'search_form.html', {'form': form})
+    return render(request, 'homepage.html', {'form': form})
 
 def movie_detail(request, movie_id):
     details = {}
@@ -86,9 +101,17 @@ def movie_detail(request, movie_id):
     omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={OMDB_KEY}'
     omdb_request = requests.get(omdb_endpoint)
     omdb_data = omdb_request.json()
-    actors = omdb_data['Actors'].split(",")
-    directors = omdb_data['Director'].split(",")
-    writers = omdb_data['Writer'].split(",")
+    actors = omdb_data['Actors'].split(", ")
+    directors = omdb_data['Director'].split(", ")
+    writers = omdb_data['Writer'].split(", ")
+    for index, director in enumerate(directors):
+        if "(" in director:
+            parens_index = director.find("(")
+            directors[index] = director[:parens_index]
+    for index, writer in enumerate(writers):
+        if "(" in writer:
+            parens_index = writer.find("(")
+            writers[index] = writer[:parens_index]
     recommendations_path = f'/movie/{movie_id}/recommendations'
     recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
     recommendations_request = requests.get(recommendations_endpoint)
@@ -102,7 +125,7 @@ def movie_detail(request, movie_id):
         video = video_data['results'][0]
         details.update({'video': video})
     if len(video_data['results']) > 1:
-        related_videos = video_data['results'][1:]
+        related_videos = video_data['results'][1:5]
         details.update({'videos': related_videos})
     rotten_tomatoes = ''
     if omdb_data['Ratings']:

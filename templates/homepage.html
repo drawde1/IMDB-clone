@@ -7,94 +7,105 @@
 
 {% block content %}
 
-
 {% if favorites %}
-    <h5 class="list-title">Watch Again</h5>
-    <div class="carousel">
-        <ul>
-            {% for favorite in favorites %}
-                <div class="carousel-item">
-                    <a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">
-                        <img src="{{favorite.poster_url}}" alt="{{favorite.title}}" width=220>
-                    </a>
-                    <h6><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></h6>
-                </div>
-            {% endfor %}
-        </ul>
+    <div class="carousel-container">
+        <h5 class="list-title">Watch Again</h5>
+        <div class="carousel">
+            <ul>
+                {% for favorite in favorites %}
+                    <div class="carousel-item">
+                        <a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">
+                            <img src="{{favorite.poster_url}}" alt="{{favorite.title}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endif %}
 
 {% if recommendations %}
-    <br>
-    <br>
-    <h5 class="list-title">Because You Watched {{ fave_movie.name }}</h5>
+    <div class="carousel-container">
+        <h5 class="list-title">Because You Watched {{ fave_movie.name }}</h5>
+        <div class="carousel">
+            <ul>
+                {% for recommendation in recommendations.results %}
+                    <div class="carousel-item">
+                        <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+<div class="carousel-container">
+    <h5 class="list-title">Popular</h5>
     <div class="carousel">
         <ul>
-            {% for recommendation in recommendations.results %}
+            {% for result in popular.results %}
                 <div class="carousel-item">
-                    <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
-                        <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                    <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
-                    <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                    <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
                 </div>
             {% endfor %}
         </ul>
     </div>
-{% endif %}
-
-<h5 class="list-title">Popular</h5>
-<div class="carousel">
-    <ul>
-        {% for result in popular.results %}
-            <div class="carousel-item">
-                <a href="{% url 'movie_detail' movie_id=result.id %}">
-                    <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
-                </a>
-                <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
-            </div>
-        {% endfor %}
-    </ul>
 </div>
 
-<h5 class="list-title">In Theaters</h5>
-<div class="carousel">
-    <ul>
-        {% for result in latest.results %}
-            <div class="carousel-item">
-                <a href="{% url 'movie_detail' movie_id=result.id%}">
-                    <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
-                </a>
-                <h6><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></h6>
-            </div>
-        {% endfor %}
-    </ul>
+<div class="carousel-container">
+    <h5 class="list-title">In Theaters</h5>
+    <div class="carousel">
+        <ul>
+            {% for result in latest.results %}
+                <div class="carousel-item">
+                    <a href="{% url 'movie_detail' movie_id=result.id%}">
+                        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                    </a>
+                    <h6><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></h6>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
-<h5 class="list-title">Top Rated</h5>
-<div class="carousel">
-    <ul>
-        {% for result in top.results %}
-            <div class="carousel-item">
-                <a href="{% url 'movie_detail' movie_id=result.id %}">
-                    <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
-                </a>
-                <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
-            </div>
-        {% endfor %}
-    </ul>
+<div class="carousel-container">
+    <h5 class="list-title">Top Rated</h5>
+    <div class="carousel">
+        <ul>
+            {% for result in top.results %}
+                <div class="carousel-item">
+                    <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                    </a>
+                    <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
-<h5 class="list-title">Coming Soon To Theaters</h5>
-<div class="carousel">
-    <ul>
-        {% for result in upcoming.results %}
-            <div class="carousel-item">
-                <a href="{% url 'movie_detail' movie_id=result.id %}">
-                    <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
-                </a>
-                <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
-            </div>
-        {% endfor %}
-    </ul>
+<div class="carousel-container">
+    <h5 class="list-title">Coming Soon To Theaters</h5>
+    <div class="carousel">
+        <ul>
+            {% for result in upcoming.results %}
+                <div class="carousel-item">
+                    <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                    </a>
+                    <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
+
 {% endblock %}
+    

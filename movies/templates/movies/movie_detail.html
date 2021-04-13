@@ -7,131 +7,141 @@
 
 {% block content %}
 
-<h4>{{ data.title}}</h4>
+<h4 class="movie-title">{{ data.title}}</h4>
 
-<div>
+<div class="poster-container">
     <div>
-    {% if data.poster_path %}
-        <img src="https://image.tmdb.org/t/p/w342{{data.poster_path}}" alt="{{data.title}}">
-    {% endif %}
+        {% if data.poster_path %}
+            <img src="https://image.tmdb.org/t/p/w342{{data.poster_path}}" alt="{{data.title}}">
+        {% endif %}
+    </div>
+    <div>
+        {% if video %}
+            <div style="margin-left: 60px;">
+                <iframe width="720" height="450" src="http://www.youtube.com/embed/{{video.key}}" frameborder="0" allowfullscreen></iframe>
+            </div>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            {% if not is_favorited %}
+                <div class="seen-container">
+                    <a href="{% url 'add_favorites' movie_id=data.id %}" class="mark-seen">🤍 <span style="margin-left: 5px;">Mark as Seen</span></a>
+                </div>
+            {% else %}
+                <div class="seen-container">
+                    <a href="{% url 'remove_favorites' movie_id=data.id %}" class="seen">🧡 <span style="margin-left: 5px;">Seen</span></a>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="watchlist-container">
+                <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
+            </div>
+        {% endif %}
     </div>
 </div>
 
-<div>
-{% if data.vote_average %}
-    <span>⭐️ {{ data.vote_average }}</span>
-{% endif %}
-
-{% if rotten_tomatoes %}
-    <img src="{% static 'images/rotten.png' %}" width=20> {{rotten_tomatoes}}
-{% endif %}
-
-<span style="border: 1px solid #ffffff; padding: 5px;">{{ omdb.Rated }}</span>
-
-{% if user.is_authenticated %}
-    {% if not is_favorited %}
-        <a href="{% url 'add_favorites' movie_id=data.id %}" style="text-decoration: none;">🤍 <span style="margin-left: 5px;">Mark as Seen</span></a>
-    {% else %}
-        <a href="{% url 'remove_favorites' movie_id=data.id %}" style= "text-decoration: none;">🧡 <span style="margin-left: 5px;">Seen</span></a>
+<div class="ratings-container">
+    {% if data.vote_average %}
+        <span>⭐️ <span class="rating-indent">{{ data.vote_average }}</span></span>
     {% endif %}
-{% endif %}
 
-{% if data.runtime %}
-    <span>{{ data.runtime }} minutes</span>
-{% endif %}
+    {% if rotten_tomatoes %}
+        <img src="{% static 'images/rotten_tomatoes.png' %}" width=20 class="rating-item rotten_tomatoes"> <span class="rating-indent">{{rotten_tomatoes}}</span>
+    {% endif %}
 
-{% if user.is_authenticated %}
-    <a href="/watchlist/{{data.id}}/" style="text-decoration: none;">➕ Add to Watchlist</a>
-{% endif %}
+    <span class="rating-item rated" style="border: 1px solid #ffffff; padding: 5px;">{{ omdb.Rated }}</span>
 
-{% if video %}
-    <a href="https://www.youtube.com/watch?v={{video.key}}" target="_blank" style="text-decoration: none;">Watch the Trailer</a>
-    <iframe width="425" height="349" src="http://www.youtube.com/embed/{{video.key}}" frameborder="0" allowfullscreen></iframe>
-{% endif %}
+    {% if data.runtime %}
+        <span class="rating-item runtime">{{ data.runtime }} minutes</span>
+    {% endif %}
 </div>
 
 <br>
 <br>
+<div class="overview-container">
+    {% if data.overview %}
+        <h6 class="summary">{{ data.overview }}</h6>
+    {% endif %}
 
-{% if data.overview %}
-    <h6>{{ data.overview }}</h6>
-{% endif %}
-
-{% if actors %}
-<h6>Cast: 
-    {% for actor in actors %}
-        <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}}</a></span>
-    {% endfor %}
-</h6>
-{% endif %}
-
+    {% if actors %}
+    <h6 class="summary cast">Cast: 
+        {% for actor in actors %}
+            <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}}</a></span>
+        {% endfor %}
+    </h6>
+    {% endif %}
+</div>
 {% if recommendations %}
-    <br>
-    <br>
-    <h5 class="list-title">More Like This</h5>
-    <div class="carousel">
-        <ul>
-            {% for recommendation in recommendations.results %}
-                <div class="carousel-item">
-                    <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
-                        <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
-                    </a>
-                    <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
-                </div>
-            {% endfor %}
-        </ul>
+    <div class="carousel-container">
+        <h5 class="list-title more">More Like This</h5>
+        <div class="carousel">
+            <ul>
+                {% for recommendation in recommendations.results %}
+                    <div class="carousel-item">
+                        <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 {% endif %}
 
 {% if videos %}
-    <br>
-    <br>
-    <h5 class="list-title">Related Videos</h5>
-    {% for video in videos %}
-        <h6><a href="https://www.youtube.com/watch?v={{video.key}}" target="_blank">{{video.name}}</a></h6>
-    {% endfor %}
-{% endif %}
-
-<h5>About {{data.title}}</h5>
-
-{% if data.release_date %}
-    <h6>Release Date: {{ omdb.Released }}</h6>
-{% endif %}
-
-<h6>Director/s: 
-    {% for actor in actors %}
-        <span><a href="{% url 'actor_link' actor_name=actor %}">{{omdb.Director}}</a></span>
-    {% endfor %}
-</h6>
-
-<h6>Writer/s: 
-    {% for actor in actors %}
-        <span><a href="{% url 'actor_link' actor_name=actor %}">{{omdb.Writer}}</a></span>
-    {% endfor %}
-</h6>
-<h6>Cast: 
-    {% for actor in actors %}
-        <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}}</a></span>
-    {% endfor %}
-</h6>
-
-{% if data.genres %}
-    <h6>Genre: 
-            {% for genre in data.genres %}
-                <span>{{ genre.name }}</span>
-            {% endfor %}
-    </h6>
-{% endif %}
-
-
-{% if reviews.results %}
-    <h6>Critique Reviews</h6>
-    <ol>
-        {% for review in reviews.results %}
-            <li>User: {{ review.author }}</li>
-            <p>{{ review.content }}</p>
+<div class="carousel-container">
+    <h5 class="list-title related">Related Videos</h5>
+    <div class="related-video">
+        {% for video in videos %}
+            <div style="margin-left: 50px;">
+                <iframe width="250" height="250" src="http://www.youtube.com/embed/{{video.key}}" frameborder="0" allowfullscreen></iframe>
+            </div>
         {% endfor %}
-    </ol>
+    </div>  
+</div>
 {% endif %}
+
+<div class="about-container">
+    <div class="about-text">
+        <h5 class="about-indent">About {{data.title}}</h5>
+
+        {% if data.release_date %}
+            <h6 class="about-indent">Release Date: {{ omdb.Released }}</h6>
+        {% endif %}
+
+        <h6 class="about-indent">Director/s: 
+            {% for director in directors %}
+                <span><a href="{% url 'actor_link' actor_name=director %}">{{director}}</a></span>
+            {% endfor %}
+        </h6>
+
+        <h6 class="about-indent">Writer/s: 
+            {% for writer in writers %}
+                <span><a href="{% url 'actor_link' actor_name=writer %}">{{writer}}</a></span>
+            {% endfor %}
+        </h6>
+        <h6 class="about-indent">Cast: 
+            {% for actor in actors %}
+                <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}},</a></span>
+            {% endfor %}
+        </h6>
+
+        {% if data.genres %}
+            <h6 class="about-indent">Genre: 
+                    {% for genre in data.genres %}
+                        <span>{{ genre.name }}</span>
+                    {% endfor %}
+            </h6>
+        {% endif %}
+
+
+        {% if reviews.results %}
+            <h6 class="about-indent">Critique Reviews: <a href="#">{{reviews.total_results}} Review/s</a></h6>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}

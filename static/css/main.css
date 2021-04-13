@@ -22,22 +22,30 @@ body {
 /* Homepage */
 
 .list-title {
+    padding-top: 20px;
     color: #e6ba41;
     font-weight: bold;
     margin-left: 40px;
 }
 
 .list-title:hover {
-    border-bottom: 3px solid #e6ba41;   
+    text-decoration: underline;
+}
+
+.carousel-container {
+    position: relative;
+    margin-top: -20px;
 }
 
 .carousel {
-    margin-top: -100px;
-    height: 600px;
+    
+    height: 500px;
     perspective: 2000px;
 }
 
 .carousel .carousel-item {
+    position: absolute;
+    top: -80px;
     width: 250px;
 }
 
@@ -207,6 +215,136 @@ body {
 
 /* Movie Detail Page */
 
+.movie-title {
+    padding-top: 30px;
+    color: #e6ba41;
+    font-weight: bold;
+    margin-left: 40px;
+}
+
 .rated {
     border: 1px solid #ffffff;
+}
+
+.poster-container {
+    display: flex;
+    margin-left: 80px;
+    margin-top: 45px;
+    width: 1132px;
+    height: 523px;
+}
+
+.overview-container {
+    position: relative;
+    top: 0px;
+    left: 77px;
+    padding: 14px 42px;
+    background-color: #191919;
+    width: 1125px;
+    height: 180px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.summary {
+    position: relative;
+    line-height: 1.6;
+}
+
+.cast {
+   padding-top: 15px;
+}
+
+
+.ratings-container {
+    margin-left: 96px;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+.rating-item {
+    margin-left: 15px;
+}
+
+.rating-indent {
+    margin-left: 3px;
+}
+
+.video-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.seen-container {
+    width: 200px;
+    height: 60px;
+    background-color: #191919;
+    position: relative;
+    top: 30px;
+    left: 150px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+
+.seen {
+    position: absolute;
+    top: 15px;
+    left: 58px;
+    
+}
+
+.watchlist-container {
+    width: 200px;
+    height: 60px;
+    background-color: #191919;
+    position: relative;
+    top: -30px;
+    left: 470px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.watchlist {
+    position: absolute;
+    top: 14px;
+    left: 13px;
+}
+
+.mark-seen {
+    position: absolute;
+    top: 15px;
+    left: 25px;
+}
+
+.about-container {
+    position: relative;
+    left: 65px;
+    background-color: #191919;
+    width: 1125px;
+    height: 300px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 30px;
+}
+
+.about-text {
+    padding: 10px 50px;
+}
+
+.related-video {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.more {
+    position: relative;
+    top: 25px;
+}
+
+.related {
+    position: relative;
+    top: -20px;
+}
+
+.about-indent {
+    line-height: 1.5;
 }

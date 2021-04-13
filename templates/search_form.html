@@ -1,9 +1,8 @@
 {% block form %}
 
-<form action="" method="post" class="search_field">
+<form action="/movies/all/" method="post" class="search_field" id="search_form">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="text" class="input" placeholder="Search" id="formControl">
+    <input type="text" class="input" placeholder="Search" name="search_all" id="search_input">
     <button type="submit" class="fabutton">
         <i class="fas fa-search"></i>
     </button>

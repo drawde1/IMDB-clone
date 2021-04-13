@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from reviews.views import reviews
-from movies.views import homepage
+from movies.views import homepage, search_all
 # from IMDB_user.views import add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 urlpatterns = [
@@ -24,6 +24,7 @@ urlpatterns = [
     path('users/', include('IMDB_user.urls')),
     path('movies/', include('movies.urls')),
     path('actors/', include('actors.urls')),
+    path('search/all/', search_all, name="search_all"),
     path('reviews/<str:imbd_id>/', reviews),
     # path('watchlist/<str:imbd_id>/', add_watchlist),
     path("logout/", logout_view, name="logout"),

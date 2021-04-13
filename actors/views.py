@@ -21,7 +21,7 @@ def search_actor(request):
                 results = request_data['results']
                 return render(request, 'actors/actor_results.html', {'results': results})
     form = ActorSearchForm()
-    return render(request, 'general_form.html', {'form': form})
+    return render(request, 'homepage.html', {'form': form})
 
 def actor_detail(request, actor_id):
     actor_path = f'/person/{actor_id}'
