@@ -29,9 +29,9 @@ body {
     margin-left: 40px;
 }
 
-/* .list-title:hover {
+.list-title:hover {
     text-decoration: underline;
-} */
+}
 
 .carousel-container {
     position: relative;
@@ -216,7 +216,6 @@ body {
 /* Movie Detail Page */
 
 .movie-title {
-    padding-top: 10px;
     color: #e6ba41;
     font-weight: bold;
     margin-left: 40px;
@@ -328,9 +327,12 @@ body {
     margin-bottom: 30px;
 }
 
+.about-container a {
+    color: #fff;
+}
+
 .about-text {
     padding: 10px 50px;
-    padding-bottom: 20px;
 }
 
 .related-video {

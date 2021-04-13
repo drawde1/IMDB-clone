@@ -13,12 +13,14 @@
         <div class="carousel">
             <ul>
                 {% for favorite in favorites %}
-                    <div class="carousel-item">
-                        <a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">
-                            <img src="{{favorite.poster_url}}" alt="{{favorite.title}}" width=220>
-                        </a>
-                        <h6><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></h6>
-                    </div>
+                    {% if favorite.poster_url %}
+                        <div class="carousel-item">
+                            <a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">
+                                <img src="{{favorite.poster_url}}" alt="{{favorite.title}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></h6>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

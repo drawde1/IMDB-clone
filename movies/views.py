@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from IMDB_user.models import MyCustomUser
 from IMDB.settings import TMDB_KEY, OMDB_KEY
-from movies.forms import MovieSearchForm
+from movies.forms import MovieSearchForm, AllSearchForm
 import requests
 import random
 
@@ -53,18 +53,18 @@ def homepage(request):
 
 def search_all(request):
     if request.method == 'POST':
-        form = MovieSearchForm(request.POST)
+        form = AllSearchForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             search_keyword = data['search_all']
             search_path = f'/search/multi'
             endpoint = f'{tmdb_base_url}{search_path}?api_key={TMDB_KEY}&query={search_keyword}'
             search_request = requests.get(endpoint)
-            if id_request.status_code in range(200, 299):
+            if search_request.status_code in range(200, 299):
                 request_data = search_request.json()
                 results = request_data['results']
                 return render(request, 'movies/all_results.html', {'results': results})
-    form = MovieSearchForm()
+    form = AllSearchForm()
     return render(request, 'homepage.html', {'form': form})
 
 def search_movie(request):
@@ -110,7 +110,7 @@ def movie_detail(request, movie_id):
             directors[index] = director[:parens_index]
     for index, writer in enumerate(writers):
         if "(" in writer:
-            parens_index = writer.find("(")
+            parens_index = writer.find(" (")
             writers[index] = writer[:parens_index]
     recommendations_path = f'/movie/{movie_id}/recommendations'
     recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
