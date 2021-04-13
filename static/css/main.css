@@ -17,6 +17,7 @@ body {
     width: 90%;
     margin-top: 40px;
     margin-bottom: 40px;
+    padding: 20px 0;
 }
 
 /* Homepage */
@@ -28,9 +29,9 @@ body {
     margin-left: 40px;
 }
 
-.list-title:hover {
+/* .list-title:hover {
     text-decoration: underline;
-}
+} */
 
 .carousel-container {
     position: relative;
@@ -38,14 +39,13 @@ body {
 }
 
 .carousel {
-    
     height: 500px;
     perspective: 2000px;
 }
 
 .carousel .carousel-item {
     position: absolute;
-    top: -80px;
+    top: -60px;
     width: 250px;
 }
 
@@ -216,7 +216,7 @@ body {
 /* Movie Detail Page */
 
 .movie-title {
-    padding-top: 30px;
+    padding-top: 10px;
     color: #e6ba41;
     font-weight: bold;
     margin-left: 40px;
@@ -248,6 +248,7 @@ body {
 .summary {
     position: relative;
     line-height: 1.6;
+    margin-top: 20px;
 }
 
 .cast {
@@ -318,6 +319,7 @@ body {
 
 .about-container {
     position: relative;
+    top: 10px;
     left: 65px;
     background-color: #191919;
     width: 1125px;
@@ -328,6 +330,7 @@ body {
 
 .about-text {
     padding: 10px 50px;
+    padding-bottom: 20px;
 }
 
 .related-video {
@@ -337,7 +340,7 @@ body {
 
 .more {
     position: relative;
-    top: 25px;
+    top: 30px;
 }
 
 .related {
