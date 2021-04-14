@@ -51,6 +51,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "django-materializecss-form"
+version = "1.1.18"
+description = "A simple Django form template tag to work with Materializecss"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "idna"
 version = "2.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -116,7 +124,7 @@ brotli = ["brotlipy (>=0.6.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "00ebd63bcaea6f9f59c5b40425456cacb72ac0ef04121388e0a359e5e978e450"
+content-hash = "3af9fdb5d93f9fc2588166c76e963520093e0f2bff94a887fd1ee569fcbbd7ab"
 
 [metadata.files]
 asgiref = [
@@ -138,6 +146,9 @@ django = [
 django-environ = [
     {file = "django-environ-0.4.5.tar.gz", hash = "sha256:6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde"},
     {file = "django_environ-0.4.5-py2.py3-none-any.whl", hash = "sha256:c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"},
+]
+django-materializecss-form = [
+    {file = "django-materializecss-form-1.1.18.linux-x86_64.tar.gz", hash = "sha256:0e3bc1a4e2ac2a4bfdaedd7c01d318101f4c58034f626c5c8edd829b4631dac8"},
 ]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
