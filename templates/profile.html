@@ -6,7 +6,9 @@
 {% block content %}
 
 <h1>{{request.user}}'s profile</h1>
+{% if request.user.profile_pic%}
 <img src ={{request.user.profile_pic.url}} width =200 /> {{request.user.bio}}
+{%endif %}
 <p>total reviews: {{reviews.count}}</p>
 <h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
 <a href='/edit-profile/'>edit profile</a>
