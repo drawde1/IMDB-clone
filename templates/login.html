@@ -12,12 +12,9 @@
     </head>
     <body>
 
-
-        <a class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign In</a>
-
         <div class="auth-container modal" id="modal1">
             <div class="form-container sign-up-container">
-                <form action="#" class="form-control">
+                <form action="/signup/" class="form-control">
                     <h1 class="form-title">Create Account</h1>
                     <input type="text" placeholder="Name" />
                     <input type="text" placeholder="Displayname" />
@@ -26,7 +23,7 @@
                 </form>
             </div>
             <div class="form-container sign-in-container">
-                <form action="#" class="form-control">
+                <form action="/login/" class="form-control">
                     <h1 class="form-title">Sign In</h1>
                     <input type="text" placeholder="Username" />
                     <input type="password" placeholder="Password" />
@@ -49,9 +46,16 @@
             </div>
         </div>
 
-        <script>
+        <!-- <script>
             $(document).ready(function(){
                 $('.modal').modal();
+            })
+        </script> -->
+        <script>
+            const modalDiv = document.getElementById('modal1')
+            const modalButton = document.getElementById('modalButton')
+            modalButton.addEventListener('click', () => {
+               modalDiv.classList.remove("modal")
             })
         </script>
         <script>
@@ -67,5 +71,15 @@
             container.classList.remove("right-panel-active");
             });
         </script>
+        <!-- <script>
+            const login = document.getElementById("all")
+            const search_form = document.getElementById("search_form")
+            const search_input = document.getElementById("search_input")
+
+            all.addEventListener("click", () => {
+                search_form.action = "/search/all/"
+                search_input.setAttribute("name", "search_all")
+            })
+        </script> -->
     </body>
 </html>
