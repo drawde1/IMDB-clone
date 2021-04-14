@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from reviews.models import Review
 from IMDB.settings import TMDB_KEY
 from IMDB_user.forms import UserForm
@@ -45,8 +45,12 @@ def profile_view(request):
 
 
 def edit_profile(request):
-    form = UserForm()
     user = request.user
+    form = UserForm(initial={
+        'bio': user.bio,
+        'displayname': user.displayname,
+        'profile_pic': user.profile_pic
+    })
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
     if form.is_valid():
@@ -55,4 +59,8 @@ def edit_profile(request):
         user.profile_pic = data['profile_pic']
         user.bio = data['bio']
         user.save()
-    return render(request,'editprofile.html', {'form': form})
+        return redirect('/profile/')
+    return render(
+        request,
+        'editprofile.html',
+        {'form': form})

@@ -1,9 +1,9 @@
 from django.shortcuts import render
-
+from movies.forms import MovieSearchForm, AllSearchForm
 from IMDB_user.models import MyCustomUser
 from IMDB.settings import TMDB_KEY, OMDB_KEY
-from movies.forms import MovieSearchForm, AllSearchForm
 from movies.models import Movie
+from movies.forms import MovieSearchForm
 import requests
 import random
 
@@ -54,6 +54,7 @@ def homepage(request):
     })
     return render(request, 'homepage.html', details)
 
+
 def search_all(request):
     if request.method == 'POST':
         form = AllSearchForm(request.POST)
@@ -66,9 +67,11 @@ def search_all(request):
             if search_request.status_code in range(200, 299):
                 request_data = search_request.json()
                 results = request_data['results']
-                return render(request, 'movies/all_results.html', {'results': results})
+                return render(
+                    request, 'movies/all_results.html', {'results': results})
     form = AllSearchForm()
     return render(request, 'homepage.html', {'form': form})
+
 
 def search_movie(request):
     if request.method == 'POST':
@@ -85,7 +88,7 @@ def search_movie(request):
                 return render(
                     request, 'movies/movie_results.html', {'results': results})
     form = MovieSearchForm()
-    return render(request, 'homepage.html', {'form': form})
+    return render(request, 'general_form.html', {'form': form})
 
 
 def movie_detail(request, movie_id):
@@ -106,32 +109,10 @@ def movie_detail(request, movie_id):
     omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={OMDB_KEY}'
     omdb_request = requests.get(omdb_endpoint)
     omdb_data = omdb_request.json()
-    actors = omdb_data['Actors'].split(", ")
-    directors = omdb_data['Director'].split(", ")
-    writers = omdb_data['Writer'].split(", ")
-    for index, director in enumerate(directors):
-        if "(" in director:
-            parens_index = director.find("(")
-            directors[index] = director[:parens_index]
-    for index, writer in enumerate(writers):
-        if "(" in writer:
-            parens_index = writer.find(" (")
-            writers[index] = writer[:parens_index]
-    recommendations_path = f'/movie/{movie_id}/recommendations'
-    recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
-    recommendations_request = requests.get(recommendations_endpoint)
-    if recommendations_request.status_code in range(200, 299):
-        recommendations_data = recommendations_request.json()
-        if not recommendations_data['results'] == []:
-            details.update({'recommendations': recommendations_data})
     video = {}
-    related_videos = []
     if not video_data['results'] == []:
         video = video_data['results'][0]
         details.update({'video': video})
-    if len(video_data['results']) > 1:
-        related_videos = video_data['results'][1:5]
-        details.update({'videos': related_videos})
     rotten_tomatoes = ''
     if omdb_data['Ratings']:
         for rating in omdb_data['Ratings']:
@@ -140,25 +121,25 @@ def movie_detail(request, movie_id):
                 details.update({'rotten_tomatoes': rotten_tomatoes})
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        is_favorited = current_user.favorites_list.filter(tmdb_id=movie_id).exists()
+        is_favorited = current_user.favorites_list.filter(
+            tmdb_id=movie_id).exists()
         details.update({'is_favorited': is_favorited})
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
-        'omdb': omdb_data,
-        'actors': actors,
-        'directors': directors,
-        'writers': writers
+        'omdb': omdb_data
     })
-   
     rotten_tomatoes = omdb_data['Ratings'][0]
     video = video_data['results'][0]
     poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
     if not Movie.objects.filter(tmdb_id=movie_id).exists():
-        Movie.objects.create(
+        movie = Movie.objects.create(
             tmdb_id=movie_id,
             name=movie_data['title'],
             poster_url=poster_url
         )
+    else:
+        movie = Movie.objects.get(tmdb_id=movie_id)
+    details.update({'movie': movie})
     return render(request, 'movies/movie_detail.html', details)
-    # return render(request, 'movies/movie_detail.html', {'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })
+    # return render(request, 'movies/movie_detail.html',{'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })
