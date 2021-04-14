@@ -42,10 +42,12 @@
    
   </div>
   <br/>
-<div class = 'scroll'>
-{% for review in reviews %}
+<button id='by-date' class='hidden'> By Date</button>
+<button id='by-vote'> By Vote</button>
+<div class = 'scroll' id = 'date-list'>
+{% for review in reviews_by_time %}
 <div class="card mb-3">
-    <div class="card-body">
+    <div class="card-body" id={{review.id}}>
       <h5 class="card-title">{{review.user}}{{review.user.emoji}}</h5>
       <p class="card-text">{{review.text}}</p>
       <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
@@ -62,11 +64,54 @@
   </div>
 {% endfor %}
 </div>
+<div class = 'scroll hidden' id = 'vote-list'>
+  {% for review in reviews_by_votes %}
+  <div class="card mb-3" >
+      <div class="card-body" id={{review.id}}>
+        <h5 class="card-title">{{review.user}}{{review.user.emoji}}</h5>
+        <p class="card-text">{{review.text}}</p>
+        <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
+        
+        {% if request.user in review.likedby.all %}
+         <p><small class="text-muted">you've already voted on this post</small></p>
+         
+        {% else %}
+        <a href='/vote/{{review.id}}/{{1}}/' class="btn btn-lg btn-primary">helpful</a>
+        <a href='/vote/{{review.id}}/{{0}}/' class="btn btn-lg btn-primary">unhelpful</a>
+        {% endif %}
+        {{review.vote_total}} user's have found this helpful
+      </div>
+    </div>
+  {% endfor %}
+  </div>
 <style>
     .scroll {
     overflow: scroll;
     height: 700px;
     cursor: url(https://cdn.custom-cursor.com/db/4828/32/arrow2747.png), auto;
   }
+  .hidden{
+    display: none;
+  }
 </style>
+<script>
+  let dateButton = document.getElementById('by-date')
+  let voteButton = document.getElementById('by-vote')
+  let voteList = document.getElementById('vote-list')
+  let dateList = document.getElementById('date-list')
+
+  dateButton.onclick= () =>{
+    dateList.classList.remove('hidden')
+    voteButton.classList.remove('hidden')
+    dateButton.classList.add('hidden')
+    voteList.classList.add('hidden')
+  }
+  voteButton.onclick= () =>{
+    dateList.classList.add('hidden')
+    voteButton.classList.add('hidden')
+    dateButton.classList.remove('hidden')
+    voteList.classList.remove('hidden')
+  }
+
+</script>
 {% endblock %}

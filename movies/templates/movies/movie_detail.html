@@ -35,9 +35,12 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-            <div class="watchlist-container">
-                <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
+            
+        {% if not movie in user.watch_list.all%}
+            <div class="watchlist-container">            
+                <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>              
             </div>
+            {% endif %}
         {% endif %}
         <a href="{% url 'post_review' tmdb_id=data.id %}">Post a Review</a>
     </div>
