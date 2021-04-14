@@ -37,7 +37,7 @@ class ReviewView(View):
 
     def post(self, request, tmdb_id):
         form = ReviewForm(request.POST)
-        if Movie.objects.filter(tmdb_id= tmdb_id).exists():
+        if Movie.objects.filter(tmdb_id=tmdb_id).exists():
             movie = Movie.objects.get(tmdb_id=tmdb_id)
         if form.is_valid():
             data = form.cleaned_data

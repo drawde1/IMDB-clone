@@ -14,11 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
 from django.urls import path, include
 from reviews.views import ReviewView
 from movies.views import homepage
 # from IMDB_user.views import add_watchlist
-from IMDB_user.views import profile_view, add_watchlist
+from user_profile.views import profile_view, edit_profile
+from IMDB_user.views import add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
 urlpatterns = [
@@ -39,5 +42,7 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
     path('profile/', profile_view, name='profile'),
-    path('vote/<str:review_id>/<int:value>/', helpful_unhelpful)
+    path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
+    path('edit-profile/', edit_profile),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
