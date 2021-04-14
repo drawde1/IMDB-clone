@@ -16,4 +16,4 @@ def helpful_unhelpful(request, review_id, value):
     review.save()
     review.user.karma_score += value*20
     review.user.save()
-    return redirect(f'/reviews/{review.movie.tmdb_id}')
+    return redirect(f'/reviews/{review.movie.tmdb_id}/')

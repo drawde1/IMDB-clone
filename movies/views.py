@@ -32,7 +32,7 @@ def homepage(request):
     upcoming_data = upcoming_request.json()
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        if current_user.favorites_list.all() :
+        if current_user.favorites_list.all():
             favorites = current_user.favorites_list.all()
             fave_movie = random.choice(favorites)
             movie_id = fave_movie.id
@@ -42,8 +42,10 @@ def homepage(request):
             if recommendations_request.status_code in range(200, 299):
                 recommendations_data = recommendations_request.json()
                 if not recommendations_data['results'] == []:
-                    details.update({'fave_movie': fave_movie, 'recommendations': recommendations_data})
-            details.update({'favorites': favorites })
+                    details.update({
+                        'fave_movie': fave_movie,
+                        'recommendations': recommendations_data})
+            details.update({'favorites': favorites})
     details.update({
         'latest': latest_data,
         'popular': popular_data,
@@ -74,15 +76,17 @@ def search_movie(request):
         if form.is_valid():
             data = form.cleaned_data
             movie_name = data['search_movie']
-            id_path = f'/search/movie'
+            id_path = '/search/movie'
             endpoint = f'{tmdb_base_url}{id_path}?api_key={TMDB_KEY}&query={movie_name}'
             id_request = requests.get(endpoint)
             if id_request.status_code in range(200, 299):
                 request_data = id_request.json()
                 results = request_data['results']
-                return render(request, 'movies/movie_results.html', {'results': results})
+                return render(
+                    request, 'movies/movie_results.html', {'results': results})
     form = MovieSearchForm()
     return render(request, 'homepage.html', {'form': form})
+
 
 def movie_detail(request, movie_id):
     details = {}

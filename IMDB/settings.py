@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import environ
+import os
 
 # Initialise environment variables
 env = environ.Env()
@@ -146,3 +147,5 @@ OMDB_KEY = env('OMDB_KEY')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')

@@ -1,0 +1,17 @@
+{% if request.user.displayname %}
+{{request.user.displayname}}
+{% endif %}
+<br/>
+{% if request.user.bio %}
+{{request.user.bio}}
+{% endif %}
+<br/>
+{% if request.user.bio %}
+<img src={{request.user.profile_pic.url}}/>
+{% endif %}
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit"  value="Submit">
+</form>
