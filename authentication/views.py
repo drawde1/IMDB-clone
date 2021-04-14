@@ -36,7 +36,7 @@ class SignupView(View):
 
 
 class LoginView(View):
-    template_name = "general_form.html"
+    template_name = "login.html"
     form = LoginForm
 
     def get(self, request):

@@ -22,6 +22,7 @@ def add_watchlist(request, tmdb_id):
     user = request.user
     movie = Movie.objects.get(tmdb_id=tmdb_id)
     user.watch_list.add(movie)
+    user.save()
     return redirect(f'/movies/{tmdb_id}/')
 
 def remove_watchlist(request, tmdb_id):

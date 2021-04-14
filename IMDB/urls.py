@@ -31,15 +31,11 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
-    path('admin/', admin.site.urls),
     path('movies/', include('movies.urls')),
-    path('admin/', admin.site.urls),
     path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
     path('watchlist/<str:tmdb_id>/', add_watchlist,name="add_watchlist"),
     path('watchlist/remove/<str:tmdb_id>/', remove_watchlist, name='remove_watchlist'),
-    path("logout/", logout_view, name="logout"),
-    path("login/", LoginView.as_view(), name="login"),
-    path("signup/", SignupView.as_view(), name="signup"),
     path('profile/', profile_view, name='profile'),
-    path('vote/<str:review_id>/<int:value>/', helpful_unhelpful)
+    path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
+    path('admin/', admin.site.urls)
 ]
