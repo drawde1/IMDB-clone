@@ -18,7 +18,7 @@ from django.urls import path, include
 # from reviews.views import reviews
 from movies.views import homepage, search_all
 from reviews.views import ReviewView
-from IMDB_user.views import profile_view, add_watchlist
+from IMDB_user.views import profile_view, add_watchlist, remove_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
 urlpatterns = [
@@ -35,7 +35,8 @@ urlpatterns = [
     path('movies/', include('movies.urls')),
     path('admin/', admin.site.urls),
     path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
-    path('watchlist/<str:tmdb_id>/', add_watchlist, name="add_watchlist"),
+    path('watchlist/<str:tmdb_id>/', add_watchlist,name="add_watchlist"),
+    path('watchlist/remove/<str:tmdb_id>/', remove_watchlist, name='remove_watchlist'),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),

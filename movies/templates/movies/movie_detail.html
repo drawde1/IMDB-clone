@@ -35,11 +35,19 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-            <div class="watchlist-container">
-                <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
-            </div>
+            {% if not in_watchlist %}
+                <div class="watchlist-container">
+                    <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
+                </div>
+            {% else %}
+                <div class="watchlist-container">
+                    <a href="/watchlist/remove/{{data.id}}/" class="watchlist">✔️ Added to Watchlist</a>
+                </div>
+            {% endif %}
         {% endif %}
-        <a href="{% url 'post_review' tmdb_id=data.id %}">Post a Review</a>
+        <div class="review-container">
+            <a href="{% url 'post_review' tmdb_id=data.id %}" class="review-text">✏️ <span style="margin-left: 5px;">Post a Review</span></a>
+        </div>
     </div>
 </div>
 

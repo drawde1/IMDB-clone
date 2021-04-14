@@ -17,17 +17,19 @@ omdb_key = 'd361bf3'
 base_url = 'https://api.themoviedb.org/3'
 api_key = 'ea3f0ae618db2e67cd3f57ba270936c4'
 
-# def add_watchlist(request, imbd_id):
-#     user = request.user
-#     movie = Movie.objects.get(imbd_id=imbd_id)
-#     user.watch_list.add(movie)
-#     return redirect('/')
 
 def add_watchlist(request, tmdb_id):
     user = request.user
     movie = Movie.objects.get(tmdb_id=tmdb_id)
     user.watch_list.add(movie)
     return redirect(f'/movies/{tmdb_id}/')
+
+def remove_watchlist(request, tmdb_id):
+    current_user = MyCustomUser.objects.get(id=request.user.id)
+    movie = Movie.objects.get(tmdb_id=tmdb_id)
+    current_user.watch_list.remove(movie)
+    current_user.save()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 def add_favorites(request, movie_id):
     if Movie.objects.filter(tmdb_id=movie_id).exists():

@@ -137,7 +137,8 @@ def movie_detail(request, movie_id):
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
         is_favorited = current_user.favorites_list.filter(tmdb_id=movie_id).exists()
-        details.update({'is_favorited': is_favorited})
+        in_watchlist = current_user.watch_list.filter(tmdb_id=movie_id).exists()
+        details.update({'is_favorited': is_favorited, 'in_watchlist': in_watchlist})
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
