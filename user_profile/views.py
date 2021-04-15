@@ -13,6 +13,7 @@ def profile_view(request, user_id):
     watch_list_movies = []
     recomendations = []
     user = MyCustomUser.objects.get(id=user_id)
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user]).count
     watch_list = user.watch_list
     for movie in watch_list.all():
         movie_path = f'/movie/{movie.tmdb_id}'
@@ -37,7 +38,8 @@ def profile_view(request, user_id):
             'reviews': reviews,
             'watch_list': watch_list_movies,
             'recomendations': recomendations,
-            'user': user
+            'user': user,
+            'following_num': following_num
             }
     if watch_list_movies:
         context.update({'test': watch_list_movies[0]})
@@ -73,13 +75,22 @@ def edit_profile(request):
         'editprofile.html',
         {'form': form})
 
-def following_view(request, user_id):
+def followed_view(request, user_id):
     user = MyCustomUser.objects.get(id=user_id)
-    followed_list = user.followed_list.all()
+    follow_list = user.followed_list.all()
     return render(
         request,
         'followed.html',
-        {'user': user, "followed_list": followed_list})
+        {'user': user, "followed_list": follow_list})
+
+def following_view(request, user_id):
+    user = MyCustomUser.objects.get(id=user_id)
+    follow_list = MyCustomUser.objects.filter(followed_list__in=[user])
+    return render(
+        request,
+        'followed.html',
+        {'user': user, "followed_list": follow_list})
+
 
 def follow(request, user_id):
     user_followed = MyCustomUser.objects.get(id=user_id)
