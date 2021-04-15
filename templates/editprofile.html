@@ -7,7 +7,7 @@
 {% endif %}
 <br/>
 {% if request.user.profile_pic %}
-<img src={{request.user.profile_pic.url}}/>
+<img src={{request.user.profile_pic.url}} width = 200/>
 {% endif %}
 
 <form action="" method="post" enctype="multipart/form-data">

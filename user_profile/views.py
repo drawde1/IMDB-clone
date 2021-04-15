@@ -63,7 +63,10 @@ def edit_profile(request):
         user.profile_pic = data['profile_pic']
         user.bio = data['bio']
         user.save()
-        return redirect('/profile/')
+        return render(
+        request,
+        'profile.html',
+        {"user": user})
     return render(
         request,
         'editprofile.html',
