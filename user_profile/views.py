@@ -47,9 +47,9 @@ def edit_profile(request):
         user.bio = data['bio']
         user.save()
         return render(
-        request,
-        'profile.html',
-        {"user": user})
+            request,
+            'profile.html',
+            {"user": user})
     return render(
         request,
         'editprofile.html',
