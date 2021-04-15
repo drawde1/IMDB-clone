@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect
 from reviews.models import Review
 from IMDB.settings import TMDB_KEY
 from IMDB_user.forms import UserForm
+from IMDB_user.models import MyCustomUser
 import requests
 # Create your views here.
 base_url = 'https://api.themoviedb.org/3'
 
 
-def profile_view(request):
+def profile_view(request, user_id):
     watch_list_movies = []
     recomendations = []
-    watch_list = request.user.watch_list
+    user = MyCustomUser.objects.get(id=user_id)
+    watch_list = user.watch_list
     for movie in watch_list.all():
         movie_path = f'/movie/{movie.tmdb_id}'
         movie_endpoint = f'{base_url}{movie_path}?api_key={TMDB_KEY}'
@@ -26,14 +28,16 @@ def profile_view(request):
             if recomendations_endpoint_request.status_code in range(200, 299):
                 recomendations_data = recomendations_endpoint_request.json()
                 for recomendations_data in recomendations_data['results']:
-                    if not request.user.watch_list.filter(
+                    if not user.watch_list.filter(
                             name=recomendations_data['title']):
                         recomendations.append(recomendations_data)
-    reviews = Review.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=user)
     context = {
             'reviews': reviews,
             'watch_list': watch_list_movies,
-            'recomendations': recomendations}
+            'recomendations': recomendations,
+            'user': user
+            }
     if watch_list_movies:
         context.update({'test': watch_list_movies[0]})
     if recomendations:
@@ -59,7 +63,10 @@ def edit_profile(request):
         user.profile_pic = data['profile_pic']
         user.bio = data['bio']
         user.save()
-        return redirect('/profile/')
+        return render(
+        request,
+        'profile.html',
+        {"user": user})
     return render(
         request,
         'editprofile.html',
