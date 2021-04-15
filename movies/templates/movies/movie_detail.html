@@ -38,7 +38,7 @@
 
         {% if user.is_authenticated %}
             
-            {% if not in_watchlist %}
+            {% if not movie in user.watch_list.all %}
                 <div class="watchlist-container">
                     <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
                 </div>

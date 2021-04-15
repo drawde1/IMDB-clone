@@ -17,12 +17,12 @@
   <h5 class="list-title">Watch List</h5>
   <div class="carousel">
       <ul>
-          {% for movie in watch_list %}
+          {% for movie in user.watch_list.all %}
               <div class="carousel-item">
-                  <a href="{% url 'movie_detail' movie_id=movie.id %}">
-                      <img src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" alt="{{movie.title}}" width=220>
+                  <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                      <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
                   </a>
-                  <h6><a href="{% url 'movie_detail' movie_id=movie.id %}">{{ movie.title }}</a></h6>
+                  <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
               </div>
           {% endfor %}
       </ul>
