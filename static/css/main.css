@@ -656,3 +656,15 @@ button.ghost {
     width: 100%;
     height: 100%;
 }
+
+/* Actor Detail Page */
+
+.actor-details {
+    margin-left: 40px;
+    background-color: #191919;
+    padding: 10px 30px;
+}
+
+.actor-label {
+    color: #777777;
+}
