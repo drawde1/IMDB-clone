@@ -43,10 +43,10 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
-    path('profile/', profile_view, name='profile'),
     path('following/<int:user_id>', following_view, name='users_followed'),
     path('follow/<int:user_id>', follow, name='follow'),
     path('unfollow/<int:user_id>', unfollow, name='unfollow'),
+    path('profile/<int:user_id>', profile_view, name='profile'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
     path('edit-profile/', edit_profile),
 ]
