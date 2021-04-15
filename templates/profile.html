@@ -10,10 +10,10 @@
 <img src ='{{user.profile_pic.url}}' width =200 /> {{user.bio}}
 {% endif %}
 <p>total reviews: {{reviews.count}}</p>
-<p><a href = "/following/{{request.user.id}}">following {{ request.user.followed_list.count }} users </a></p>
-<p><a href = "/follow/{{request.user.id}}"> follow this user </a></p>
-<p><a href = "/unfollow/{{request.user.id}}"> unfollow this user </a></p>
-<h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
+<p><a href = "/following/{{user.id}}">following {{ user.followed_list.count }} users </a></p>
+<p><a href = "/follow/{{user.id}}"> follow this user </a></p>
+<p><a href = "/unfollow/{{user.id}}"> unfollow this user </a></p>
+
 <h2>karma: {{user.karma_score}}{{user.emoji}}</h2>
 <a href='/edit-profile/'>edit profile</a>
 <div class="container">
