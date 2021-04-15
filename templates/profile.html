@@ -8,19 +8,43 @@
 
 <h4 class="movie-title">{{user.displayname}}</h4>
 
-<div class="overview-container" style="display: flex;">
+<div class="overview-container profile-container" style="display: flex;">
   {% if request.user.profile_pic %}
     <div class="image-container">
       <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
     </div>
   {% endif %}
     <div>
-      <p>{{request.user.bio}}</p>
-      <p>total reviews: {{reviews.count}}</p>
-      <h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
-      <a href='/edit-profile/'>edit profile</a>
+        {% if user.bio %}
+            <p>{{request.user.bio}}</p>
+        {% endif %}
+        {% if reviews.count > 0 %}
+            <p>total reviews: {{reviews.count}}</p>
+        {% else %}
+            <p>Post your first review to get some karma points!</p>
+        {% endif %}
+        <p>karma: {{request.user.karma_score}}{{request.user.emoji}}</p>
+        <a href='/edit-profile/'>edit profile</a>
     </div>
 </div>
+
+{% if reviews %}
+    <div class="carousel-container">
+        <h5 class="list-title">Reviews You Posted</h5>
+        <div class="carousel">
+            <ul>
+                {% for review in reviews %}
+                    <div class="carousel-item">
+                        <a href=/movies/{{review.movie.tmdb_id}}>
+                            <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
+                        </a>
+                        <h6><a href=/movies/{{review.movie.tmdb_id}}>{{review.movie.name}}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
 
 {% if watch_list %}
     <div class="carousel-container">
@@ -60,12 +84,4 @@
     </div>
 {% endif %}
 
-{% for review in reviews %}
-    <a href=/movies/{{review.movie.tmdb_id}}><img src="{{review.movie.poster_url}}" width="100" alt="..."></a>
-    <a href=/reviews/{{review.movie.tmdb_id}}></a>
-    <h5>{{review.movie.name}}</h5>        
-    <p>{{review.creation_time}}</p>
-    <p>{{review.text}}</p>
-{% endfor %}
-  
 {% endblock%}   

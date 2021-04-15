@@ -36,7 +36,7 @@ urlpatterns = [
     path("signup/", SignupView.as_view(), name="signup"),
     path('movies/', include('movies.urls')),
     path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
-    path('watchlist/<str:tmdb_id>/', add_watchlist,name="add_watchlist"),
+    path('watchlist/<str:movie_id>/', add_watchlist,name="add_watchlist"),
     path('watchlist/remove/<str:tmdb_id>/', remove_watchlist, name='remove_watchlist'),
     path('profile/', profile_view, name='profile'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),

@@ -55,6 +55,7 @@
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
+                    <!-- <a href="{% url 'add_favorites' movie_id=result.id %}"><i class="fas fa-plus"></i></a> -->
                 </div>
             {% endfor %}
         </ul>

@@ -48,7 +48,7 @@ body {
 .carousel .carousel-item {
     position: absolute;
     top: -60px;
-    width: 250px;
+    width: 220px;
 }
 
 .carousel .carousel-item h6 {
@@ -58,6 +58,15 @@ body {
     padding: 10px 5px;
     text-align: center;
     width: 200px;
+}
+
+.fa-plus {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    padding: 40px;
+    color:#fff;
+    font-size: 25px;
 }
 
 /* Navbar */
@@ -94,8 +103,8 @@ body {
 
 .nav-logout {
     position: relative;
-    top: -40px;
-    right: 10px;
+    top: 0px;
+    right: 0px;
 }
 
 /* Search Bar */
@@ -234,6 +243,7 @@ body {
     color: #e6ba41;
     font-weight: bold;
     margin-left: 40px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .rated {
@@ -629,6 +639,10 @@ button.ghost {
 }
 
 /* Profile Page */
+
+.profile-container {
+    height: 300px;
+}
 
 .image-container {
     width: 200px;
