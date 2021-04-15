@@ -10,6 +10,7 @@ base_url = 'https://api.themoviedb.org/3'
 def profile_view(request):
     watch_list_movies = []
     recomendations = []
+    seen_list = []
     watch_list = request.user.watch_list
     for movie in watch_list.all():
         movie_path = f'/movie/{movie.tmdb_id}'
@@ -29,11 +30,15 @@ def profile_view(request):
                     if not request.user.watch_list.filter(
                             name=recomendations_data['title']):
                         recomendations.append(recomendations_data)
+    if request.user.favorites_list.all():
+            seen_list = request.user.favorites_list.all()
     reviews = Review.objects.filter(user=request.user)
     context = {
             'reviews': reviews,
             'watch_list': watch_list_movies,
-            'recomendations': recomendations}
+            'seen_list': seen_list,
+            'recomendations': recomendations
+    }
     if watch_list_movies:
         context.update({'test': watch_list_movies[0]})
     if recomendations:
@@ -53,14 +58,14 @@ def edit_profile(request):
     })
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
-    if form.is_valid():
-        data = form.cleaned_data
-        user.displayname = data['displayname']
-        user.profile_pic = data['profile_pic']
-        user.bio = data['bio']
-        user.save()
-        return redirect('/profile/')
+        if form.is_valid():
+            data = form.cleaned_data
+            user.displayname = data['displayname']
+            user.profile_pic = data['profile_pic']
+            user.bio = data['bio']
+            user.save()
+            return redirect('/profile/')
     return render(
         request,
-        'editprofile.html',
+        'profile.html',
         {'form': form})
