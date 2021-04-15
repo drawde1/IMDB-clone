@@ -42,7 +42,11 @@ urlpatterns = [
         'watchlist/remove/<str:tmdb_id>/',
         remove_watchlist,
         name='remove_watchlist'),
-    path('profile/', profile_view, name='profile'),
+    # path('profile/', profile_view, name='profile'),
+    # path("logout/", logout_view, name="logout"),
+    # path("login/", LoginView.as_view(), name="login"),
+    # path("signup/", SignupView.as_view(), name="signup"),
+    path('profile/<int:user_id>', profile_view, name='profile'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
     path('edit-profile/', edit_profile),
     path('admin/', admin.site.urls)
