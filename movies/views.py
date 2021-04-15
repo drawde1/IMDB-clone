@@ -109,10 +109,32 @@ def movie_detail(request, movie_id):
     omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={OMDB_KEY}'
     omdb_request = requests.get(omdb_endpoint)
     omdb_data = omdb_request.json()
+    actors = omdb_data['Actors'].split(", ")
+    directors = omdb_data['Director'].split(", ")
+    writers = omdb_data['Writer'].split(", ")
+    for index, director in enumerate(directors):
+        if "(" in director:
+            parens_index = director.find("(")
+            directors[index] = director[:parens_index]
+    for index, writer in enumerate(writers):
+        if "(" in writer:
+            parens_index = writer.find(" (")
+            writers[index] = writer[:parens_index]
+    recommendations_path = f'/movie/{movie_id}/recommendations'
+    recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
+    recommendations_request = requests.get(recommendations_endpoint)
+    if recommendations_request.status_code in range(200, 299):
+        recommendations_data = recommendations_request.json()
+        if not recommendations_data['results'] == []:
+            details.update({'recommendations': recommendations_data})
     video = {}
+    related_videos = []
     if not video_data['results'] == []:
         video = video_data['results'][0]
         details.update({'video': video})
+    if len(video_data['results']) > 1:
+        related_videos = video_data['results'][1:5]
+        details.update({'videos': related_videos})
     rotten_tomatoes = ''
     if omdb_data['Ratings']:
         for rating in omdb_data['Ratings']:
@@ -127,19 +149,19 @@ def movie_detail(request, movie_id):
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
-        'omdb': omdb_data
+        'omdb': omdb_data,
+        'actors': actors,
+        'directors': directors,
+        'writers': writers
     })
+   
     rotten_tomatoes = omdb_data['Ratings'][0]
     video = video_data['results'][0]
     poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
     if not Movie.objects.filter(tmdb_id=movie_id).exists():
-        movie = Movie.objects.create(
+        Movie.objects.create(
             tmdb_id=movie_id,
             name=movie_data['title'],
             poster_url=poster_url
         )
-    else:
-        movie = Movie.objects.get(tmdb_id=movie_id)
-    details.update({'movie': movie})
     return render(request, 'movies/movie_detail.html', details)
-    # return render(request, 'movies/movie_detail.html',{'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })
