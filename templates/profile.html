@@ -12,7 +12,62 @@
 <p>total reviews: {{reviews.count}}</p>
 <h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
 <a href='/edit-profile/'>edit profile</a>
-<div class="container">
+
+<div class="carousel-container">
+  <h5 class="list-title">Watch List</h5>
+  <div class="carousel">
+      <ul>
+          {% for movie in watch_list %}
+              <div class="carousel-item">
+                  <a href="{% url 'movie_detail' movie_id=movie.id %}">
+                      <img src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" alt="{{movie.title}}" width=220>
+                  </a>
+                  <h6><a href="{% url 'movie_detail' movie_id=movie.id %}">{{ movie.title }}</a></h6>
+              </div>
+          {% endfor %}
+      </ul>
+  </div>
+</div>
+
+<div class="carousel-container">
+  <h5 class="list-title">recomendations</h5>
+  <div class="carousel">
+      <ul>
+          {% for movie in recomendations %}
+              <div class="carousel-item">
+                  <a href="{% url 'movie_detail' movie_id=movie.id %}">
+                      <img src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" alt="{{movie.title}}" width=220>
+                  </a>
+                  <h6><a href="{% url 'movie_detail' movie_id=movie.id %}">{{ movie.title }}</a></h6>
+              </div>
+          {% endfor %}
+      </ul>
+  </div>
+</div>
+
+<div class="carousel-container">
+  <h5 class="list-title">You've Left {{reviews.count}} Review(s) so Far</h5>
+  <div class="carousel">
+      <ul>
+          {% for review in reviews %}
+              <div class="carousel-item">
+                <div class="card-body">
+                  <a href=/movies/{{review.movie.tmdb_id}}/ ><img src="{{review.movie.poster_url}}" width="190" alt="..."></a>
+                <a href=/reviews/{{review.movie.tmdb_id}}/  class="btn btn-sm btn-black">
+                  <h5 class="card-title">{{review.movie.name}}</h5>
+                  <p class="card-text">{{review.text}}</p>
+                  <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
+                </a>
+                </div>
+              </div>
+          {% endfor %}
+      </ul>
+  </div>
+</div>
+
+
+
+<!-- <div class="container">
   <div class="row align-items-start">
     <div class="col">
       <h1>watch list </h1>
@@ -34,7 +89,7 @@
       <div class="carousel-item">
       {% endif %}
       
-    <!-- <li><h2>{{movie.title}}<h2></li>  -->
+    <li><h2>{{movie.title}}<h2></li> 
        {% if movie.poster_path %}
         <a href = '/movies/{{movie.id}}/'><img src="https://image.tmdb.org/t/p/w342{{movie.poster_path}}" class="d-block w-100" width = 100 alt="{{movie.title}}"></a>
        {% endif %}
@@ -125,7 +180,7 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
-</ul>
+</ul> -->
 
 
 {% endblock%}   

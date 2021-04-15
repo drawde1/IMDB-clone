@@ -25,24 +25,18 @@
         <div class = container>
           <h2 class="card-title display-1">Post a Review</h2>
         </div>
-          <br/>
-          <br/>
+
           <p class="card-text">{% include 'general_form.html'%}</p>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
+         
         </div>
       </div>
     </div>
    
   </div>
   <br/>
-<button id='by-date' class='hidden'> By Date</button>
+<div class="seen-container">
+  <div id='by-date' class='hidden'> By Date</div>
+</div>
 <button id='by-vote'> By Vote</button>
 <div class = 'scroll' id = 'date-list'>
 {% for review in reviews_by_time %}

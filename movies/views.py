@@ -1,13 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from movies.forms import MovieSearchForm, AllSearchForm
 from IMDB_user.models import MyCustomUser
-from IMDB.settings import TMDB_KEY, OMDB_KEY
 from movies.models import Movie
-from authentication.forms import LoginForm
-from movies.forms import MovieSearchForm
-from django.contrib.auth import authenticate, login, logout
-import requests
 import random
+from movies.helpers import ApiPaths
 
 # Create your views here.
 tmdb_base_url = 'https://api.themoviedb.org/3'
@@ -16,22 +12,18 @@ omdb_base_url = 'http://www.omdbapi.com/'
 
 def homepage(request):
     details = {}
-    latest_path = '/movie/now_playing'
-    popular_path = '/movie/popular'
-    top_path = '/movie/top_rated'
-    upcoming_path = '/movie/upcoming'
-    latest_endpoint = f'{tmdb_base_url}{latest_path}?api_key={TMDB_KEY}'
-    popular_endpoint = f'{tmdb_base_url}{popular_path}?api_key={TMDB_KEY}'
-    top_endpoint = f'{tmdb_base_url}{top_path}?api_key={TMDB_KEY}'
-    upcoming_endpoint = f'{tmdb_base_url}{upcoming_path}?api_key={TMDB_KEY}'
-    latest_request = requests.get(latest_endpoint)
-    popular_request = requests.get(popular_endpoint)
-    top_request = requests.get(top_endpoint)
-    upcoming_request = requests.get(upcoming_endpoint)
-    latest_data = latest_request.json()
-    popular_data = popular_request.json()
-    top_data = top_request.json()
-    upcoming_data = upcoming_request.json()
+    latest_data = ApiPaths.grab_data(ApiPaths.latest_path)
+    popular_data = ApiPaths.grab_data(ApiPaths.popular_path)
+    top_data = ApiPaths.grab_data(ApiPaths.top_path)
+    upcoming_data = ApiPaths.grab_data(ApiPaths.upcoming_path)
+
+    details.update({
+        'latest': latest_data,
+        'popular': popular_data,
+        'top': top_data,
+        'upcoming': upcoming_data,
+    })
+
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
         if current_user.favorites_list.all():
@@ -39,35 +31,28 @@ def homepage(request):
             fave_movie = random.choice(favorites)
             movie_id = fave_movie.id
             recommendations_path = f'/movie/{movie_id}/recommendations'
-            recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
-            recommendations_request = requests.get(recommendations_endpoint)
-            if recommendations_request.status_code in range(200, 299):
-                recommendations_data = recommendations_request.json()
+            recommendations_data = ApiPaths.grab_data(recommendations_path)
+            if recommendations_data:
                 if not recommendations_data['results'] == []:
                     details.update({
                         'fave_movie': fave_movie,
                         'recommendations': recommendations_data})
             details.update({'favorites': favorites})
-    details.update({
-        'latest': latest_data,
-        'popular': popular_data,
-        'top': top_data,
-        'upcoming': upcoming_data,
-    })
-    form = LoginForm()
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            user = authenticate(
-                request,
-                username=data.get("username"),
-                password=data.get("password")
-            )
-            if user:
-                login(request, user)
-                return redirect('/')
-    details.update({'form': form})
+
+    # form = LoginForm()
+    # if request.method == 'POST':
+    #     form = LoginForm(request.POST)
+    #     if form.is_valid():
+    #         data = form.cleaned_data
+    #         user = authenticate(
+    #             request,
+    #             username=data.get("username"),
+    #             password=data.get("password")
+    #         )
+    #         if user:
+    #             login(request, user)
+    #             return redirect('/')
+    # details.update({'form': form})
     return render(request, 'homepage.html', details)
 
 
@@ -77,11 +62,9 @@ def search_all(request):
         if form.is_valid():
             data = form.cleaned_data
             search_keyword = data['search_all']
-            search_path = f'/search/multi'
-            endpoint = f'{tmdb_base_url}{search_path}?api_key={TMDB_KEY}&query={search_keyword}'
-            search_request = requests.get(endpoint)
-            if search_request.status_code in range(200, 299):
-                request_data = search_request.json()
+            request_data = ApiPaths.grab_data(
+                ApiPaths.search_path, query=search_keyword)
+            if request_data:
                 results = request_data['results']
                 return render(
                     request, 'movies/all_results.html', {'results': results})
@@ -95,11 +78,9 @@ def search_movie(request):
         if form.is_valid():
             data = form.cleaned_data
             movie_name = data['search_movie']
-            id_path = '/search/movie'
-            endpoint = f'{tmdb_base_url}{id_path}?api_key={TMDB_KEY}&query={movie_name}'
-            id_request = requests.get(endpoint)
-            if id_request.status_code in range(200, 299):
-                request_data = id_request.json()
+            request_data = ApiPaths.grab_data(
+                ApiPaths.id_path, query=movie_name)
+            if request_data:
                 results = request_data['results']
                 return render(
                     request, 'movies/movie_results.html', {'results': results})
@@ -109,44 +90,54 @@ def search_movie(request):
 
 def movie_detail(request, movie_id):
     details = {}
+
     movie_path = f'/movie/{movie_id}'
     video_path = f'/movie/{movie_id}/videos'
     reviews_path = f'/movie/{movie_id}/reviews'
-    movie_endpoint = f'{tmdb_base_url}{movie_path}?api_key={TMDB_KEY}'
-    video_endpoint = f'{tmdb_base_url}{video_path}?api_key={TMDB_KEY}'
-    reviews_endpoint = f'{tmdb_base_url}{reviews_path}?api_key={TMDB_KEY}'
-    movie_request = requests.get(movie_endpoint)
-    video_request = requests.get(video_endpoint)
-    reviews_request = requests.get(reviews_endpoint)
-    movie_data = movie_request.json()
+
+    movie_data = ApiPaths.grab_data(movie_path)
+    video_data = ApiPaths.grab_data(video_path)
+    reviews_data = ApiPaths.grab_data(reviews_path)
+
     imdb_id = movie_data['imdb_id']
-    video_data = video_request.json()
-    reviews_data = reviews_request.json()
-    omdb_endpoint = f'{omdb_base_url}?i={imdb_id}&apikey={OMDB_KEY}'
-    omdb_request = requests.get(omdb_endpoint)
-    omdb_data = omdb_request.json()
+    omdb_data = ApiPaths.grab_data(imdb_id, omdb=True)
+    details.update(ApiPaths.grab_cast(imdb_id))
+
+    recommendations_path = f'/movie/{movie_id}/recommendations'
+    recommendations_data = ApiPaths.grab_data(recommendations_path)
+
+    if recommendations_data:
+        if not recommendations_data['results'] == []:
+            details.update({'recommendations': recommendations_data})
+
     video = {}
+    related_videos = []
+
     if not video_data['results'] == []:
         video = video_data['results'][0]
         details.update({'video': video})
+    if len(video_data['results']) > 1:
+        related_videos = video_data['results'][1:5]
+        details.update({'videos': related_videos})
+
     rotten_tomatoes = ''
+
     if omdb_data['Ratings']:
         for rating in omdb_data['Ratings']:
             if rating['Source'] == 'Rotten Tomatoes':
                 rotten_tomatoes = rating['Value']
                 details.update({'rotten_tomatoes': rotten_tomatoes})
+
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
         is_favorited = current_user.favorites_list.filter(
             tmdb_id=movie_id).exists()
-        in_watchlist = current_user.watch_list.filter(
-            tmdb_id=movie_id).exists()
-        details.update(
-            {'is_favorited': is_favorited, 'in_watchlist': in_watchlist})
+        details.update({'is_favorited': is_favorited})
+
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
-        'omdb': omdb_data
+        'omdb': omdb_data,
     })
     rotten_tomatoes = omdb_data['Ratings'][0]
     video = video_data['results'][0]
@@ -161,4 +152,3 @@ def movie_detail(request, movie_id):
         movie = Movie.objects.get(tmdb_id=movie_id)
     details.update({'movie': movie})
     return render(request, 'movies/movie_detail.html', details)
-    # return render(request, 'movies/movie_detail.html',{'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })
