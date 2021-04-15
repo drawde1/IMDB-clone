@@ -17,10 +17,12 @@
     </div>
     <div>
         {% if video %}
-            <div style="margin-left: 60px;">
-                <iframe width="720" height="450" src="http://www.youtube.com/embed/{{video.key}}" frameborder="0" allowfullscreen></iframe>
+            <div class="trailer-container">
+                <div class="video-cover"></div>
+                <iframe width="720" height="450" src="http://www.youtube.com/embed/{{video.key}}?modestbranding=1&rel=0&showinfo=0&loop=1&autoplay=1&mute=1" frameborder="0" allowfullscreen></iframe>
             </div>
         {% endif %}
+            
 
         {% if user.is_authenticated %}
             {% if not is_favorited %}
@@ -36,13 +38,20 @@
 
         {% if user.is_authenticated %}
             
-        {% if not movie in user.watch_list.all%}
-            <div class="watchlist-container">            
-                <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>              
-            </div>
+            {% if not in_watchlist %}
+                <div class="watchlist-container">
+                    <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
+                </div>
+            {% else %}
+                <div class="watchlist-container">
+                    <a href="/watchlist/remove/{{data.id}}/" class="watchlist">✔️ Added to Watchlist</a>
+                </div>
             {% endif %}
+        
+        <div class="review-container">
+            <a href="{% url 'post_review' tmdb_id=data.id %}" class="review-text">✏️ <span style="margin-left: 5px;">Post a Review</span></a>
+        </div>
         {% endif %}
-        <a href="{% url 'post_review' tmdb_id=data.id %}">Post a Review</a>
     </div>
 </div>
 
@@ -110,31 +119,31 @@
 
 <div class="about-container">
     <div class="about-text">
-        <h5 class="about-indent" style="color: #e6ba41;">About {{data.title}}</h5>
+        <h5 class="about-indent" style="color: #e6ba41; font-weight: bold;">About {{data.title}}</h5>
 
         {% if data.release_date %}
-            <h6 class="about-indent">Release Date: {{ omdb.Released }}</h6>
+            <h6 class="about-indent"><span style="color: #777777;">Release Date:</span> {{ omdb.Released }}</h6>
         {% endif %}
 
-        <h6 class="about-indent">Director/s: 
+        <h6 class="about-indent"><span style="color: #777777;">Director/s:</span>  
             {% for director in directors %}
                 <span><a href="{% url 'actor_link' actor_name=director %}">{{director}}</a></span>
             {% endfor %}
         </h6>
 
-        <h6 class="about-indent">Writer/s: 
+        <h6 class="about-indent"><span style="color: #777777;">Writer/s:</span>  
             {% for writer in writers %}
                 <span><a href="{% url 'actor_link' actor_name=writer %}">{{writer}}</a></span>
             {% endfor %}
         </h6>
-        <h6 class="about-indent">Cast: 
+        <h6 class="about-indent"><span style="color: #777777;">Cast:</span>  
             {% for actor in actors %}
                 <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}},</a></span>
             {% endfor %}
         </h6>
 
         {% if data.genres %}
-            <h6 class="about-indent">Genre: 
+            <h6 class="about-indent"><span style="color: #777777;">Genre:</span>  
                     {% for genre in data.genres %}
                         <span>{{ genre.name }}</span>
                     {% endfor %}
@@ -143,7 +152,7 @@
 
 
         {% if reviews.results %}
-            <h6 class="about-indent">Critique Reviews: <a href="#">{{reviews.total_results}} Review/s</a></h6>
+            <h6 class="about-indent"><span style="color: #777777;">Critique Reviews:</span>  <a href="#">{{reviews.total_results}} Review/s</a></h6>
         {% endif %}
     </div>
 </div>

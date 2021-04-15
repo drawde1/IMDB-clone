@@ -6,13 +6,13 @@
 {% if message %}
     <h1>{{ message }}</h1>
 {% endif %}
-
-<form action="" method="post">
+<div>
+<form action="" method="post" class ="form-control">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" class="btn btn-lg btn-primary" value="Submit">
 </form>
-
+</div>
 {% if link %}
     <a href="{{ link }}">{{ message_2 }}</a>
 {% endif %}

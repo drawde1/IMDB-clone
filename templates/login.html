@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <!-- <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    </head> -->
+    <body>
+
+        <div class="auth-container modal" id="modal1">
+            <div class="form-container sign-up-container">
+                <form method="post" class="form-control">
+                    {% csrf_token %}
+                    <h1 class="form-title">Create Account</h1>
+                    {{form.as_p}}
+                    <input type ="submit" value="submit" class="form-button">
+                </form>
+            </div>
+            <div class="form-container sign-in-container">
+                    <!-- <input type="text" placeholder="Username" />
+                    <input type="password" placeholder="Password" />
+                    <button class="form-button">Sign In</button> -->
+                    <form method="post" class="form-control">
+                        {% csrf_token %}
+                        <h1 class="form-title">Sign In</h1>
+                        {{form.as_p}}
+                        <input type ="submit" value="submit" class="form-button">
+                    </form>
+
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1 class="form-title">Welcome Back!</h1>
+                        <p class="form-p">To keep connected with us please login with your personal info</p>
+                        <button class="ghost form-button" id="signIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1 class="form-title">Hello, Friend!</h1>
+                        <p class="form-p">Enter your personal details and start journey with us</p>
+                        <button class="ghost form-button" id="signUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <script>
+            $(document).ready(function(){
+                $('.modal').modal();
+            })
+        </script> -->
+        <script>
+            const modalDiv = document.getElementById('modal1')
+            const modalButton = document.getElementById('modalButton')
+            modalButton.addEventListener('click', () => {
+               modalDiv.classList.remove("modal")
+            })
+        </script>
+        <script>
+            const signUpButton = document.getElementById('signUp');
+            const signInButton = document.getElementById('signIn');
+            const container = document.getElementById('modal1');
+
+            signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+            });
+
+            signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+            });
+        </script>
+        <!-- <script>
+            const login = document.getElementById("all")
+            const search_form = document.getElementById("search_form")
+            const search_input = document.getElementById("search_input")
+
+            all.addEventListener("click", () => {
+                search_form.action = "/search/all/"
+                search_input.setAttribute("name", "search_all")
+            })
+        </script> -->
+    </body>
+</html>

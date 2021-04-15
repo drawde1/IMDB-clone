@@ -25,15 +25,16 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile' %}" class="page-custom">{{user.displayname}}</a></li>
-                    <li><a href="{% url 'logout' %}" class="page-custom">Logout</a></li>
+                    <li><a href="{% url 'logout' %}" class="page-custom">Log Out</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}" class="page-custom">Login</a></li>
-                    <li><a href="{% url 'signup' %}" class="page-custom">Signup</a></li>
+                    <li><a id="modalButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign In</a></li>
+                    <li><a class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign Up</a></li>
                 {% endif %}
             </ul>
         </div>
     </nav>
 </div>
+{% include 'login.html' %}
 {% endblock %}
      
 

@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from movies.forms import MovieSearchForm, AllSearchForm
 from IMDB_user.models import MyCustomUser
 from IMDB.settings import TMDB_KEY, OMDB_KEY
 from movies.models import Movie
+from authentication.forms import LoginForm
 from movies.forms import MovieSearchForm
+from django.contrib.auth import authenticate, login, logout
 import requests
 import random
 
@@ -50,8 +52,22 @@ def homepage(request):
         'latest': latest_data,
         'popular': popular_data,
         'top': top_data,
-        'upcoming': upcoming_data
+        'upcoming': upcoming_data,
     })
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = authenticate(
+                request,
+                username=data.get("username"),
+                password=data.get("password")
+            )
+            if user:
+                login(request, user)
+                return redirect('/')
+    details.update({'form': form})
     return render(request, 'homepage.html', details)
 
 
@@ -123,7 +139,10 @@ def movie_detail(request, movie_id):
         current_user = MyCustomUser.objects.get(id=request.user.id)
         is_favorited = current_user.favorites_list.filter(
             tmdb_id=movie_id).exists()
-        details.update({'is_favorited': is_favorited})
+        in_watchlist = current_user.watch_list.filter(
+            tmdb_id=movie_id).exists()
+        details.update(
+            {'is_favorited': is_favorited, 'in_watchlist': in_watchlist})
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
