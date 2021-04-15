@@ -21,7 +21,7 @@ from django.urls import path, include
 from movies.views import homepage, search_all
 from reviews.views import ReviewView
 # from IMDB_user.views import add_watchlist
-from user_profile.views import profile_view, edit_profile
+from user_profile.views import profile_view, edit_profile, following_view, follow, unfollow
 from IMDB_user.views import add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
@@ -44,6 +44,9 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
     path('profile/', profile_view, name='profile'),
+    path('following/<int:user_id>', following_view, name='users_followed'),
+    path('follow/<int:user_id>', follow, name='follow'),
+    path('unfollow/<int:user_id>', unfollow, name='unfollow'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
     path('edit-profile/', edit_profile),
 ]

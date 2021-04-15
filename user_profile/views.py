@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from reviews.models import Review
 from IMDB.settings import TMDB_KEY
 from IMDB_user.forms import UserForm
+from IMDB_user.models import MyCustomUser
 import requests
+
 # Create your views here.
 base_url = 'https://api.themoviedb.org/3'
 
@@ -64,3 +66,32 @@ def edit_profile(request):
         request,
         'editprofile.html',
         {'form': form})
+
+def following_view(request, user_id):
+    user = MyCustomUser.objects.get(id=user_id)
+    followed_list = user.followed_list.all()
+    return render(
+        request,
+        'followed.html',
+        {'user': user, "followed_list": followed_list})
+
+def follow(request, user_id):
+    user_followed = MyCustomUser.objects.get(id=user_id)
+    user_obj = MyCustomUser.objects.get(id=request.user.id)
+    user_obj.followed_list.add(user_followed)
+    user_obj.save()
+    return render(
+        request,
+        'profile.html',
+        {'user': user_obj})
+
+
+def unfollow(request, user_id):
+    user_unfollowed = MyCustomUser.objects.get(id=user_id)
+    user_obj = MyCustomUser.objects.get(id=request.user.id)
+    user_obj.followed_list.remove(user_unfollowed)
+    user_obj.save()
+    return render(
+        request,
+        'profile.html',
+        {'user': user_obj})
