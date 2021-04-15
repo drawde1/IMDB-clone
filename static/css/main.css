@@ -24,7 +24,7 @@ body {
 
 /* Homepage */
 
-.list-title {
+h5.list-title {
     padding-top: 20px;
     color: #e6ba41;
     font-weight: bold;

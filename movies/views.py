@@ -129,17 +129,17 @@ def movie_detail(request, movie_id):
         'reviews': reviews_data,
         'omdb': omdb_data
     })
-    # rotten_tomatoes = omdb_data['Ratings'][0]
-    # video = video_data['results'][0]
-    # poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
-    # if not Movie.objects.filter(tmdb_id=movie_id).exists():
-    #     movie = Movie.objects.create(
-    #         tmdb_id=movie_id,
-    #         name=movie_data['title'],
-    #         poster_url=poster_url
-    #     )
-    # else:
-    #     movie = Movie.objects.get(tmdb_id=movie_id)
-    # details.update({'movie': movie})
+    rotten_tomatoes = omdb_data['Ratings'][0]
+    video = video_data['results'][0]
+    poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
+    if not Movie.objects.filter(tmdb_id=movie_id).exists():
+        movie = Movie.objects.create(
+            tmdb_id=movie_id,
+            name=movie_data['title'],
+            poster_url=poster_url
+        )
+    else:
+        movie = Movie.objects.get(tmdb_id=movie_id)
+    details.update({'movie': movie})
     return render(request, 'movies/movie_detail.html', details)
     # return render(request, 'movies/movie_detail.html',{'data': movie_data, 'reviews': reviews_data, 'video': video, 'omdb': omdb_data, 'rotten_tomatoes': rotten_tomatoes })

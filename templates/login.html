@@ -3,9 +3,9 @@
         <form action="/signup/" class="form-control">
             {% csrf_token %}
             <h1 class="form-title">Create Account</h1>
-            <input type="text" name="SignupView.as_view()" placeholder="Name" />
-            <input type="text" name="SignupView.as_view()" placeholder="Displayname" />
-            <input type="password" name="SignupView.as_view()" placeholder="Password" />
+            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="displayname" placeholder="Displayname" />
+            <input type="password" name="password" placeholder="Password" />
             <button class="form-button">Sign Up</button>
         </form>
     </div>
@@ -13,8 +13,8 @@
         <form action="/login/" method="post" class="form-control">
             {% csrf_token %}
             <h1 class="form-title">Sign In</h1>
-            <input type="text" name="LoginView.as_view()" placeholder="Username" />
-            <input type="password" name="LoginView.as_view()" placeholder="Password" />
+            <input type="text" name="username" placeholder="Username" />
+            <input type="password" name="password" placeholder="Password" />
             <button class="form-button">Sign In</button>
         </form>
     </div>
