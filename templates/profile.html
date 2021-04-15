@@ -1,127 +1,64 @@
-
 {% extends 'base.html' %}
+
 {% block navbar %}
     {% include 'navbar.html' %}
 {% endblock %}
+
 {% block content %}
-<h1>{{request.user}}'s profile</h1>
-<p>total reviews: {{reviews.count}}</p>
-<h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
 
-<div class="container">
-  <div class="row align-items-start">
-    <div class="col">
-      <h1>watch list </h1>
+{{user}}
 
-<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-  {% if test %}
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  {% endif %}
-  <div class="carousel-inner">
-    
-    {% for movie in watch_list %}
-    {% if movie == test %}
-      <div class="carousel-item active">
-      {% else %}
-      <div class="carousel-item">
-      {% endif %}
-      
-    <!-- <li><h2>{{movie.title}}<h2></li>  -->
-       {% if movie.poster_path %}
-        <a href = '/movies/{{movie.id}}'><img src="https://image.tmdb.org/t/p/w342{{movie.poster_path}}" class="d-block w-100" width = 100 alt="{{movie.title}}"></a>
-       {% endif %}
+<h4 class="movie-title">{{user.displayname}}</h4>
 
-    </div> 
-    {% endfor %}
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
+<div class="overview-container">
+  <p>total reviews: {{reviews.count}}</p>
+  <h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
 </div>
-<ul>
-    
-</ul>
-    </div>
-    <div class="col">
-     <h1>You've Left {{reviews.count}} Review(s) so Far</h1>
-<ul>
-  <div  class= 'scroll'>
-    {% for review in reviews %}
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <a href=/movies/{{review.movie.tmdb_id}}><img src="{{review.movie.poster_url}}" width="100" alt="..."></a>
+
+{% if watch_list %}
+    <div class="carousel-container">
+        <h5 class="list-title">Watch List</h5>
+        <div class="carousel">
+            <ul>
+                {% for movie in watch_list %}
+                    {% if movie.poster_path %}
+                        <div class="carousel-item">
+                            <a href="{% url 'movie_detail' movie_id=movie.id %}">
+                                <img src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" alt="{{movie.title}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=movie.id %}">{{ movie.title }}</a></h6>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </ul>
         </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <a href=/reviews/{{review.movie.tmdb_id}}  class="btn btn-sm btn-black">
-            <h5 class="card-title">{{review.movie.name}}</h5>
-            
-            <p class="card-text">{{review.text}}</p>
-            <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
-          </a>
-          </div>
+    </div>
+{% endif %}
+
+{% if recomendations %}
+    <div class="carousel-container">
+        <h5 class="list-title">You May Like</h5>
+        <div class="carousel">
+            <ul>
+                {% for recommendation in recomendations %}
+                    <div class="carousel-item">
+                        <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
         </div>
-      
-      </div>
     </div>
-       
-       
-    {% endfor %}
-  </div>
-<style>
-    .scroll {
-    overflow: scroll;
-    height: 450px;
-    cursor: url(https://cdn.custom-cursor.com/db/4828/32/arrow2747.png), auto;
-  }
-</style>
-</ul>
-    </div>
-    <div class="col">
-      <h1>recomendation</h1>
-<ul>
-<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-  {% if test2 %}
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  {% endif %}
-  <div class="carousel-inner">
-    
-    {% for recomendation in recomendations %}
-    {% if recomendation == test2%}
-      <div class="carousel-item active">
-      {% else %}
-      <div class="carousel-item">
-      {% endif %}
-       {% if recomendation.poster_path %}
-                <a href = '/movies/{{recomendation.id}}'><img src="https://image.tmdb.org/t/p/w342{{recomendation.poster_path}}"  alt="{{movie.title}}"></a>
-        {% endif %}
+{% endif %}
 
-    </div> 
-    {% endfor %}
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</ul>
-
-
+{% for review in reviews %}
+    <a href=/movies/{{review.movie.tmdb_id}}><img src="{{review.movie.poster_url}}" width="100" alt="..."></a>
+    <a href=/reviews/{{review.movie.tmdb_id}}></a>
+    <h5>{{review.movie.name}}</h5>        
+    <p>{{review.creation_time}}</p>
+    <p>{{review.text}}</p>
+{% endfor %}
+  
 {% endblock%}   

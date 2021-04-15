@@ -403,12 +403,6 @@ body {
 
 /* Auth pages */
 
-
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
-
-* {
-	box-sizing: border-box;
-}
 /* 
 auth-container {
 
@@ -620,3 +614,6 @@ button.ghost {
 .auth-button:focus {
     background-color: transparent;
 }
+
+/* Profile Page */
+
