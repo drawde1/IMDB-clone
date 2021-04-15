@@ -6,13 +6,20 @@
 
 {% block content %}
 
-{{user}}
-
 <h4 class="movie-title">{{user.displayname}}</h4>
 
-<div class="overview-container">
-  <p>total reviews: {{reviews.count}}</p>
-  <h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
+<div class="overview-container" style="display: flex;">
+  {% if request.user.profile_pic %}
+    <div class="image-container">
+      <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
+    </div>
+  {% endif %}
+    <div>
+      <p>{{request.user.bio}}</p>
+      <p>total reviews: {{reviews.count}}</p>
+      <h2>karma: {{request.user.karma_score}}{{request.user.emoji}}</h2>
+      <a href='/edit-profile/'>edit profile</a>
+    </div>
 </div>
 
 {% if watch_list %}

@@ -20,7 +20,7 @@ body {
     margin-top: 40px;
     margin-bottom: 40px;
     padding: 20px 0;
-}
+} */
 
 /* Homepage */
 
@@ -51,10 +51,6 @@ body {
     width: 250px;
 }
 
-/* .carousel .carousel-item img {
-    width: 100%;
-} */
-
 .carousel .carousel-item h6 {
     margin: 0;
     padding: 0;
@@ -83,6 +79,23 @@ body {
 .page-custom {
     position: relative;
     right: 80px;
+}
+
+.navbar-image {
+    position: relative;
+    top: 50px;
+    right: 155px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid red;
+}
+
+.nav-logout {
+    position: relative;
+    top: -40px;
+    right: 10px;
 }
 
 /* Search Bar */
@@ -617,3 +630,15 @@ button.ghost {
 
 /* Profile Page */
 
+.image-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 60%;
+    border: 5px solid gray;
+    overflow: hidden;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+}

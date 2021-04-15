@@ -14,11 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
 from django.urls import path, include
 # from reviews.views import reviews
 from movies.views import homepage, search_all
 from reviews.views import ReviewView
-from IMDB_user.views import profile_view, add_watchlist, remove_watchlist
+from IMDB_user.views import add_watchlist, remove_watchlist
+from user_profile.views import profile_view, edit_profile
+from IMDB_user.views import add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
 urlpatterns = [
@@ -27,7 +31,6 @@ urlpatterns = [
     path('movies/', include('movies.urls')),
     path('actors/', include('actors.urls')),
     path('search/all/', search_all, name="search_all"),
-    # path('reviews/<str:imbd_id>/', reviews),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
     path("signup/", SignupView.as_view(), name="signup"),
@@ -37,5 +40,7 @@ urlpatterns = [
     path('watchlist/remove/<str:tmdb_id>/', remove_watchlist, name='remove_watchlist'),
     path('profile/', profile_view, name='profile'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
+    path('edit-profile/', edit_profile),
     path('admin/', admin.site.urls)
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
