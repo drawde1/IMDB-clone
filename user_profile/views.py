@@ -13,13 +13,12 @@ base_url = 'https://api.themoviedb.org/3'
 def profile_view(request, user_id):
     recomendations = []
     user = MyCustomUser.objects.get(id=user_id)
-    can_edit=False
+    can_edit = False
     if request.user == user:
         can_edit = True
     pic_form = ProfilePicForm(
             initial={'profile_pic': user.profile_pic},)
-    displayname_form = DisplaynameForm(
-        initial={'displayname': user.displayname})
+    displayname_form = DisplaynameForm()
     bio_form = BioForm(
         initial={'bio': user.bio})
 
