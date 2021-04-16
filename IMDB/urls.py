@@ -25,6 +25,7 @@ from user_profile.views import profile_view, edit_profile
 from IMDB_user.views import add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
+from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path('', homepage, name='homepage'),
     path('users/', include('IMDB_user.urls')),
@@ -38,7 +39,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('movies/', include('movies.urls')),
     path('admin/', admin.site.urls),
-    path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
+    path('reviews/<str:tmdb_id>/', login_required(ReviewView.as_view()), name="post_review"),
     path('watchlist/<str:tmdb_id>/', add_watchlist, name="add_watchlist"),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),
