@@ -18,17 +18,17 @@ api_key = 'ea3f0ae618db2e67cd3f57ba270936c4'
 
 
 
-def add_watchlist(request, movie_id):
-    if Movie.objects.filter(tmdb_id=movie_id).exists():
-        movie = Movie.objects.get(tmdb_id=movie_id)
+def add_watchlist(request, tmdb_id):
+    if Movie.objects.filter(tmdb_id=tmdb_id).exists():
+        movie = Movie.objects.get(tmdb_id=tmdb_id)
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        if not current_user.watch_list.filter(tmdb_id=movie_id).exists():
+        if not current_user.watch_list.filter(tmdb_id=tmdb_id).exists():
             current_user.watch_list.add(movie)
             current_user.save()
             return redirect(request.META.get(
                 'HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
-        movie_path = f'/movie/{movie_id}'
+        movie_path = f'/movie/{tmdb_id}'
         movie_endpoint = f'{tmdb_base_url}{movie_path}?api_key={tmdb_key}'
         movie_request = requests.get(movie_endpoint)
         movie_data = movie_request.json()
@@ -44,12 +44,15 @@ def add_watchlist(request, movie_id):
         return redirect(request.META.get(
             'HTTP_REFERER', 'redirect_if_referer_not_found'))
 
+
 def remove_watchlist(request, tmdb_id):
     current_user = MyCustomUser.objects.get(id=request.user.id)
     movie = Movie.objects.get(tmdb_id=tmdb_id)
     current_user.watch_list.remove(movie)
     current_user.save()
-    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+    return redirect(
+        request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
 
 def add_favorites(request, movie_id):
     if Movie.objects.filter(tmdb_id=movie_id).exists():
