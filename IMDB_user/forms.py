@@ -2,11 +2,25 @@ from django.forms import ModelForm
 from IMDB_user.models import MyCustomUser
 
 
-class UserForm(ModelForm):
+class DisplaynameForm(ModelForm):
     class Meta:
-        model= MyCustomUser
-        fields =[ 
-            'bio',
+        model = MyCustomUser
+        fields = [
             'displayname',
-            'profile_pic'
+        ]
+
+
+class ProfilePicForm(ModelForm):
+    class Meta:
+        model = MyCustomUser
+        fields = [
+            'profile_pic',
+        ]
+
+
+class BioForm(ModelForm):
+    class Meta:
+        model = MyCustomUser
+        fields = [
+            'bio',
         ]

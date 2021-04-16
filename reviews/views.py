@@ -12,8 +12,8 @@ class ReviewView(View):
             movie = Movie.objects.get(tmdb_id=tmdb_id)
         reviews_by_time = Review.objects.filter(
             movie=movie).order_by('-creation_time')
-        reviews_by_votes = Review.objects.filter(
-            movie=movie).order_by('-votes')
+        reviews_by_votes = sorted(Review.objects.filter(
+            movie=movie), key=lambda review: review.vote_total)
         return render(
             request,
             'reviews.html',
