@@ -43,7 +43,6 @@ urlpatterns = [
         name='remove_watchlist'),
     path('profile/<int:user_id>', profile_view, name='profile'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
-    path('edit-profile/', edit_profile),
     path('admin/', admin.site.urls)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

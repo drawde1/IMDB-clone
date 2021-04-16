@@ -65,8 +65,8 @@
       {% if user.bio %}
           <h5>About Me:</h5>
           <h6 id ='bio'>{{request.user.bio}}</h6>
+       {% endif %}
           <button id='bio-b'> Add/Edit Bio</button>
-      {% endif %}
       <form action="" method="post" id ='bio-form' class='hidden' >
         {% csrf_token %}
         {{ bio_form.as_p }}
