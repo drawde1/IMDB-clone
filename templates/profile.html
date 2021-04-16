@@ -5,74 +5,91 @@
 {% endblock %}
 
 {% block content %}
-<h1 id='curr-displayname'>{{user.displayname}}'s profile</h1>
 {% if can_edit %} 
-<button id='displayname-b'>Add/Edit Displayname</button>
-<form action="" method="post"  id ='displayname-form' class = "form-control">
+<!-- <form action="" method="post"  id ='displayname-form' class = "form-control">
   {% csrf_token %}
   {{ displayname_form.as_p }}
   <input type="submit" name= save_displayname  value="Submit">
-</form>
+</form> -->
+<!-- <button id='displayname-b'>Add/Edit Displayname</button> -->
 {% endif %}
-{% if user.profile_pic %}
+
+<!-- {% if user.profile_pic %}
   <img src ='{{user.profile_pic.url}}' width =200/>
-{% endif %}
+{% endif %} -->
 {% if can_edit%}
-<form action="" method="post"  id ='profile-pic-form' class = "form-control" enctype="multipart/form-data">
+<!-- <form action="" method="post"  id ='profile-pic-form' class = "form-control" enctype="multipart/form-data">
   {% csrf_token %}
   {{ pic_form.as_p }}
   <input type="submit" name='save_profile_pic'  value="Submit">
-</form>
-<button id='profile-pic-b'> Add/Change Photo</button>
+</form> -->
+<!-- <button id='profile-pic-b'> Add/Change Photo</button> -->
 
-<form action="" method="post"  id ='bio-form' class = "form-control">
+<!-- <form action="" method="post"  id ='bio-form' class = "form-control">
   {% csrf_token %}
   {{ bio_form.as_p }}
   <input type="submit" name='save_bio'  value="Submit">
-</form>
+</form> -->
 {% endif %}
-{% if user.bio %}
+<!-- {% if user.bio %}
 <p id='bio'>{{user.bio}}</p>
-{% endif%}
+{% endif%} -->
 {% if can_edit%}
-<button id='bio-b'> Add/Edit Bio</button>
+<!-- <button id='bio-b'> Add/Edit Bio</button> -->
 
 {% endif %}
-<p>total reviews: {{reviews.count}}</p>
-<h2>karma: {{user.karma_score}}{{user.emoji}}</h2>
+<!-- <p>total reviews: {{reviews.count}}</p>
+<h2>karma: {{user.karma_score}}{{user.emoji}}</h2> -->
 
+<div class="profile-container" id='about'>
+  <div>
+    <button id='displayname-b'>Add/Edit Displayname</button>
+    <h1 id='curr-displayname'>{{user.displayname}}'s info</h1>
+   
+    <form action="" method="post" id ='displayname-form' class='hidden' >
+      {% csrf_token %}
+      {{ displayname_form.as_p }}
+      <input type="submit" name='save_displayname'  value="Submit">
+    </form>   
+      {% if request.user.profile_pic %}
+          <div class="image-container">
+              <img src ='{{user.profile_pic.url}}' width="300" />
+          </div>
+      {% endif %}
+      <button id='profile-pic-b'> Add/Change Photo</button>
+      <form action="" method="post" id ='profile-pic-form' class = 'hidden' enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{ pic_form.as_p }}
+        <input type="submit" name='save_profile_pic'  value="Submit">
+      </form> 
+      {% if user.bio %}
+          <h5>About Me:</h5>
+          <h6 id ='bio'>{{request.user.bio}}</h6>
+          <button id='bio-b'> Add/Edit Bio</button>
+      {% endif %}
+      <form action="" method="post" id ='bio-form' class='hidden' >
+        {% csrf_token %}
+        {{ bio_form.as_p }}
+        <input type="submit" name='save_bio'  value="Submit">
+      </form>
+      <br>
+      {% if reviews.count > 0 %}
+          <h6>Reviews Posted: {{reviews.count}}</h6>
+      {% else %}
+          <h6>Post your first review to get some karma points!</h6>
+      {% endif %}
+      <br>
+      <h6>Karma: {{request.user.karma_score}} {{request.user.emoji}}</h6> 
+  </div>
 
-<script>
+  <div>
+      
+         
+      <br>   
+          
+  </div>
+</div>
 
-
-  let editDisplayname = document.getElementById('displayname-b')
-  let editProfilePic = document.getElementById('profile-pic-b')
-  let editBio = document.getElementById('bio-b')
-
-  let displayname = document.getElementById('curr-displayname')
-  let bio = document.getElementById('bio')
-  
-  let displaynameForm = document.getElementById('displayname-form')
-  let profilePicForm = document.getElementById('profile-pic-form')
-  let bioForm = document.getElementById('bio-form')
-  
-  bioForm.classList.add('hidden')
-  displaynameForm.classList.add('hidden')
-  profilePicForm.classList.add('hidden')
-
-
-  editDisplayname.onclick = ()=>{
-    displaynameForm.classList.remove('hidden')
-    displayname.classList.add('hidden')
-    }
-  editProfilePic.onclick = ()=>{
-    profilePicForm.classList.remove('hidden')
-    }
-  editBio.onclick = ()=>{
-    bioForm.classList.remove('hidden')
-    bio.classList.add('hidden')
-    }
-</script>
 <style>
   .hidden{
     display: none;
@@ -113,50 +130,53 @@
           {% endfor %}
       </ul>
   </div>
-<div class="profile-container">
-    <div>
-        {% if request.user.profile_pic %}
-            <div class="image-container">
-                <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
-            </div>
-        {% endif %}
-        {% if user.bio %}
-            <h5>About Me:</h5>
-            <h6>{{request.user.bio}}</h6>
-        {% endif %}
-        <br>
-        {% if reviews.count > 0 %}
-            <h6>Reviews Posted: {{reviews.count}}</h6>
-        {% else %}
-            <h6>Post your first review to get some karma points!</h6>
-        {% endif %}
-        <br>
-        <h6>Karma: {{request.user.karma_score}} {{request.user.emoji}}</h6> 
-    </div>
+ 
+
+<style>
+ textarea:focus, input:focus {
+    color: #e6ba41;
+}
+textarea, input{
+  color: white;
+}
+textarea{
+  width: 400px;
+  height: 400px;
+}
+</style>
+<script>
+
+
+  let editDisplayname = document.getElementById('displayname-b')
+  let editProfilePic = document.getElementById('profile-pic-b')
+  let editBio = document.getElementById('bio-b')
+
+  let displayname = document.getElementById('curr-displayname')
+  let bio = document.getElementById('bio')
   
-    <div>
-        <form action="/edit-profile/" method="post">
-            {% csrf_token %}
-            <input type="text" name="displayname" placeholder="Displayname" class="edit-input" style="color:white" />
-            <button>Edit Displayname</button>
-        </form>   
-        <form action="/edit-profile/" method="post">
-            {% csrf_token %}
-            <input type="text" name="bio" placeholder="Say something about yourself" class="edit-input" />
-            <button>Edit Bio</button>
-        </form>   
-        <br>   
-        <form action="/edit-profile/" method="post">
-            {% csrf_token %}
-            <!-- <input type="text" name="displayname" value={{user.displayname}} placeholder="Displayname" class="edit-input" style="color:#191919" /> -->
-            <input type="file" name="profile_pic" />
-            <button type="submit">Change Profile Photo</button>
-        </form>     
-    </div>
-</div>
+  let displaynameForm = document.getElementById('displayname-form')
+  let profilePicForm = document.getElementById('profile-pic-form')
+  let bioForm = document.getElementById('bio-form')
+  
+  bioForm.classList.add('hidden')
+  displaynameForm.classList.add('hidden')
+  profilePicForm.classList.add('hidden')
 
 
-{% if reviews %}
+  editDisplayname.onclick = ()=>{
+    displaynameForm.classList.remove('hidden')
+    displayname.classList.add('hidden')
+    }
+  editProfilePic.onclick = ()=>{
+    profilePicForm.classList.remove('hidden')
+    }
+  editBio.onclick = ()=>{
+    bioForm.classList.remove('hidden')
+    bio.classList.add('hidden')
+    console.log('hello')
+    }
+</script>
+<!-- {% if reviews %}
     <div class="carousel-container">
         <h5 class="list-title">Reviews You Posted</h5>
         <div class="carousel">
@@ -172,7 +192,7 @@
             </ul>
         </div>
     </div>
-{% endif %}
+{% endif %} -->
 
 {% if watch_list %}
     <div class="carousel-container">

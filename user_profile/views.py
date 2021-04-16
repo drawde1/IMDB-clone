@@ -44,7 +44,7 @@ def profile_view(request, user_id):
                 data = pic_form.cleaned_data
                 user.profile_pic = data['profile_pic']
                 user.save()
-        return redirect(f'/profile/{user.id}')
+        return redirect(f'/profile/{user.id}#about')
 
     for movie in user.watch_list.all():
         recomendations_path = f'/movie/{movie.tmdb_id}/recommendations'
