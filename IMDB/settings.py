@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/images/'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/'
 
 AUTH_USER_MODEL = 'IMDB_user.MyCustomUser'
 

@@ -14,6 +14,8 @@ omdb_base_url = 'http://www.omdbapi.com/'
 
 def homepage(request):
     details = {}
+    if request.GET.get('next'):
+        details.update({"message": 'Please sign in to view this page!'})
     latest_path = '/movie/now_playing'
     popular_path = '/movie/popular'
     top_path = '/movie/top_rated'
