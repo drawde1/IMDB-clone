@@ -5,15 +5,80 @@
 {% endblock %}
 
 {% block content %}
-
-<h1>{{user}}'s profile</h1>
+<h1 id='curr-displayname'>{{user.displayname}}'s profile</h1>
+{% if can_edit %} 
+<button id='displayname-b'>Add/Edit Displayname</button>
+<form action="" method="post"  id ='displayname-form' class = "form-control">
+  {% csrf_token %}
+  {{ displayname_form.as_p }}
+  <input type="submit" name= save_displayname  value="Submit">
+</form>
+{% endif %}
 {% if user.profile_pic %}
-<img src ='{{user.profile_pic.url}}' width =200 /> {{user.bio}}
+  <img src ='{{user.profile_pic.url}}' width =200/>
+{% endif %}
+{% if can_edit%}
+<form action="" method="post"  id ='profile-pic-form' class = "form-control" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ pic_form.as_p }}
+  <input type="submit" name='save_profile_pic'  value="Submit">
+</form>
+<button id='profile-pic-b'> Add/Change Photo</button>
+
+<form action="" method="post"  id ='bio-form' class = "form-control">
+  {% csrf_token %}
+  {{ bio_form.as_p }}
+  <input type="submit" name='save_bio'  value="Submit">
+</form>
+{% endif %}
+{% if user.bio %}
+<p id='bio'>{{user.bio}}</p>
+{% endif%}
+{% if can_edit%}
+<button id='bio-b'> Add/Edit Bio</button>
+
 {% endif %}
 <p>total reviews: {{reviews.count}}</p>
 <h2>karma: {{user.karma_score}}{{user.emoji}}</h2>
-<a href='/edit-profile/'>edit profile</a>
 
+
+<script>
+
+
+  let editDisplayname = document.getElementById('displayname-b')
+  let editProfilePic = document.getElementById('profile-pic-b')
+  let editBio = document.getElementById('bio-b')
+
+  let displayname = document.getElementById('curr-displayname')
+  let bio = document.getElementById('bio')
+  
+  let displaynameForm = document.getElementById('displayname-form')
+  let profilePicForm = document.getElementById('profile-pic-form')
+  let bioForm = document.getElementById('bio-form')
+  
+  bioForm.classList.add('hidden')
+  displaynameForm.classList.add('hidden')
+  profilePicForm.classList.add('hidden')
+
+
+  editDisplayname.onclick = ()=>{
+    displaynameForm.classList.remove('hidden')
+    displayname.classList.add('hidden')
+    }
+  editProfilePic.onclick = ()=>{
+    profilePicForm.classList.remove('hidden')
+    }
+  editBio.onclick = ()=>{
+    bioForm.classList.remove('hidden')
+    bio.classList.add('hidden')
+    }
+</script>
+<style>
+  .hidden{
+    display: none;
+  }
+
+</style>
 <div class="carousel-container">
   <h5 class="list-title">Watch List</h5>
   <div class="carousel">
@@ -24,22 +89,6 @@
                       <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
                   </a>
                   <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
-              </div>
-          {% endfor %}
-      </ul>
-  </div>
-</div>
-
-<div class="carousel-container">
-  <h5 class="list-title">recomendations</h5>
-  <div class="carousel">
-      <ul>
-          {% for movie in recomendations %}
-              <div class="carousel-item">
-                  <a href="{% url 'movie_detail' movie_id=movie.id %}">
-                      <img src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" alt="{{movie.title}}" width=220>
-                  </a>
-                  <h6><a href="{% url 'movie_detail' movie_id=movie.id %}">{{ movie.title }}</a></h6>
               </div>
           {% endfor %}
       </ul>
@@ -66,89 +115,6 @@
   </div>
 </div>
 
-
-
-<!-- <div class="container">
-  <div class="row align-items-start">
-    <div class="col">
-      <h1>watch list </h1>
-
-<div class="overview-container profile-container">
-  {% if request.user.profile_pic %}
-    <div class="image-container">
-      <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
-    </div>
-  {% endif %}
-  <div class="carousel-inner">
-    
-    {% for movie in watch_list %}
-    {% if movie == test %}
-      <div class="carousel-item active">
-      {% else %}
-      <div class="carousel-item">
-      {% endif %}
-      
-    <li><h2>{{movie.title}}<h2></li> 
-       {% if movie.poster_path %}
-        <a href = '/movies/{{movie.id}}/'><img src="https://image.tmdb.org/t/p/w342{{movie.poster_path}}" class="d-block w-100" width = 100 alt="{{movie.title}}"></a>
-       {% endif %}
-
-    </div> 
-    {% endfor %}
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-<ul>
-    
-</ul>
-    <div>
-        {% if user.bio %}
-            <p>{{request.user.bio}}</p>
-        {% endif %}
-        {% if reviews.count > 0 %}
-            <p>total reviews: {{reviews.count}}</p>
-        {% else %}
-            <p>Post your first review to get some karma points!</p>
-        {% endif %}
-        <p>karma: {{request.user.karma_score}}{{request.user.emoji}}</p>
-        <<span>Displayname: {{user.displayname}}
-            <span>
-                <form action="/edit-profile/" method="post">
-                    {% csrf_token %}
-                    <input type="text" name="displayname" placeholder="Displayname" />
-                    <input type="submit">
-                </form>
-            </span> 
-        </span>
-        <span>Profile Photo: {{user.profile_pic}}
-            <span>
-                <form action="/edit-profile/" method="post">
-                    {% csrf_token %}
-                    <input type="file" name="profile_pic" placeholder="Profile Photo" />
-                    <input type="text" name="displayname" value={{user.displayname}} placeholder="Displayname" />
-                    <input type="submit">
-                </form>
-            </span>
-        </span>
-        <span>Bio: {{user.bio}}
-            <span>
-                <form action="/edit-profile/" method="post">
-                    {% csrf_token %}
-                    <textarea rows="20" cols="20" name="bio" placeholder="Bio" />
-                    <input type="text" name="displayname" value={{user.displayname}} placeholder="Displayname" width=50 />
-                    <input type="submit">
-                </form>
-            </span>
-        </span> -->
-    </div>
-</div>
 
 {% if reviews %}
     <div class="carousel-container">

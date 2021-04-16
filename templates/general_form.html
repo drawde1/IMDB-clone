@@ -7,10 +7,10 @@
     <h1>{{ message }}</h1>
 {% endif %}
 <div>
-<form action="" method="post" class ="form-control">
+<form action="" method="post" id='form' class ="form-control">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" class="btn btn-lg btn-primary" value="Submit">
+    <input type="submit" value="Submit">
 </form>
 </div>
 {% if link %}
