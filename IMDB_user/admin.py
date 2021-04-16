@@ -17,6 +17,9 @@ class CustomUserAdmin(UserAdmin):
             {
                 'fields': [
                     'displayname',
+                    'profile_pic',
+                    'bio',
+                    'karma_score',
                     'watch_list',
                     'favorites_list'
                 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from reviews.models import Review
 from IMDB.settings import TMDB_KEY
-from IMDB_user.forms import UserForm
+from IMDB_user.forms import DisplaynameForm, BioForm, PhotoForm
 import requests
 # Create your views here.
 base_url = 'https://api.themoviedb.org/3'
@@ -49,19 +49,28 @@ def profile_view(request):
         context)
 
 
+# def edit_profile(request):
+#     user = request.user
+#     if request.method == 'POST':
+#         form = PhotoForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             data = form.cleaned_data
+#             user.displayname = user.displayname
+#             user.profile_pic = data['profile_pic']
+#             user.save()
+#             return redirect('/profile/')
+#     return render(
+#         request,
+#         'profile.html',
+#         {'form': form})
+
 def edit_profile(request):
     user = request.user
-    form = UserForm(initial={
-        'bio': user.bio,
-        'displayname': user.displayname,
-        'profile_pic': user.profile_pic
-    })
     if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES)
+        form = BioForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
-            user.displayname = data['displayname']
-            user.profile_pic = data['profile_pic']
+            user.displayname = user.displayname
             user.bio = data['bio']
             user.save()
             return redirect('/profile/')
