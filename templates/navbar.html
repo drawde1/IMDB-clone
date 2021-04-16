@@ -36,14 +36,15 @@
                         <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li>
                     {% endif %}
                 {% else %}
-                    <li><a id="loginButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign In</a></li>
-                    <li><a class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign Up</a></li>
+                    <li id="loginButton" class="waves-effect waves-light btn modal-trigger auth-button login-custom">Sign In / Sign Up</li>
+                    <!-- <li><a id="signupButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal2">Sign Up</a></li> -->
                 {% endif %}
             </ul>
         </div>
     </nav>
 </div>
 {% include 'login.html' %}
+{% include 'signup.html' %}
 {% endblock %}
      
 

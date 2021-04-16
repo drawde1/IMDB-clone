@@ -113,6 +113,46 @@
           {% endfor %}
       </ul>
   </div>
+<div class="profile-container">
+    <div>
+        {% if request.user.profile_pic %}
+            <div class="image-container">
+                <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
+            </div>
+        {% endif %}
+        {% if user.bio %}
+            <h5>About Me:</h5>
+            <h6>{{request.user.bio}}</h6>
+        {% endif %}
+        <br>
+        {% if reviews.count > 0 %}
+            <h6>Reviews Posted: {{reviews.count}}</h6>
+        {% else %}
+            <h6>Post your first review to get some karma points!</h6>
+        {% endif %}
+        <br>
+        <h6>Karma: {{request.user.karma_score}} {{request.user.emoji}}</h6> 
+    </div>
+  
+    <div>
+        <form action="/edit-profile/" method="post">
+            {% csrf_token %}
+            <input type="text" name="displayname" placeholder="Displayname" class="edit-input" style="color:white" />
+            <button>Edit Displayname</button>
+        </form>   
+        <form action="/edit-profile/" method="post">
+            {% csrf_token %}
+            <input type="text" name="bio" placeholder="Say something about yourself" class="edit-input" />
+            <button>Edit Bio</button>
+        </form>   
+        <br>   
+        <form action="/edit-profile/" method="post">
+            {% csrf_token %}
+            <!-- <input type="text" name="displayname" value={{user.displayname}} placeholder="Displayname" class="edit-input" style="color:#191919" /> -->
+            <input type="file" name="profile_pic" />
+            <button type="submit">Change Profile Photo</button>
+        </form>     
+    </div>
 </div>
 
 

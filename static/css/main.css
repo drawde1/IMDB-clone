@@ -266,7 +266,6 @@ body {
     padding: 14px 42px;
     background-color: #191919;
     width: 1125px;
-    height: 180px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -358,7 +357,6 @@ body {
     left: 65px;
     background-color: #191919;
     width: 1125px;
-    height: 300px;
     font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 30px;
 }
@@ -416,29 +414,31 @@ body {
     /* border: 5px solid #191919; */
 }
 
-/* .video-cover {
-    position: absolute;
-    top:-290px;
-    left:50px;
-    border: 1px solid white;
-    width:500px; height:50px;
-    background-color: black;
-} */
-
 /* Auth pages */
 
-/* 
-auth-container {
+.modal-container {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
 
-	background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
-} */
+.closeBtn {
+    color: #ccc;
+    float: right;
+    font-size: 30px;
+}
+
+.closeBtn:hover,.closeBtn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 .form-title {
 	font-weight: bold;
@@ -506,6 +506,7 @@ button.ghost {
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
 			0 10px 10px rgba(0,0,0,0.22);
 	position: relative;
+    margin: 150px auto;
 	overflow: hidden;
     font-family: 'Montserrat', sans-serif;
 	width: 768px;
@@ -639,16 +640,28 @@ button.ghost {
     background-color: transparent;
 }
 
+.login-custom {
+    position: relative;
+    top: 15px;
+    right: 80px;
+}
+
 /* Profile Page */
 
 .profile-container {
-    height: 400px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    padding: 14px 42px;
+    background-color: #191919;
+    width: 1125px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .image-container {
-    width: 200px;
-    height: 200px;
-    border-radius: 60%;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
     border: 5px solid gray;
     overflow: hidden;
 }
@@ -658,14 +671,96 @@ button.ghost {
     height: 100%;
 }
 
+.edit-input {
+    color: white;
+}
+
 /* Actor Detail Page */
 
 .actor-details {
     margin-left: 40px;
     background-color: #191919;
-    padding: 10px 30px;
+    padding: 20px 40px;
+    color: white;
 }
 
 .actor-label {
     color: #777777;
+}
+
+.actor-character {
+    position: relative;
+    top: -15px;
+    left: 10px;
+    color: #777777;
+    font-size: 16px;
+}
+
+.bio-container .bio-content {
+    position: relative;
+    max-width: 700px;
+    text-align: justify;
+}
+
+.short-bio {
+    margin-bottom: 10px;
+}
+
+.more-bio {
+    position: relative;
+    padding: 5px 20px;
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    background: #111;
+}
+
+.container#main-container.active {
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+}
+
+#popup {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 700px;
+    max-height: 650px;
+    padding: 40px;
+    box-shadow: 0 5px 30px rgba(0,0,0,.30);
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 10px;
+    background: rgb(245, 191, 91);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.bio-scroll {
+    max-height: 500px;
+    overflow: scroll;
+    text-align: justify;
+}
+
+.close-bio {
+    max-height: 100px;
+    margin-bottom: 20px;
+}
+
+#popup.active {
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.dots {
+    display: inline;
+}
+
+.dots.active {
+    display: none;
 }

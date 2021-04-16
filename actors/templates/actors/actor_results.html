@@ -7,7 +7,7 @@
 {% block content %}
 <h5 class="list-title">Actor Search Results</h5>
 <div class="carousel">
-    <ol>
+    <ul>
         {% for result in results %} 
             <div class="carousel-item">
                 <a href="{% url 'actor_detail' actor_id=result.id %}">
@@ -16,6 +16,6 @@
                 <h6><a href="{% url 'actor_detail' actor_id=result.id %}">{{ result.name }}</a></h6>
             </div>
         {% endfor %}
-    </ol>
+    </ul>
 </div>
 {% endblock %}

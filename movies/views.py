@@ -26,10 +26,13 @@ def homepage(request):
 
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
+        if current_user.watch_list.all():
+            watchlist = current_user.watch_list.all()
+            details.update({'watchlist': watchlist})
         if current_user.favorites_list.all():
             favorites = current_user.favorites_list.all()
             fave_movie = random.choice(favorites)
-            movie_id = fave_movie.id
+            movie_id = fave_movie.tmdb_id
             recommendations_path = f'/movie/{movie_id}/recommendations'
             recommendations_data = ApiPaths.grab_data(recommendations_path)
             if recommendations_data:
