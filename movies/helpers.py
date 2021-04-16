@@ -14,10 +14,19 @@ class ApiPaths():
 
     def grab_cast(imdb_id):
         omdb_data = ApiPaths.grab_data(imdb_id, omdb=True)
+        if omdb_data.get('Actors'):
+            actors = omdb_data['Actors'].split(", ")
+        else:
+            return {}
 
-        actors = omdb_data['Actors'].split(", ")
-        directors = omdb_data['Director'].split(", ")
-        writers = omdb_data['Writer'].split(", ")
+        if omdb_data.get('Director'):
+            directors = omdb_data['Director'].split(", ")
+        else:
+            return {}
+        if omdb_data.get('Writer'):
+            writers = omdb_data['Writer'].split(", ")
+        else:
+            return {}
         for index, director in enumerate(directors):
             if "(" in director:
                 parens_index = director.find("(")

@@ -38,21 +38,6 @@ def homepage(request):
                         'fave_movie': fave_movie,
                         'recommendations': recommendations_data})
             details.update({'favorites': favorites})
-
-    # form = LoginForm()
-    # if request.method == 'POST':
-    #     form = LoginForm(request.POST)
-    #     if form.is_valid():
-    #         data = form.cleaned_data
-    #         user = authenticate(
-    #             request,
-    #             username=data.get("username"),
-    #             password=data.get("password")
-    #         )
-    #         if user:
-    #             login(request, user)
-    #             return redirect('/')
-    # details.update({'form': form})
     return render(request, 'homepage.html', details)
 
 
@@ -122,7 +107,7 @@ def movie_detail(request, movie_id):
 
     rotten_tomatoes = ''
 
-    if omdb_data['Ratings']:
+    if omdb_data.get('Ratings'):
         for rating in omdb_data['Ratings']:
             if rating['Source'] == 'Rotten Tomatoes':
                 rotten_tomatoes = rating['Value']
@@ -130,24 +115,26 @@ def movie_detail(request, movie_id):
 
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
-        is_favorited = current_user.favorites_list.filter(tmdb_id=movie_id).exists()
-        in_watchlist = current_user.watch_list.filter(tmdb_id=movie_id).exists()
-        details.update({'is_favorited': is_favorited, 'in_watchlist': in_watchlist})
+        is_favorited = current_user.favorites_list.filter(
+            tmdb_id=movie_id).exists()
+        in_watchlist = current_user.watch_list.filter(
+            tmdb_id=movie_id).exists()
+        details.update(
+            {'is_favorited': is_favorited, 'in_watchlist': in_watchlist})
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
         'omdb': omdb_data,
     })
-    rotten_tomatoes = omdb_data['Ratings'][0]
-    video = video_data['results'][0]
+    if omdb_data.get('Ratings'):
+        rotten_tomatoes = omdb_data['Ratings'][0]
+    if video_data['results']:
+        video = video_data['results'][0]
     poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
     if not Movie.objects.filter(tmdb_id=movie_id).exists():
-        movie = Movie.objects.create(
+        Movie.objects.create(
             tmdb_id=movie_id,
             name=movie_data['title'],
             poster_url=poster_url
         )
-    else:
-        movie = Movie.objects.get(tmdb_id=movie_id)
-    details.update({'movie': movie})
     return render(request, 'movies/movie_detail.html', details)

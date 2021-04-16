@@ -63,9 +63,9 @@
     {% if rotten_tomatoes %}
         <img src="{% static 'images/rotten_tomatoes.png' %}" width=20 class="rating-item rotten_tomatoes"> <span class="rating-indent">{{rotten_tomatoes}}</span>
     {% endif %}
-
+    {% if omdb.Rated %}
     <span class="rating-item rated" style="border: 1px solid #ffffff; padding: 5px;">{{ omdb.Rated }}</span>
-
+    {% endif %}
     {% if data.runtime %}
         <span class="rating-item runtime">{{ data.runtime }} minutes</span>
     {% endif %}
@@ -123,7 +123,7 @@
         <h5 class="about-indent" style="color: #e6ba41; font-weight: bold;">About {{data.title}}</h5>
 
         {% if data.release_date %}
-            <h6 class="about-indent"><span style="color: #777777;">Release Date:</span> {{ omdb.Released }}</h6>
+            <h6 class="about-indent"><span style="color: #777777;">Release Date:</span> {{ data.release_date }}</h6>
         {% endif %}
 
         {% if directors%}
