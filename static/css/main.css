@@ -413,15 +413,6 @@ h5.list-title {
     /* border: 5px solid #191919; */
 }
 
-/* .video-cover {
-    position: absolute;
-    top:-290px;
-    left:50px;
-    border: 1px solid white;
-    width:500px; height:50px;
-    background-color: black;
-} */
-
 /* Auth pages */
 
 .modal-container {
@@ -648,6 +639,12 @@ button.ghost {
     background-color: transparent;
 }
 
+.login-custom {
+    position: relative;
+    top: 15px;
+    right: 80px;
+}
+
 /* Profile Page */
 
 .profile-container {
@@ -672,7 +669,8 @@ button.ghost {
 .actor-details {
     margin-left: 40px;
     background-color: #191919;
-    padding: 10px 30px;
+    padding: 20px 40px;
+    color: white;
 }
 
 .actor-label {
@@ -685,4 +683,73 @@ button.ghost {
     left: 10px;
     color: #777777;
     font-size: 16px;
+}
+
+.bio-container .bio-content {
+    position: relative;
+    max-width: 700px;
+    text-align: justify;
+}
+
+.short-bio {
+    margin-bottom: 10px;
+}
+
+.more-bio {
+    position: relative;
+    padding: 5px 20px;
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    background: #111;
+}
+
+.container#main-container.active {
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+}
+
+#popup {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 700px;
+    max-height: 650px;
+    padding: 40px;
+    box-shadow: 0 5px 30px rgba(0,0,0,.30);
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 10px;
+    background: rgb(245, 191, 91);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.bio-scroll {
+    max-height: 500px;
+    overflow: scroll;
+    text-align: justify;
+}
+
+.close-bio {
+    max-height: 100px;
+    margin-bottom: 20px;
+}
+
+#popup.active {
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.dots {
+    display: inline;
+}
+
+.dots.active {
+    display: none;
 }

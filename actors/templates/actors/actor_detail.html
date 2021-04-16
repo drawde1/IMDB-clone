@@ -8,12 +8,20 @@
 
 <h4 class="movie-title">{{ actor.name}}</h4>
 
+<!-- <h6>short bio: {{short_bio}}</h6> -->
+
 <div class="poster-container">
     <div>
         <img src="https://image.tmdb.org/t/p/w342{{ actor.profile_path }}">
     </div>
     <div class="actor-details">
-        <h6 class="summary">{{ actor.biography}}</h6>
+        <div class="bio-container">
+            <div class="bio-content">
+                <h6 class="summary short-bio">{{ short_bio }} <span id="bio-dots" class="dots">. . .</span></h6>
+                <a href="#" onclick="toggle()" id="read-more" class="more-bio">See full bio >></a>
+            </div>
+        </div>
+        <br>
         <h6 class="summary"><span class="actor-label">Date of birth:</span> {{ actor.birthday}}</h6>
         {% if actor.deathday %}
         <h6 class="summary"><span class="actor-label">Date of death:</span> {{ actor.deathday}}</h6>
@@ -22,6 +30,8 @@
         <h6 class="summary"><span class="actor-label">Born in:</span> {{ actor.place_of_birth}}</h6>
     </div>
 </div>
+
+
 
 <div class="carousel-container">
     <h5 class="list-title">Known For</h5>
@@ -55,4 +65,13 @@
     </div>
 {% endif %}
 
+{% endblock %}
+
+{% block popup %}
+    <div class="bio-scroll">
+        <h6 style="line-height: 1.6;">{{ actor.biography }}</h6>
+    </div>
+    <div class="close-bio">
+        <a href="#" onclick="toggle()" id="read-more" class="more-bio close-button">Close</a>
+    </div>
 {% endblock %}

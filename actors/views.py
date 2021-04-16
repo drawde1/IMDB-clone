@@ -37,12 +37,14 @@ def actor_detail(request, actor_id):
     actor_data = actor_request.json()
     movies_data = movies_request.json()
     images_data = images_request.json()
+    short_bio = actor_data['biography'][:500]
     movies = movies_data['cast']
     images = images_data['profiles']
     return render(request, 'actors/actor_detail.html',{
         'actor': actor_data,
         'movies': movies,
-        'images': images
+        'images': images,
+        'short_bio': short_bio
     })
 
 def actor_link(request, actor_name):
