@@ -13,14 +13,13 @@
         <img src="https://image.tmdb.org/t/p/w342{{ actor.profile_path }}">
     </div>
     <div class="actor-details">
+        <h6 class="summary">{{ actor.biography}}</h6>
         <h6 class="summary"><span class="actor-label">Date of birth:</span> {{ actor.birthday}}</h6>
         {% if actor.deathday %}
         <h6 class="summary"><span class="actor-label">Date of death:</span> {{ actor.deathday}}</h6>
         {% endif %}
 
         <h6 class="summary"><span class="actor-label">Born in:</span> {{ actor.place_of_birth}}</h6>
-        <h6 class="summary"><span class="actor-label"> Biography:</span> {{ actor.biography}}</h6>
-        <h6 class="summary"><span class="actor-label"> Popularity:</span> {{ actor.popularity}}</h6>
     </div>
 </div>
 

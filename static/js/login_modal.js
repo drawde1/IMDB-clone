@@ -1,13 +1,24 @@
-const loginDiv = document.getElementById('modal1')
-const signupDiv = document.getElementById('modal2')
+const loginDiv = document.getElementById('modalDiv')
 const loginButton = document.getElementById('loginButton')
-const signupButton = document.getElementById('signupButton')
+const closeBtn = document.getElementById('closeButton')
+// const signupDiv = document.getElementById('modal2')
+// const signupButton = document.getElementById('signupButton')
 
 
 loginButton.addEventListener('click', () => {
-    loginDiv.classList.toggle("modal")
+    loginDiv.style.display = 'block'
 })
 
-signupButton.addEventListener('click', () => {
-    signupDiv.classList.toggle("modal")
+closeBtn.addEventListener('click', () => {
+    loginDiv.style.display = 'none';
 })
+
+window.addEventListener('click', (e) => {
+    if (e.target === loginDiv){
+        loginDiv.style.display = 'none';
+    }
+})
+
+// signupButton.addEventListener('click', () => {
+//     signupDiv.classList.toggle("modal")
+// })

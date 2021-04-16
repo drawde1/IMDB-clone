@@ -424,18 +424,29 @@ h5.list-title {
 
 /* Auth pages */
 
-/* 
-auth-container {
+.modal-container {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
 
-	background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
-} */
+.closeBtn {
+    color: #ccc;
+    float: right;
+    font-size: 30px;
+}
+
+.closeBtn:hover,.closeBtn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 .form-title {
 	font-weight: bold;
@@ -503,6 +514,7 @@ button.ghost {
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
 			0 10px 10px rgba(0,0,0,0.22);
 	position: relative;
+    margin: 150px auto;
 	overflow: hidden;
     font-family: 'Montserrat', sans-serif;
 	width: 768px;
