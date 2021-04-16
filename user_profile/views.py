@@ -40,17 +40,14 @@ def edit_profile(request):
     })
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES)
-    if form.is_valid():
-        data = form.cleaned_data
-        user.displayname = data['displayname']
-        user.profile_pic = data['profile_pic']
-        user.bio = data['bio']
-        user.save()
-        return render(
-            request,
-            'profile.html',
-            {"user": user})
+        if form.is_valid():
+            data = form.cleaned_data
+            user.displayname = data['displayname']
+            user.profile_pic = data['profile_pic']
+            user.bio = data['bio']
+            user.save()
+            return redirect('/profile/')
     return render(
         request,
-        'editprofile.html',
+        'profile.html',
         {'form': form})

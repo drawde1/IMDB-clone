@@ -37,8 +37,7 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-            
-            {% if not movie in user.watch_list.all %}
+            {% if not in_watchlist %}
                 <div class="watchlist-container">
                     <a href="/watchlist/{{data.id}}/" class="watchlist">➕ Add to Watchlist</a>
                 </div>
@@ -47,11 +46,11 @@
                     <a href="/watchlist/remove/{{data.id}}/" class="watchlist">✔️ Added to Watchlist</a>
                 </div>
             {% endif %}
-
         
-        <div class="review-container">
-            <a href="{% url 'post_review' tmdb_id=data.id %}" class="review-text">✏️ <span style="margin-left: 5px;">Post a Review</span></a>
-        </div>
+        
+            <div class="review-container">
+                <a href="{% url 'post_review' tmdb_id=data.id %}" class="review-text">✏️ <span style="margin-left: 5px;">Post a Review</span></a>
+            </div>
         {% endif %}
     </div>
 </div>
@@ -80,13 +79,14 @@
     {% endif %}
 
     {% if actors %}
-    <h6 class="summary cast">Cast: 
-        {% for actor in actors %}
-            <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}}</a></span>
-        {% endfor %}
-    </h6>
+        <h6 class="summary cast">Cast: 
+            {% for actor in actors %}
+                <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}}</a></span>
+            {% endfor %}
+        </h6>
     {% endif %}
 </div>
+
 {% if recommendations %}
     <div class="carousel-container">
         <h5 class="list-title more">More Like This</h5>
@@ -106,16 +106,16 @@
 {% endif %}
 
 {% if videos %}
-<div class="carousel-container">
-    <h5 class="list-title related">Related Videos</h5>
-    <div class="related-video">
-        {% for video in videos %}
-            <div style="margin-left: 50px;">
-                <iframe width="250" height="250" src="http://www.youtube.com/embed/{{video.key}}" frameborder="0" allowfullscreen></iframe>
-            </div>
-        {% endfor %}
-    </div>  
-</div>
+    <div class="carousel-container">
+        <h5 class="list-title related">Related Videos</h5>
+        <div class="related-video">
+            {% for video in videos %}
+                <div style="margin-left: 50px;">
+                    <iframe width="250" height="250" src="http://www.youtube.com/embed/{{video.key}}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            {% endfor %}
+        </div>  
+    </div>
 {% endif %}
 
 <div class="about-container">
@@ -126,22 +126,29 @@
             <h6 class="about-indent"><span style="color: #777777;">Release Date:</span> {{ omdb.Released }}</h6>
         {% endif %}
 
-        <h6 class="about-indent"><span style="color: #777777;">Director/s:</span>  
-            {% for director in directors %}
-                <span><a href="{% url 'actor_link' actor_name=director %}">{{director}}</a></span>
-            {% endfor %}
-        </h6>
+        {% if directors%}
+            <h6 class="about-indent"><span style="color: #777777;">Director/s:</span>  
+                {% for director in directors %}
+                    <span><a href="{% url 'actor_link' actor_name=director %}">{{director}}</a></span>
+                {% endfor %}
+            </h6>
+        {% endif %}
 
+        {% if writers %}
         <h6 class="about-indent"><span style="color: #777777;">Writer/s:</span>  
             {% for writer in writers %}
                 <span><a href="{% url 'actor_link' actor_name=writer %}">{{writer}}</a></span>
             {% endfor %}
         </h6>
-        <h6 class="about-indent"><span style="color: #777777;">Cast:</span>  
-            {% for actor in actors %}
-                <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}},</a></span>
-            {% endfor %}
-        </h6>
+        {% endif %}
+
+        {% if actors %}
+            <h6 class="about-indent"><span style="color: #777777;">Cast:</span>  
+                {% for actor in actors %}
+                    <span><a href="{% url 'actor_link' actor_name=actor %}">{{actor}},</a></span>
+                {% endfor %}
+            </h6>
+        {% endif %}
 
         {% if data.genres %}
             <h6 class="about-indent"><span style="color: #777777;">Genre:</span>  

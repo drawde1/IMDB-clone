@@ -26,8 +26,18 @@
                 {% if user.is_authenticated %}
                     <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li>
                     <li><a href="{% url 'logout' %}" class="page-custom">Logout</a></li>
+                    {% if request.user.profile_pic %}
+                        <div class="navbar-image">
+                            <a href="/profile/{{user.id}}">
+                                <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
+                            </a>
+                        </div>
+                    {% else %}
+                        <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li>
+                    {% endif %}
+                    <li class="nav-logout"><a href="{% url 'logout' %}" class="page-custom">Log Out</a></li>
                 {% else %}
-                    <li><a id="modalButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign In</a></li>
+                    <li><a id="loginButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign In</a></li>
                     <li><a class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign Up</a></li>
                 {% endif %}
             </ul>

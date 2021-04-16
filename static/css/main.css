@@ -49,12 +49,8 @@ body {
 .carousel .carousel-item {
     position: absolute;
     top: -60px;
-    width: 250px;
+    width: 220px;
 }
-
-/* .carousel .carousel-item img {
-    width: 100%;
-} */
 
 .carousel .carousel-item h6 {
     margin: 0;
@@ -63,6 +59,15 @@ body {
     padding: 10px 5px;
     text-align: center;
     width: 200px;
+}
+
+.fa-plus {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    padding: 40px;
+    color:#fff;
+    font-size: 25px;
 }
 
 /* Navbar */
@@ -84,6 +89,23 @@ body {
 .page-custom {
     position: relative;
     right: 80px;
+}
+
+.navbar-image {
+    position: relative;
+    top: 50px;
+    right: 155px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid red;
+}
+
+.nav-logout {
+    position: relative;
+    top: 0px;
+    right: 0px;
 }
 
 /* Search Bar */
@@ -222,6 +244,7 @@ body {
     color: #e6ba41;
     font-weight: bold;
     margin-left: 40px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .rated {
@@ -404,12 +427,6 @@ body {
 
 /* Auth pages */
 
-
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
-
-* {
-	box-sizing: border-box;
-}
 /* 
 auth-container {
 
@@ -620,4 +637,35 @@ button.ghost {
 
 .auth-button:focus {
     background-color: transparent;
+}
+
+/* Profile Page */
+
+.profile-container {
+    height: 400px;
+}
+
+.image-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 60%;
+    border: 5px solid gray;
+    overflow: hidden;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+}
+
+/* Actor Detail Page */
+
+.actor-details {
+    margin-left: 40px;
+    background-color: #191919;
+    padding: 10px 30px;
+}
+
+.actor-label {
+    color: #777777;
 }
