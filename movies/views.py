@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from movies.forms import MovieSearchForm, AllSearchForm
 from IMDB_user.models import MyCustomUser
 from IMDB.settings import TMDB_KEY, OMDB_KEY
