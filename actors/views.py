@@ -24,12 +24,26 @@ def search_actor(request):
     return render(request, 'homepage.html', {'form': form})
 
 def actor_detail(request, actor_id):
+    details = {}
     actor_path = f'/person/{actor_id}'
+    movies_path = f'/person/{actor_id}/movie_credits'
+    images_path = f'/person/{actor_id}/images'
     actor_endpoint = f'{base_url}{actor_path}?api_key={TMDB_KEY}'
+    movies_endpoint = f'{base_url}{movies_path}?api_key={TMDB_KEY}'
+    images_endpoint = f'{base_url}{images_path}?api_key={TMDB_KEY}'
     actor_request = requests.get(actor_endpoint)
-    if actor_request.status_code in range(200, 299):
-        actor_data = actor_request.json()
-        return render(request, 'actors/actor_detail.html', {'actor': actor_data})
+    movies_request = requests.get(movies_endpoint)
+    images_request = requests.get(images_endpoint)
+    actor_data = actor_request.json()
+    movies_data = movies_request.json()
+    images_data = images_request.json()
+    movies = movies_data['cast']
+    images = images_data['profiles']
+    return render(request, 'actors/actor_detail.html',{
+        'actor': actor_data,
+        'movies': movies,
+        'images': images
+    })
 
 def actor_link(request, actor_name):
     id_path = f'/search/person'

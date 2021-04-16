@@ -36,13 +36,14 @@
                     <li class="nav-logout"><a href="{% url 'logout' %}" class="page-custom">Log Out</a></li>
                 {% else %}
                     <li><a id="loginButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign In</a></li>
-                    <li><a class="waves-effect waves-light btn modal-trigger auth-button" href="#modal1">Sign Up</a></li>
+                    <li><a id="signupButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal2">Sign Up</a></li>
                 {% endif %}
             </ul>
         </div>
     </nav>
 </div>
 {% include 'login.html' %}
+{% include 'signup.html' %}
 {% endblock %}
      
 

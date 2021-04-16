@@ -265,7 +265,6 @@ h5.list-title {
     padding: 14px 42px;
     background-color: #191919;
     width: 1125px;
-    height: 180px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -357,7 +356,6 @@ h5.list-title {
     left: 65px;
     background-color: #191919;
     width: 1125px;
-    height: 300px;
     font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 30px;
 }
@@ -667,4 +665,12 @@ button.ghost {
 
 .actor-label {
     color: #777777;
+}
+
+.actor-character {
+    position: relative;
+    top: -15px;
+    left: 10px;
+    color: #777777;
+    font-size: 16px;
 }

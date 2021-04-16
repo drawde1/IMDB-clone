@@ -1,9 +1,9 @@
 <div class="auth-container modal" id="modal1">
     <div class="form-container sign-up-container">
-        <form action="/signup/" class="form-control">
+        <form action="/signup/" method="post" class="form-control">
             {% csrf_token %}
             <h1 class="form-title">Create Account</h1>
-            <input type="text" name="name" placeholder="Name" />
+            <input type="text" name="username" placeholder="Username" />
             <input type="text" name="displayname" placeholder="Displayname" />
             <input type="password" name="password" placeholder="Password" />
             <button class="form-button">Sign Up</button>
@@ -33,15 +33,3 @@
         </div>
     </div>
 </div>
-
-      
-        
-<!-- <script>
-    const loginButton = document.getElementById("loginButton")
-    const search_form = document.getElementById("search_form")
-    const search_input = document.getElementById("search_input")
-
-    loginButton.addEventListener("click", () => {
-        search_form.action = "/login/"
-    })
-</script> -->

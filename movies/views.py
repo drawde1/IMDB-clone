@@ -18,24 +18,32 @@ def homepage(request):
     popular_path = '/movie/popular'
     top_path = '/movie/top_rated'
     upcoming_path = '/movie/upcoming'
+    actors_path = '/person/popular'
     latest_endpoint = f'{tmdb_base_url}{latest_path}?api_key={TMDB_KEY}'
     popular_endpoint = f'{tmdb_base_url}{popular_path}?api_key={TMDB_KEY}'
     top_endpoint = f'{tmdb_base_url}{top_path}?api_key={TMDB_KEY}'
     upcoming_endpoint = f'{tmdb_base_url}{upcoming_path}?api_key={TMDB_KEY}'
+    actors_endpoint = f'{tmdb_base_url}{actors_path}?api_key={TMDB_KEY}'
     latest_request = requests.get(latest_endpoint)
     popular_request = requests.get(popular_endpoint)
     top_request = requests.get(top_endpoint)
     upcoming_request = requests.get(upcoming_endpoint)
+    actors_request = requests.get(actors_endpoint)
     latest_data = latest_request.json()
     popular_data = popular_request.json()
     top_data = top_request.json()
     upcoming_data = upcoming_request.json()
+    actors_data = actors_request.json()
+    actors = actors_data['results']
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
+        if current_user.watch_list.all():
+            watchlist = current_user.watch_list.all()
+            details.update({'watchlist': watchlist})
         if current_user.favorites_list.all():
             favorites = current_user.favorites_list.all()
             fave_movie = random.choice(favorites)
-            movie_id = fave_movie.id
+            movie_id = fave_movie.tmdb_id
             recommendations_path = f'/movie/{movie_id}/recommendations'
             recommendations_endpoint = f'{tmdb_base_url}{recommendations_path}?api_key={TMDB_KEY}'
             recommendations_request = requests.get(recommendations_endpoint)
@@ -50,7 +58,8 @@ def homepage(request):
         'latest': latest_data,
         'popular': popular_data,
         'top': top_data,
-        'upcoming': upcoming_data
+        'upcoming': upcoming_data,
+        'actors': actors
     })
     return render(request, 'homepage.html', details)
 
@@ -154,9 +163,6 @@ def movie_detail(request, movie_id):
         'directors': directors,
         'writers': writers
     })
-   
-    rotten_tomatoes = omdb_data['Ratings'][0]
-    video = video_data['results'][0]
     poster_url = f"https://image.tmdb.org/t/p/w342{movie_data['poster_path']}"
     if not Movie.objects.filter(tmdb_id=movie_id).exists():
         Movie.objects.create(

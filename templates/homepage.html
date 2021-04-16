@@ -7,6 +7,26 @@
 
 {% block content %}
 
+{% if watchlist %}
+    <div class="carousel-container">
+        <h5 class="list-title">Watch List</h5>
+        <div class="carousel">
+            <ul>
+                {% for movie in watchlist %}
+                    {% if movie.poster_url %}
+                        <div class="carousel-item">
+                            <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                                <img src="{{movie.poster_url}}" alt="{{movie.title}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.title }}</a></h6>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
 {% if favorites %}
     <div class="carousel-container">
         <h5 class="list-title">Watch Again</h5>
@@ -110,5 +130,20 @@
     </div>
 </div>
 
+<div class="carousel-container">
+    <h5 class="list-title">Trending Actors</h5>
+    <div class="carousel">
+        <ul>
+            {% for actor in actors %}
+                <div class="carousel-item">
+                    <a href="{% url 'actor_detail' actor_id=actor.id %}">
+                        <img src="https://image.tmdb.org/t/p/w154{{actor.profile_path}}" alt="{{actor.name}}" width=220>
+                    </a>
+                    <h6><a href="{% url 'actor_detail' actor_id=actor.id %}">{{ actor.name }}</a></h6>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
 {% endblock %}
-    
