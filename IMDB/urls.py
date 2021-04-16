@@ -21,7 +21,7 @@ from django.urls import path, include
 from movies.views import homepage, search_all
 from reviews.views import ReviewView
 from IMDB_user.views import add_watchlist, remove_watchlist
-from user_profile.views import profile_view, edit_profile
+from user_profile.views import profile_view, displayname_profile, bio_profile, photo_profile
 from IMDB_user.views import add_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
@@ -40,7 +40,9 @@ urlpatterns = [
     path('watchlist/remove/<str:tmdb_id>/', remove_watchlist, name='remove_watchlist'),
     path('profile/', profile_view, name='profile'),
     path('vote/<str:review_id>/<int:value>/', helpful_unhelpful),
-    path('edit-profile/', edit_profile),
+    path('profile/edit/displayname/', displayname_profile),
+    path('profile/edit/bio/', bio_profile),
+    path('profile/edit/photo/', photo_profile),
     path('admin/', admin.site.urls)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

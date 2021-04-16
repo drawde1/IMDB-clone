@@ -30,20 +30,19 @@
     </div>
   
     <div>
-        <form action="/edit-profile/" method="post">
+        <form action="/profile/edit/displayname/" method="post">
             {% csrf_token %}
             <input type="text" name="displayname" placeholder="Displayname" class="edit-input" style="color:white" />
             <button>Edit Displayname</button>
         </form>   
-        <form action="/edit-profile/" method="post">
+        <form action="/profile/edit/bio/" method="post">
             {% csrf_token %}
             <input type="text" name="bio" placeholder="Say something about yourself" class="edit-input" />
             <button>Edit Bio</button>
         </form>   
         <br>   
-        <form action="/edit-profile/" method="post">
+        <form action="/profile/edit/photo/" method="post">
             {% csrf_token %}
-            <!-- <input type="text" name="displayname" value={{user.displayname}} placeholder="Displayname" class="edit-input" style="color:#191919" /> -->
             <input type="file" name="profile_pic" />
             <button type="submit">Change Profile Photo</button>
         </form>     

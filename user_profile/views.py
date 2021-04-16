@@ -48,30 +48,46 @@ def profile_view(request):
         'profile.html',
         context)
 
-
-# def edit_profile(request):
-#     user = request.user
-#     if request.method == 'POST':
-#         form = PhotoForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             data = form.cleaned_data
-#             user.displayname = user.displayname
-#             user.profile_pic = data['profile_pic']
-#             user.save()
-#             return redirect('/profile/')
-#     return render(
-#         request,
-#         'profile.html',
-#         {'form': form})
-
-def edit_profile(request):
+def displayname_profile(request):
     user = request.user
+    form = DisplaynameForm()
+    if request.method == 'POST':
+        form = DisplaynameForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            user.displayname = data['displayname']
+            user.save()
+            return redirect('/profile/')
+    return render(
+        request,
+        'profile.html',
+        {'form': form})
+
+def bio_profile(request):
+    user = request.user
+    form = BioForm()
     if request.method == 'POST':
         form = BioForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
             user.displayname = user.displayname
             user.bio = data['bio']
+            user.save()
+            return redirect('/profile/')
+    return render(
+        request,
+        'profile.html',
+        {'form': form})
+
+def photo_profile(request):
+    user = request.user
+    form = PhotoForm()
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            user.displayname = user.displayname
+            user.profile_pic = data['profile_pic']
             user.save()
             return redirect('/profile/')
     return render(
