@@ -651,18 +651,17 @@ button.ghost {
 .profile-container {
     display: flex;
     justify-content: space-between;
-    margin-left: 50px;
-    padding: 14px 42px;
+    margin: 40px auto;
+    padding: 40px;
     background-color: #191919;
-    width: 1125px;
+    width: 90%;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .image-container {
-    width: 50px;
-    height: 50px;
+    width: 150px;
+    height: 150px;
     border-radius: 10px;
-    border: 5px solid gray;
     overflow: hidden;
 }
 
@@ -671,9 +670,21 @@ button.ghost {
     height: 100%;
 }
 
-.edit-input {
-    color: white;
+.profile-right {
+    display: flex;
+    flex-direction: column;
+    margin-right: 100px;
 }
+
+.edit-link {
+    font-size: 15px;
+    font-style: italic;
+}
+
+.display-inline {
+    display: inline-block;
+}
+
 
 /* Actor Detail Page */
 
@@ -763,4 +774,17 @@ button.ghost {
 
 .dots.active {
     display: none;
+}
+
+textarea:focus, input:focus {
+    color: #e6ba41;
+}
+
+textarea, input{
+color: white;
+}
+
+textarea{
+width: 400px;
+height: 400px;
 }
