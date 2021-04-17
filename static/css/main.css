@@ -30,6 +30,7 @@ body {
     color: #e6ba41;
     font-weight: bold;
     margin-left: 40px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .list-title:hover {
@@ -93,19 +94,18 @@ body {
 
 .navbar-image {
     position: relative;
-    top: 50px;
+    top: 10px;
     right: 155px;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
     overflow: hidden;
-    border: 2px solid red;
 }
 
 .nav-logout {
     position: relative;
-    top: 0px;
-    right: 0px;
+    top: -45px;
+    right: 83px;
 }
 
 /* Search Bar */
@@ -363,6 +363,12 @@ body {
 
 .about-container a {
     color: #fff;
+}
+
+.about-title {
+    color: #e6ba41;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .about-container a:hover {
@@ -733,7 +739,7 @@ button.ghost {
     user-select: none;
 }
 
-#popup {
+#popup, #display, #bio, #click {
     position: fixed;
     top: 40%;
     left: 50%;
@@ -750,6 +756,13 @@ button.ghost {
     transition: 0.5s;
 }
 
+#popup.active, #display.active, #bio.active, #click.active {
+    top: 50%;
+    visibility: visible;
+    opacity: 1;
+    transition: 0.5s;
+}
+
 .bio-scroll {
     max-height: 500px;
     overflow: scroll;
@@ -759,13 +772,6 @@ button.ghost {
 .close-bio {
     max-height: 100px;
     margin-bottom: 20px;
-}
-
-#popup.active {
-    top: 50%;
-    visibility: visible;
-    opacity: 1;
-    transition: 0.5s;
 }
 
 .dots {

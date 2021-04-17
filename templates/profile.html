@@ -15,33 +15,19 @@
                     <img class="profile-image" src ='{{user.profile_pic.url}}' />
                 </div>
                 {% endif %}
-            <span class="edit-link"><a href="#" id='profile-pic-b'>edit</a></span>
-            <div style="display: inline-block">
-                <form action="" method="post" id ='profile-pic-form' class = 'hidden' enctype="multipart/form-data" >
-                    {% csrf_token %}
-                    {{ pic_form.as_p }}
-                    <input type="submit" name='save_profile_pic'  value="Submit">
-                </form> 
-            </div>
+            <span class="edit-link"><a href="#" onclick="editPhoto()">edit</a></span>
+            
             <br>
             <h5 style="display: inline-block">{{user.displayname}}</h5>
-            <a href="#" onclick="edit()">edit</a>
+            <a href="#" onclick="editDisplayname()">edit</a>
             
             <br>
             <div style="display: inline-block">
                 {% if user.bio %}
-                    <h5>About Me: <span class="edit-link"><a href="#" id='bio-b'>edit</a></span></h5>
-                    <h6 id ='bio'>{{request.user.bio}}</h6>
+                    <h5>About Me: <span class="edit-link"><a href="#" onclick="editBio()">edit</a></span></h5>
+                    <h6>{{request.user.bio}}</h6>
                 {% endif %}
-            </div>
-            <div style="display: inline-block">
-                <form action="" method="post" id ='bio-form' class='hidden' >
-                    {% csrf_token %}
-                    {{ bio_form.as_p }}
-                    <input type="submit" name='save_bio'  value="Submit">
-                </form>
-            </div>
-            
+            </div> 
         </div>
 
         <div class="profile-right">
@@ -55,12 +41,7 @@
         </div>
     </div>
 
-    <style>
-    .hidden{
-        display: none;
-    }
-
-    </style>
+    
     <div class="carousel-container">
     <h5 class="list-title">Watch List</h5>
     <div class="carousel">
@@ -158,10 +139,30 @@
 
 {% block popup %}
     <div class="bio-scroll">
-        <form action="" method="post" id ='displayname-form' >
+        <form action="" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {{ pic_form.as_p }}
+            <input type="submit" name='save_profile_pic'  value="Submit">
+        </form> 
+    </div>
+{% endblock %}
+
+{% block display %}
+    <div class="bio-scroll">
+        <form action="" method="post">
             {% csrf_token %}
             {{ displayname_form.as_p }}
-            <input type="submit" name='save_displayname'  value="Submit">
+            <input type="submit" name='save_displayname' value="Submit">
         </form>   
+    </div>
+{% endblock %}
+
+{% block bio %}
+    <div class="bio-scroll">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ bio_form.as_p }}
+            <input type="submit" name='save_bio' value="Submit">
+        </form>
     </div>
 {% endblock %}

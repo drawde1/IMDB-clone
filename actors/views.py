@@ -63,7 +63,7 @@ def actor_link(request, actor_name):
             actor_request = requests.get(actor_endpoint)
             if actor_request.status_code in range(200, 299):
                 actor_data = actor_request.json()
-            return render(request, 'actors/actor_detail.html', args=[actor_id])
+            return HttpResponseRedirect(reverse("actor_detail", args=[actor_id]))
 
 
     

@@ -78,8 +78,6 @@
         <h6 class="summary">{{ data.overview }}</h6>
     {% endif %}
 
-    <h1>Actors:{{actors}}</h1>
-
     {% if actors %}
         <h6 class="summary cast">Cast: 
             {% for actor in actors %}
@@ -122,7 +120,7 @@
 
 <div class="about-container">
     <div class="about-text">
-        <h5 class="about-indent" style="color: #e6ba41; font-weight: bold;">About {{data.title}}</h5>
+        <h5 class="about-indent about-title">About {{data.title}}</h5>
 
         {% if data.release_date %}
             <h6 class="about-indent"><span style="color: #777777;">Release Date:</span> {{ data.release_date }}</h6>
