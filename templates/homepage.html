@@ -13,14 +13,12 @@
         <div class="carousel">
             <ul>
                 {% for movie in watchlist %}
-                    {% if movie.poster_url %}
-                        <div class="carousel-item">
-                            <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
-                                <img src="{{movie.poster_url}}" alt="{{movie.title}}" width=220>
-                            </a>
-                            <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.title }}</a></h6>
-                        </div>
-                    {% endif %}
+                    <div class="carousel-item">
+                        <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                            <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
+                    </div>
                 {% endfor %}
             </ul>
         </div>
@@ -52,12 +50,12 @@
         <h5 class="list-title">Because You Watched {{ fave_movie.name }}</h5>
         <div class="carousel">
             <ul>
-                {% for recommendation in recommendations.results %}
+                {% for result in recommendations.results %}
                     <div class="carousel-item">
-                        <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
-                            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                        <a href="{% url 'movie_detail' movie_id=result.id %}">
+                            <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                         </a>
-                        <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                        <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
                     </div>
                 {% endfor %}
             </ul>
@@ -75,7 +73,7 @@
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
-                    <!-- <a href="{% url 'add_favorites' movie_id=result.id %}"><i class="fas fa-plus"></i></a> -->
+                    <!-- <a href="{% url 'add_favorites' movie_id=result.id %}" id="icon" class="add"><i class="fas fa-plus"></i></a> -->
                 </div>
             {% endfor %}
         </ul>

@@ -50,7 +50,34 @@ body {
 .carousel .carousel-item {
     position: absolute;
     top: -60px;
-    width: 220px;
+    width: 250px;
+}
+
+.carousel .carousel-item.active::after {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: inline-block;
+    z-index: 2;
+}
+
+.carousel .carousel-item.active:hover::after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f004 \f00c \f044";
+    font-weight: 400; 
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    display: inline-block;
+    font-size: 30px;
+    text-rendering: auto;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
 }
 
 .carousel .carousel-item h6 {
@@ -655,12 +682,12 @@ button.ghost {
 /* Profile Page */
 
 .profile-container {
-    display: flex;
-    justify-content: space-between;
+    position: relative;
     margin: 40px auto;
     padding: 40px;
     background-color: #191919;
     width: 90%;
+    min-height: 270px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -676,12 +703,6 @@ button.ghost {
     height: 100%;
 }
 
-.profile-right {
-    display: flex;
-    flex-direction: column;
-    margin-right: 100px;
-}
-
 .edit-link {
     font-size: 15px;
     font-style: italic;
@@ -691,6 +712,85 @@ button.ghost {
     display: inline-block;
 }
 
+.close-button {
+    position: absolute;
+    bottom: 49px;
+    left: 150px;
+    color: #039be5;
+}
+
+#photo-edit {
+    position: absolute;
+    bottom: 40px;
+    left: 140px;
+    color: #039be5;
+}
+
+#display-edit {
+    position: absolute;
+    bottom: 40px;
+    left: 140px;
+    color: #039be5;
+}
+
+#bio-edit {
+    position: absolute;
+    bottom: 40px;
+    left: 140px;
+    color: #039be5;
+}
+
+.edit-modal {
+    color: white;
+}
+
+.photo-form label {
+    display: none;
+}
+
+.bio-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bio-form textarea {
+    width: 400px;
+    height: 300px;
+    overflow: scroll;
+    padding: 20px;
+    color: white;
+}
+
+.edit-modal a {
+    color: white;
+}
+
+.submit {
+    border: none;
+    width: 82px;
+    height: 32px;
+}
+
+.cols {
+    display: inline-block;
+}
+
+.photo-col {
+    position: absolute;
+    left: 60px;
+}
+
+.info-col {
+    position: absolute;
+    top: 50px;
+    left: 345px;
+}
+
+.review-col {
+    position: absolute;
+    top: 50px;
+    right: 230px;
+}
 
 /* Actor Detail Page */
 
@@ -731,6 +831,7 @@ button.ghost {
     text-decoration: none;
     border-radius: 5px;
     background: #111;
+    color: #039be5;
 }
 
 .container#main-container.active {
@@ -739,7 +840,13 @@ button.ghost {
     user-select: none;
 }
 
-#popup, #display, #bio, #click {
+#main-container.active {
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+}
+
+#popup, #display, #bio {
     position: fixed;
     top: 40%;
     left: 50%;
@@ -756,7 +863,7 @@ button.ghost {
     transition: 0.5s;
 }
 
-#popup.active, #display.active, #bio.active, #click.active {
+#popup.active, #display.active, #bio.active {
     top: 50%;
     visibility: visible;
     opacity: 1;
