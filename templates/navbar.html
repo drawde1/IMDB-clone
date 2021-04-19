@@ -24,16 +24,27 @@
             </div>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
-                    <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li>
+                    <!-- <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li> -->
                     <li><a href="{% url 'logout' %}" class="page-custom">Logout</a></li>
+                    {% if request.user.profile_pic %}
+                        <div class="navbar-image">
+                            <a href="/profile/{{user.id}}">
+                                <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
+                            </a>
+                        </div>
+                    {% else %}
+                        <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li>
+                    {% endif %}
                 {% else %}
-                    <li><a href="{% url 'login' %}" class="page-custom">Login</a></li>
-                    <li><a href="{% url 'signup' %}" class="page-custom">Signup</a></li>
+                    <li id="loginButton" class="waves-effect waves-light btn modal-trigger auth-button login-custom">Sign In / Sign Up</li>
+                    <!-- <li><a id="signupButton" class="waves-effect waves-light btn modal-trigger auth-button" href="#modal2">Sign Up</a></li> -->
                 {% endif %}
             </ul>
         </div>
     </nav>
 </div>
+{% include 'login.html' %}
+{% include 'signup.html' %}
 {% endblock %}
      
 

@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 class MyCustomUser(AbstractUser):
     karma_score = models.IntegerField(default=0)
-    displayname = models.CharField(max_length=30)
+    displayname = models.CharField(max_length=30, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     profile_pic = models.ImageField(null=True, blank=True)
     watch_list = models.ManyToManyField(
