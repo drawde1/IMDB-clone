@@ -50,6 +50,23 @@
             <ul>
                 {% for movie in user.watch_list.all %}
                     <div class="carousel-item">
+                        {% if request.user.is_authenticated %}
+                            {% if movie in request.user.watch_list.all %}
+                                <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                            {% endif %}
+                            {% if movie in user.favorites_list.all %}
+                                <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                            {% endif %}
+                            {% if movie in review.movie.all %}
+                                <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                            {% else %}
+                                <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                            {% endif %}
+                        {% endif %}
                         <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
                             <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
                         </a>
@@ -66,10 +83,29 @@
             <ul>
                 {% for review in reviews %}
                     <div class="carousel-item">
-                        <a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">
-                            <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
-                        </a>
-                        <h6><a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">{{review.movie.name}}</a></h6>
+                        {% if request.user.is_authenticated %}
+                            {% if review.movie in request.user.watch_list.all %}
+                                <a href="{% url 'remove_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                            {% endif %}
+                            {% if review.movie in user.favorites_list.all %}
+                                <a href="{% url 'remove_favorites' movie_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_favorites' movie_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                            {% endif %}
+                            {% if review.movie in review.movie.all %}
+                                <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                            {% else %}
+                                <a href="{% url 'post_review' tmdb_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                            {% endif %}
+                        {% endif %}
+                        <div class="review-overlay" data-after-content="{{review.creation_time}}   {{review.text}}">
+                            <a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">
+                                <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">{{review.movie.name}}</a></h6>
+                        </div>
                     </div>
                 {% endfor %}
             </ul>
@@ -83,6 +119,23 @@
                 {% for movie in user.favorites_list.all %}
                     {% if movie.poster_url %}
                         <div class="carousel-item">
+                            {% if request.user.is_authenticated %}
+                                {% if movie in request.user.watch_list.all %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                                {% endif %}
+                                {% if movie in user.favorites_list.all %}
+                                    <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                                {% endif %}
+                                {% if movie in review.movie.all %}
+                                    <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                                {% else %}
+                                    <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                                {% endif %}
+                            {% endif %}
                             <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
                                 <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
                             </a>
@@ -101,6 +154,23 @@
                 <ul>
                     {% for recommendation in recomendations %}
                         <div class="carousel-item">
+                            {% if request.user.is_authenticated %}
+                                {% if recommendation in request.user.watch_list.all %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=recommendation.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_watchlist' tmdb_id=recommendation.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                                {% endif %}
+                                {% if recommendation in user.favorites_list.all %}
+                                    <a href="{% url 'remove_favorites' movie_id=recommendation.id %}" class="icon"><i class="far fa-eye"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_favorites' movie_id=recommendation.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                                {% endif %}
+                                {% if recommendation in review.movie.all %}
+                                    <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                                {% else %}
+                                    <a href="{% url 'post_review' tmdb_id=recommendation.id %}" class="icon"><i class="far fa-edit"></i></a>
+                                {% endif %}
+                            {% endif %}
                             <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
                                 <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
                             </a>
@@ -146,24 +216,3 @@
         </form>
     </div>
 {% endblock %}
-
-
-<!-- <div class="carousel-container">
-    <h5 class="list-title">You've Left {{reviews.count}} Review(s) so Far</h5>
-    <div class="carousel">
-        <ul>
-            {% for review in reviews %}
-                <div class="carousel-item">
-                    <div class="card-body">
-                    <a href=/movies/{{review.movie.tmdb_id}}/ ><img src="{{review.movie.poster_url}}" width="190" alt="..."></a>
-                    <a href=/reviews/{{review.movie.tmdb_id}}/  class="btn btn-sm btn-black">
-                    <h5 class="card-title">{{review.movie.name}}</h5>
-                    <p class="card-text">{{review.text}}</p>
-                    <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
-                    </a>
-                    </div>
-                </div>
-            {% endfor %}
-        </ul>
-    </div>
-</div> -->

@@ -14,6 +14,23 @@
             <ul>
                 {% for movie in watchlist %}
                     <div class="carousel-item">
+                        {% if request.user.is_authenticated %}
+                            {% if movie in request.user.watch_list.all %}
+                                <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                            {% endif %}
+                            {% if movie in user.favorites_list.all %}
+                                <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                            {% endif %}
+                            {% if movie in review.movie.all %}
+                                <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                            {% else %}
+                                <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                            {% endif %}
+                        {% endif %}
                         <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
                             <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
                         </a>
@@ -33,6 +50,23 @@
                 {% for favorite in favorites %}
                     {% if favorite.poster_url %}
                         <div class="carousel-item">
+                            {% if request.user.is_authenticated %}
+                                {% if favorite in request.user.watch_list.all %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=favorite.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_watchlist' tmdb_id=favorite.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                                {% endif %}
+                                {% if favorite in user.favorites_list.all %}
+                                    <a href="{% url 'remove_favorites' movie_id=favorite.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_favorites' movie_id=favorite.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                                {% endif %}
+                                {% if favorite in review.movie.all %}
+                                    <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                                {% else %}
+                                    <a href="{% url 'post_review' tmdb_id=favorite.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                                {% endif %}
+                            {% endif %}
                             <a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">
                                 <img src="{{favorite.poster_url}}" alt="{{favorite.name}}" width=220>
                             </a>
@@ -52,6 +86,23 @@
             <ul>
                 {% for result in recommendations.results %}
                     <div class="carousel-item">
+                        {% if request.user.is_authenticated %}
+                            {% if result in request.user.watch_list.all %}
+                                <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                            {% endif %}
+                            {% if result in user.favorites_list.all %}
+                                <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                            {% endif %}
+                            {% if result in review.movie.all %}
+                                <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                            {% else %}
+                                <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon"><i class="far fa-edit"></i></a>
+                            {% endif %}
+                        {% endif %}
                         <a href="{% url 'movie_detail' movie_id=result.id %}">
                             <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                         </a>
@@ -69,11 +120,27 @@
         <ul>
             {% for result in popular.results %}
                 <div class="carousel-item">
+                    {% if request.user.is_authenticated %}
+                        {% if result in request.user.watch_list.all %}
+                            <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                        {% endif %}
+                        {% if result in user.favorites_list.all %}
+                            <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                        {% endif %}
+                        {% if result in review.movie.all %}
+                            <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                        {% else %}
+                            <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon"><i class="far fa-edit"></i></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
-                    <!-- <a href="{% url 'add_favorites' movie_id=result.id %}" id="icon" class="add"><i class="fas fa-plus"></i></a> -->
                 </div>
             {% endfor %}
         </ul>
@@ -86,7 +153,24 @@
         <ul>
             {% for result in latest.results %}
                 <div class="carousel-item">
-                    <a href="{% url 'movie_detail' movie_id=result.id%}">
+                    {% if request.user.is_authenticated %}
+                        {% if result in request.user.watch_list.all %}
+                            <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                        {% endif %}
+                        {% if result in user.favorites_list.all %}
+                            <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                        {% endif %}
+                        {% if result in review.movie.all %}
+                            <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                        {% else %}
+                            <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon"><i class="far fa-edit"></i></a>
+                        {% endif %}
+                    {% endif %}
+                    <a href="{% url 'movie_detail' movie_id=result.id %}">
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></h6>
@@ -102,6 +186,23 @@
         <ul>
             {% for result in top.results %}
                 <div class="carousel-item">
+                    {% if request.user.is_authenticated %}
+                        {% if result in request.user.watch_list.all %}
+                            <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                        {% endif %}
+                        {% if result in user.favorites_list.all %}
+                            <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                        {% endif %}
+                        {% if result in review.movie.all %}
+                            <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                        {% else %}
+                            <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon"><i class="far fa-edit"></i></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>
@@ -118,6 +219,23 @@
         <ul>
             {% for result in upcoming.results %}
                 <div class="carousel-item">
+                    {% if request.user.is_authenticated %}
+                        {% if result in request.user.watch_list.all %}
+                            <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                        {% endif %}
+                        {% if result in user.favorites_list.all %}
+                            <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                        {% endif %}
+                        {% if result in review.movie.all %}
+                            <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                        {% else %}
+                            <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon"><i class="far fa-edit"></i></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>

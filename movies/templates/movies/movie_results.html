@@ -11,6 +11,23 @@
         {% for result in results %} 
             {% if result.poster_path %}
                 <div class="carousel-item">
+                    {% if request.user.is_authenticated %}
+                        {% if result in request.user.watch_list.all %}
+                            <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                        {% endif %}
+                        {% if result in user.favorites_list.all %}
+                            <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                        {% endif %}
+                        {% if result in review.movie.all %}
+                            <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                        {% else %}
+                            <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon"><i class="far fa-edit"></i></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
                     </a>

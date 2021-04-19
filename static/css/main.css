@@ -53,16 +53,16 @@ body {
     width: 250px;
 }
 
-.carousel .carousel-item.active::after {
+/* .carousel .carousel-item.active::after {
     content: "";
     position: absolute;
     top: 30px;
     left: 40px;
     display: inline-block;
     z-index: 2;
-}
+} */
 
-.carousel .carousel-item.active:hover::after {
+/* .carousel .carousel-item.active:hover::after {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     content: "\f004 \f00c \f044";
@@ -78,6 +78,19 @@ body {
     font-variant: normal;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
+} */
+
+/* .carousel-overlay::after {
+    content: "";
+    position: relative;
+} */
+
+.carousel-item .icon {
+    visibility: hidden;
+}
+
+.carousel-item:hover .icon {
+    visibility: visible;
 }
 
 .carousel .carousel-item h6 {
@@ -89,14 +102,30 @@ body {
     width: 200px;
 }
 
-.fa-plus {
+.fa-plus-square, .fa-check-square {
     position: absolute;
-    top: -10px;
-    left: 20px;
-    padding: 40px;
+    top: 25px;
+    left: 35px;
     color:#fff;
-    font-size: 25px;
+    font-size: 37px;
 }
+
+.fa-eye-slash, .fa-eye {
+    position: absolute;
+    top: 25px;
+    left: 89px;
+    color:#fff;
+    font-size: 35px;
+}
+
+.fa-edit, .fa-list-alt {
+    position: absolute;
+    top: 22px;
+    left: 153px;
+    color:#fff;
+    font-size: 35px;
+}
+
 
 /* Navbar */
 
@@ -790,6 +819,29 @@ button.ghost {
     position: absolute;
     top: 50px;
     right: 230px;
+}
+
+.review-overlay::after {
+    content: "";
+    position: relative;
+    top: 165px;
+    left: 0;
+    height: 165px;
+    width: 220px;
+    background-color: #191919;
+    color: white;
+    padding: 30px;
+    opacity: 0.8;
+}
+
+.review-overlay:hover::after {
+    content: attr(data-after-content);
+    position: absolute;
+}
+
+.review-date {
+    font-size: 12px;
+    font-style: italic;
 }
 
 /* Actor Detail Page */
