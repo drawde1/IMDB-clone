@@ -5,41 +5,7 @@
 {% endblock %}
 
 {% block content %}
-{% if can_edit %} 
-<!-- <form action="" method="post"  id ='displayname-form' class = "form-control">
-  {% csrf_token %}
-  {{ displayname_form.as_p }}
-  <input type="submit" name= save_displayname  value="Submit">
-</form> -->
-<!-- <button id='displayname-b'>Add/Edit Displayname</button> -->
-{% endif %}
 
-<!-- {% if user.profile_pic %}
-  <img src ='{{user.profile_pic.url}}' width =200/>
-{% endif %} -->
-
-<!-- <form action="" method="post"  id ='profile-pic-form' class = "form-control" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ pic_form.as_p }}
-  <input type="submit" name='save_profile_pic'  value="Submit">
-</form> -->
-<!-- <button id='profile-pic-b'> Add/Change Photo</button> -->
-
-<!-- <form action="" method="post"  id ='bio-form' class = "form-control">
-  {% csrf_token %}
-  {{ bio_form.as_p }}
-  <input type="submit" name='save_bio'  value="Submit">
-</form> -->
-
-<!-- {% if user.bio %}
-<p id='bio'>{{user.bio}}</p>
-{% endif%} -->
-{% if can_edit%}
-<!-- <button id='bio-b'> Add/Edit Bio</button> -->
-
-{% endif %}
-<!-- <p>total reviews: {{reviews.count}}</p>
-<h2>karma: {{user.karma_score}}{{user.emoji}}</h2> -->
 
 <div class="profile-container" id='about'>
   <div>

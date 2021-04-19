@@ -43,9 +43,9 @@
 {% for review in reviews_by_time %}
   <div class="card black"  id={{review.id}}>
         <div class="card-content white-text">
-          <!-- {% if review.user.profile_pic %} -->
+          {% if review.user.profile_pic %}
         <img width = 20% src={{review.user.profile_pic.url}}/>
-        <!-- {% endif %} -->
+        {% endif %}
           <span class="card-title yellow-font">{{review.user}}{{review.user.emoji}}</span>
           <p>{{review.text}}</p>
           <div class='right-text'>
@@ -82,8 +82,7 @@
 </style>
 <div class = 'scroll hidden' id = 'vote-list'>
   {% for review in reviews_by_votes %}
-    <!-- <div class="row">
-    <div class="col s12 m6"> -->
+
       <div class="card black"  id={{review.id}}>
         <div class="card-content white-text">
         {% if review.user.profile_pic %}
@@ -114,8 +113,6 @@
         
         </div>
       </div>
-    <!-- </div>
-  </div> -->
   {% endfor %}
 
   </div>
