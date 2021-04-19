@@ -937,6 +937,7 @@ button.ghost {
     height: 0%;
     width: 220px;
     background-color: #191919;
+    overflow: scroll;
     visibility: hidden;
     color: #191919;
     padding: 30px;

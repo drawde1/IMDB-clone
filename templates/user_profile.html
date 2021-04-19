@@ -77,8 +77,13 @@
         </div>
     </div>
 
+    
     <div class="carousel-container">
-        <h5 class="list-title">You Posted {{reviews.count}} Review(s)</h5>
+        {% if reviews.count == 1 %}
+            <h5 class="list-title">You Posted {{reviews.count}} Review</h5>
+        {% else %}
+            <h5 class="list-title">You Posted {{reviews.count}} Reviews</h5>
+        {% endif %}
         <div class="carousel">
             <ul>
                 {% for review in reviews %}
@@ -111,6 +116,7 @@
             </ul>
         </div>
     </div>
+    
 
     <div class="carousel-container">
         <h5 class="list-title">Watch Again</h5>
