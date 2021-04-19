@@ -3,9 +3,10 @@ from reviews.forms import ReviewForm
 from reviews.models import Review
 from movies.models import Movie
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class ReviewView(View):
+class ReviewView(LoginRequiredMixin, View):
     def get(self, request, tmdb_id):
         form = ReviewForm()
         if Movie.objects.filter(tmdb_id=tmdb_id).exists():
