@@ -71,3 +71,39 @@ def profile_view(request, user_id):
         request,
         'profile.html',
         context)
+
+
+def followed_view(request, user_id):
+    user = MyCustomUser.objects.get(id=user_id)
+    follow_list = user.followed_list.all()
+    return render(
+        request,
+        'followed.html',
+        {'user': user, "followed_list": follow_list})
+
+
+def following_view(request, user_id):
+    user = MyCustomUser.objects.get(id=user_id)
+    follow_list = MyCustomUser.objects.filter(followed_list__in=[user])
+    return render(
+        request,
+        'followed.html',
+        {'user': user, "followed_list": follow_list})
+
+
+def follow(request, user_id):
+    user_followed = MyCustomUser.objects.get(id=user_id)
+    user_obj = MyCustomUser.objects.get(id=request.user.id)
+    user_obj.followed_list.add(user_followed)
+    user_obj.save()
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
+    return redirect('profile', user_id=request.user.id)
+
+
+def unfollow(request, user_id):
+    user_unfollowed = MyCustomUser.objects.get(id=user_id)
+    user_obj = MyCustomUser.objects.get(id=request.user.id)
+    user_obj.followed_list.remove(user_unfollowed)
+    user_obj.save()
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
+    return redirect('profile', user_id=request.user.id)

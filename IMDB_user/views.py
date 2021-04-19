@@ -81,6 +81,7 @@ def add_favorites(request, movie_id):
         return redirect(request.META.get(
             'HTTP_REFERER', 'redirect_if_referer_not_found'))
 
+
 @login_required
 def remove_favorites(request, movie_id):
     current_user = MyCustomUser.objects.get(id=request.user.id)
