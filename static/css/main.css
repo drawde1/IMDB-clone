@@ -931,20 +931,29 @@ button.ghost {
 
 .review-overlay::after {
     content: "";
-    position: relative;
-    top: 165px;
+    position: absolute;
+    bottom: -130px;
     left: 0;
-    height: 165px;
+    height: 0%;
     width: 220px;
     background-color: #191919;
-    color: white;
+    visibility: hidden;
+    color: #191919;
     padding: 30px;
-    opacity: 0.8;
+    opacity: 0.2;
+    transition: 
+        height ease-out 0.75s,
+        color ease-out 2s,
+        opacity ease-out 2s;
 }
 
 .review-overlay:hover::after {
     content: attr(data-after-content);
-    position: absolute;
+    height: 90%;
+    opacity: 0.9;
+    color: #e6ba41;
+    visibility: visible;
+    
 }
 
 .review-date {
