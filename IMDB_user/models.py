@@ -26,7 +26,6 @@ class MyCustomUser(AbstractUser):
         symmetrical=False
 
     )
-
     REQUIRED_FIELDS = ['displayname']
 
     @property

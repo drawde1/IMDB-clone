@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from movies.models import Movie
+from django.contrib.auth.decorators import login_required
 import requests
 
 from IMDB_user.models import MyCustomUser
@@ -17,7 +18,7 @@ base_url = 'https://api.themoviedb.org/3'
 api_key = 'ea3f0ae618db2e67cd3f57ba270936c4'
 
 
-
+@login_required
 def add_watchlist(request, tmdb_id):
     if Movie.objects.filter(tmdb_id=tmdb_id).exists():
         movie = Movie.objects.get(tmdb_id=tmdb_id)
@@ -53,7 +54,7 @@ def remove_watchlist(request, tmdb_id):
     return redirect(
         request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
-
+@login_required
 def add_favorites(request, movie_id):
     if Movie.objects.filter(tmdb_id=movie_id).exists():
         movie = Movie.objects.get(tmdb_id=movie_id)
@@ -81,6 +82,7 @@ def add_favorites(request, movie_id):
             'HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 
+@login_required
 def remove_favorites(request, movie_id):
     current_user = MyCustomUser.objects.get(id=request.user.id)
     movie = Movie.objects.get(tmdb_id=movie_id)

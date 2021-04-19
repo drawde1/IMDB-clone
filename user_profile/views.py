@@ -4,24 +4,24 @@ from reviews.models import Review
 from IMDB_user.forms import ProfilePicForm, DisplaynameForm, BioForm
 from django.views.generic import View
 from IMDB_user.models import MyCustomUser
-import requests
 
-# import requests
 from movies.helpers import ApiPaths
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 base_url = 'https://api.themoviedb.org/3'
 
 
+@login_required
 def profile_view(request, user_id):
     recomendations = []
     user = MyCustomUser.objects.get(id=user_id)
-    can_edit=False
+    can_edit = False
     if request.user == user:
         can_edit = True
     pic_form = ProfilePicForm(
             initial={'profile_pic': user.profile_pic},)
-    displayname_form = DisplaynameForm(
-        initial={'displayname': user.displayname})
+    displayname_form = DisplaynameForm()
     bio_form = BioForm(
         initial={'bio': user.bio})
 
@@ -72,29 +72,6 @@ def profile_view(request, user_id):
         'profile.html',
         context)
 
-def edit_profile(request):
-    user = request.user
-    form = UserForm(initial={
-        'bio': user.bio,
-        'displayname': user.displayname,
-        'profile_pic': user.profile_pic
-    })
-    if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES)
-    if form.is_valid():
-        data = form.cleaned_data
-        user.displayname = data['displayname']
-        user.profile_pic = data['profile_pic']
-        user.bio = data['bio']
-        user.save()
-        return render(
-        request,
-        'profile.html',
-        {"user": user})
-    return render(
-        request,
-        'editprofile.html',
-        {'form': form})
 
 def followed_view(request, user_id):
     user = MyCustomUser.objects.get(id=user_id)
@@ -103,6 +80,7 @@ def followed_view(request, user_id):
         request,
         'followed.html',
         {'user': user, "followed_list": follow_list})
+
 
 def following_view(request, user_id):
     user = MyCustomUser.objects.get(id=user_id)

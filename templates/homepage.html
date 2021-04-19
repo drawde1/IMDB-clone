@@ -16,7 +16,11 @@
                     {% if movie.poster_url %}
                         <div class="carousel-item">
                             <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                                {% if movie.poster_url%}
                                 <img src="{{movie.poster_url}}" alt="{{movie.title}}" width=220>
+                                {% else %}
+                                <img src="/images/default.png" alt="{{result.name}}" width=220>
+                                {% endif %}
                             </a>
                             <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.title }}</a></h6>
                         </div>
@@ -36,7 +40,11 @@
                     {% if favorite.poster_url %}
                         <div class="carousel-item">
                             <a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">
+                                {% if favorite.poster_url %}
                                 <img src="{{favorite.poster_url}}" alt="{{favorite.name}}" width=220>
+                                {% else %}
+                                <img src="/images/default.png" alt="{{result.name}}" width=220>
+                                {% endif %}
                             </a>
                             <h6><a href="{% url 'movie_detail' movie_id=favorite.tmdb_id %}">{{ favorite.name }}</a></h6>
                         </div>
@@ -55,7 +63,11 @@
                 {% for recommendation in recommendations.results %}
                     <div class="carousel-item">
                         <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            {% if recommendation.poster_path %}
                             <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                            {% else %}
+                            <img src="/images/default.png" alt="{{result.name}}" width=220>
+                            {% endif %}
                         </a>
                         <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
                     </div>
@@ -72,7 +84,11 @@
             {% for result in popular.results %}
                 <div class="carousel-item">
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        {% if result.poster_path %}
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                        {% else %}
+                        <img src="/images/default.png" alt="{{result.name}}" width=220>
+                        {% endif %}
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
                     <!-- <a href="{% url 'add_favorites' movie_id=result.id %}"><i class="fas fa-plus"></i></a> -->
@@ -89,7 +105,11 @@
             {% for result in latest.results %}
                 <div class="carousel-item">
                     <a href="{% url 'movie_detail' movie_id=result.id%}">
+                        {% if result.poster_path%}
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                        {% else %}
+                    <img src="/images/default.png" alt="{{result.name}}" width=220>
+                    {% endif %}
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id%}">{{ result.title }}</a></h6>
                 </div>
@@ -105,7 +125,11 @@
             {% for result in top.results %}
                 <div class="carousel-item">
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        {% if result.poster_path %}
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                        {% else %}
+                    <img src="/images/default.png" alt="{{result.name}}" width=220>
+                    {% endif %}
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
                 </div>
@@ -121,7 +145,11 @@
             {% for result in upcoming.results %}
                 <div class="carousel-item">
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        {% if result.poster_path%}
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                        {% else %}
+                    <img src="/images/default.png" alt="{{result.name}}" width=220>
+                    {% endif %}
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
                 </div>
@@ -137,7 +165,11 @@
             {% for actor in actors %}
                 <div class="carousel-item">
                     <a href="{% url 'actor_detail' actor_id=actor.id %}">
+                        {% if actor.porfile_path%}
                         <img src="https://image.tmdb.org/t/p/w154{{actor.profile_path}}" alt="{{actor.name}}" width=220>
+                        {% else %}
+                    <img src="/images/default.png" alt="{{result.name}}" width=220>
+                    {% endif %}
                     </a>
                     <h6><a href="{% url 'actor_detail' actor_id=actor.id %}">{{ actor.name }}</a></h6>
                 </div>

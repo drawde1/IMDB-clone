@@ -6,56 +6,73 @@
 
 
 
-
-
-
-<div class="row row-cols-1 row-cols-md-2 g-4">
-    <div class="col">
-      <div class="card">
-        <img src="{{movie.poster_url}}" height= 700 class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title"></h5>
-          <!-- <p class="card-text"></p> -->
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-        <div class = container>
-          <h2 class="card-title display-1">Post a Review</h2>
-        </div>
-
+    <div class="row">
+      <div class="col s7 push-s5"><span class="flow-text">
+      
+      <div class="card black">
+        <div class="card-content white-text">
+        <div class='right-text'>
+        <br/>
+          <span class="card-title">Something On Your Mind?</span>
+                    <br/>
+          <p class='yellow-font'>Leave a Review</p>
+          </div>
           <p class="card-text">{% include 'general_form.html'%}</p>
-         
+          <p class='yellow-font'> Earn Karma by </p>
+           <p>Leaving Helpful Reviews 🥳</p>
+        </div>
+        <div class="card-action">
         </div>
       </div>
+      </span></div>
+      <div class="col s5 pull-s7"><span class="flow-text">
+<h1 class='yellow-font'>{{movie.name}}</h1>
+<img src="{{movie.poster_url}}" width= 100% class="img" alt="...">
+
+      </span></div>
     </div>
-   
-  </div>
+         
   <br/>
-<div class="seen-container">
-  <div id='by-date' class='hidden'> By Date</div>
-</div>
-<button id='by-vote'> By Vote</button>
+ 
+ <div id='by-date' class='waves-effect waves-light btn-large hidden'> By Date</div>
+<button id='by-vote' class='waves-effect waves-light btn-large'> By Vote</button>
+
+
+
 <div class = 'scroll' id = 'date-list'>
 {% for review in reviews_by_time %}
-<div class="card mb-3">
-    <div class="card-body" id={{review.id}}>
-      <h5 class="card-title">{{review.user}}{{review.user.emoji}}</h5>
-      <p class="card-text">{{review.text}}</p>
-      <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
+  <div class="card black"  id={{review.id}}>
+        <div class="card-content white-text">
+          {% if review.user.profile_pic %}
+        <img width = 20% src={{review.user.profile_pic.url}}/>
+        {% endif %}
+          <span class="card-title yellow-font">{{review.user}}{{review.user.emoji}}</span>
+          <p>{{review.text}}</p>
+          <div class='right-text'>
+          <p class="card-text yellow-font">{{review.creation_time}}</p>
+          {% if  review.vote_total > 0  %}
+        <p>{{review.vote_total}} user's have found this helpful</p>
+        {%else %}
+        <p>no one has found this helpful</p>
+        {% endif %}
+        {% if request.user in review.likedby.all %}
+        <p class="yellow-font">you've already voted on this post</p>
+         
+        {% else %}
+        <a href='/vote/{{review.id}}/{{1}}/' class="waves-effect waves-light btn-large">helpful</a>
+        <a href='/vote/{{review.id}}/{{0}}/' class="waves-effect waves-light btn-large">unhelpful</a>
+        {% endif %}
+        </div>
+        </div>
+            
+        
+        <div class="card-action">
       
-      {% if request.user in review.likedby.all %}
-       <p><small class="text-muted">you've already voted on this post</small></p>
-       
-      {% else %}
-      <a href='/vote/{{review.id}}/{{1}}/' class="btn btn-lg btn-primary">helpful</a>
-      <a href='/vote/{{review.id}}/{{0}}/' class="btn btn-lg btn-primary">unhelpful</a>
-      {% endif %}
-      {{review.vote_total}} user's have found this helpful
-    </div>
-  </div>
+        
+        </div>
+      </div>
+    <!-- </div>
+  </div> -->
 {% endfor %}
 </div>
 <style>
@@ -65,24 +82,42 @@
 </style>
 <div class = 'scroll hidden' id = 'vote-list'>
   {% for review in reviews_by_votes %}
-  <div class="card mb-3" >
-      <div class="card-body" id={{review.id}}>
-        <h5 class="card-title">{{review.user}}{{review.user.emoji}}</h5>
-        <p class="card-text">{{review.text}}</p>
-        <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
-        
+
+      <div class="card black"  id={{review.id}}>
+        <div class="card-content white-text">
+        {% if review.user.profile_pic %}
+        <img width = 20% src={{review.user.profile_pic.url}}/>
+        {% endif %}
+          <span class="card-title yellow-font">{{review.user}}{{review.user.emoji}}</span>
+          <p>{{review.text}}</p>
+          <div class='right-text'>
+          <p class="card-text yellow-font">{{review.creation_time}}</p>
+          {% if  review.vote_total > 0  %}
+        <p>{{review.vote_total}} user's have found this helpful</p>
+        {%else %}
+        <p>no one has found this helpful</p>
+        {% endif %}
         {% if request.user in review.likedby.all %}
-         <p><small class="text-muted">you've already voted on this post</small></p>
+        <p class="yellow-font">you've already voted on this post</p>
          
         {% else %}
-        <a href='/vote/{{review.id}}/{{1}}/' class="btn btn-lg btn-primary">helpful</a>
-        <a href='/vote/{{review.id}}/{{0}}/' class="btn btn-lg btn-primary">unhelpful</a>
+        <a href='/vote/{{review.id}}/{{1}}/' class="waves-effect waves-light btn-large">helpful</a>
+        <a href='/vote/{{review.id}}/{{0}}/' class="waves-effect waves-light btn-large">unhelpful</a>
         {% endif %}
-        {{review.vote_total}} user's have found this helpful
+        </div>
+        </div>
+            
+        
+        <div class="card-action">
+      
+        
+        </div>
       </div>
-    </div>
   {% endfor %}
+
   </div>
+
+  
 <style>
     .scroll {
     overflow: scroll;
@@ -92,6 +127,28 @@
   .hidden{
     display: none;
   }
+  .form-control{
+    background-color: black;
+  }
+  .right-text{
+    text-align: right;
+  }
+  textarea{
+    color: white;
+    height: 200px;
+  }
+  .btn-large{
+    background-color:#e6ba41; 
+  }
+
+  .btn-large:hover{
+    background-color:white; 
+    color:black;
+  }
+  .yellow-font{
+    color: #e6ba41;
+  }
+
 </style>
 <script>
   let dateButton = document.getElementById('by-date')

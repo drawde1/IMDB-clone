@@ -11,7 +11,11 @@
         {% for result in results %} 
             <div class="carousel-item">
                 <a href="{% url 'actor_detail' actor_id=result.id %}">
+                    {%if  result.profile_path %}
                     <img src="https://image.tmdb.org/t/p/w154{{result.profile_path}}" alt="{{result.name}}" width=220>
+                    {% else %}
+                    <img src="/images/default.png" alt="{{result.name}}" width=220>
+                    {% endif %}
                 </a>
                 <h6><a href="{% url 'actor_detail' actor_id=result.id %}">{{ result.name }}</a></h6>
             </div>

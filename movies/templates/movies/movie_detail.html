@@ -13,7 +13,10 @@
     <div>
         {% if data.poster_path %}
             <img src="https://image.tmdb.org/t/p/w342{{data.poster_path}}" alt="{{data.title}}">
-        {% endif %}
+            {% else %}
+            <img src="/images/default.png" alt="{{result.name}}" width=220>
+            {% endif %}
+
     </div>
     <div>
         {% if video %}
@@ -95,7 +98,11 @@
                 {% for recommendation in recommendations.results %}
                     <div class="carousel-item">
                         <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            {% if recommendation.poster_path %}
                             <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                            {% else %}
+                            <img src="/images/default.png" alt="{{result.name}}" width=220>
+                            {% endif %}
                         </a>
                         <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
                     </div>
