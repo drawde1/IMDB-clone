@@ -49,6 +49,14 @@
         <script src="{% static 'js/signup_form.js' %}"></script>
         <script src="{% static 'js/bio.js' %}"></script>
         <script src="{% static 'js/edit.js' %}"></script>
+        <script>
+            function postReview() {
+                const blur = document.getElementById('main-container')
+                blur.classList.toggle('active')
+                const popup = document.getElementById('popup')
+                popup.classList.toggle('active')
+            }
+        </script>
     </body>
 </html>
 
