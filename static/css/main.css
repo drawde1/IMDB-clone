@@ -93,6 +93,114 @@ body {
     visibility: visible;
 }
 
+a[data-remove-watchlist]::after {
+    content: attr(data-remove-watchlist);
+    position: absolute;
+    top: -25px;
+    left: -15px;
+    background-color: #191919;
+    padding: 10px;
+    color: #e6ba41;
+    border-radius: 5px;
+    font-size: 15px;
+    transform: scale(0);
+    transition: transform ease-out 150ms;
+}
+
+a[data-remove-watchlist]:hover::after {
+    transform: scale(1);
+}
+
+a[data-add-watchlist]::after {
+    content: attr(data-add-watchlist);
+    position: absolute;
+    top: -25px;
+    left: -15px;
+    background-color: #191919;
+    padding: 10px;
+    color: #e6ba41;
+    border-radius: 5px;
+    font-size: 15px;
+    transform: scale(0);
+    transition: transform ease-out 150ms;
+}
+
+a[data-add-watchlist]:hover::after {
+    transform: scale(1);
+}
+
+a[data-add-favorites]::after {
+    content: attr(data-add-favorites);
+    position: absolute;
+    top: -25px;
+    left: 47px;
+    background-color: #191919;
+    padding: 10px;
+    color: #e6ba41;
+    border-radius: 5px;
+    font-size: 15px;
+    transform: scale(0);
+    transition: transform ease-out 150ms;
+}
+
+a[data-add-favorites]:hover::after {
+    transform: scale(1);
+}
+
+a[data-remove-favorites]::after {
+    content: attr(data-remove-favorites);
+    position: absolute;
+    top: -25px;
+    left: 23px;
+    background-color: #191919;
+    padding: 10px;
+    color: #e6ba41;
+    border-radius: 5px;
+    font-size: 15px;
+    transform: scale(0);
+    transition: transform ease-out 150ms;
+}
+
+a[data-remove-favorites]:hover::after {
+    transform: scale(1);
+}
+
+a[data-post-review]::after {
+    content: attr(data-post-review);
+    position: absolute;
+    top: -25px;
+    left: 115px;
+    background-color: #191919;
+    padding: 10px;
+    color: #e6ba41;
+    border-radius: 5px;
+    font-size: 15px;
+    transform: scale(0);
+    transition: transform ease-out 150ms;
+}
+
+a[data-post-review]:hover::after {
+    transform: scale(1);
+}
+
+a[data-posted-review]::after {
+    content: attr(data-posted-review);
+    position: absolute;
+    top: -25px;
+    left: 115px;
+    background-color: #191919;
+    padding: 10px;
+    color: #e6ba41;
+    border-radius: 5px;
+    font-size: 15px;
+    transform: scale(0);
+    transition: transform ease-out 150ms;
+}
+
+a[data-posted-review]:hover::after {
+    transform: scale(1);
+}
+
 .carousel .carousel-item h6 {
     margin: 0;
     padding: 0;
