@@ -97,10 +97,8 @@ def follow(request, user_id):
     user_obj = MyCustomUser.objects.get(id=request.user.id)
     user_obj.followed_list.add(user_followed)
     user_obj.save()
-    return render(
-        request,
-        'profile.html',
-        {'user': user_obj})
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
+    return redirect('profile', user_id=request.user.id)
 
 
 def unfollow(request, user_id):
@@ -108,7 +106,5 @@ def unfollow(request, user_id):
     user_obj = MyCustomUser.objects.get(id=request.user.id)
     user_obj.followed_list.remove(user_unfollowed)
     user_obj.save()
-    return render(
-        request,
-        'profile.html',
-        {'user': user_obj})
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
+    return redirect('profile', user_id=request.user.id)

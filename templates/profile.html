@@ -12,9 +12,10 @@
 <p>total reviews: {{reviews.count}}</p>
 <p><a href = "/followed/{{user.id}}">{{user}} is following {{ user.followed_list.count }} users </a></p>
 <p><a href = "/following/{{user.id}}">{{user}} is being followed by {{ following_num }} users </a></p>
+{% if user != request.user %}
 <p><a href = "/follow/{{user.id}}"> Follow this user </a></p>
 <p><a href = "/unfollow/{{user.id}}"> Unfollow this user </a></p>
-
+{% endif %}
 <h2>karma: {{user.karma_score}}{{user.emoji}}</h2>
 <a href='/edit-profile/'>edit profile</a>
 <div class="container">
