@@ -66,6 +66,14 @@
           <h5>About Me:</h5>
           <h6 id ='bio'>{{request.user.bio}}</h6>
        {% endif %}
+
+        <p><a href = "/followed/{{user.id}}">{{user}} is following {{ user.followed_list.count }} users </a></p>
+        <p><a href = "/following/{{user.id}}">{{user}} is being followed by {{ following_num }} users </a></p>
+        {% if user != request.user %}
+        <p><a href = "/follow/{{user.id}}"> Follow this user </a></p>
+        <p><a href = "/unfollow/{{user.id}}"> Unfollow this user </a></p>
+        {% endif %}
+
           <button id='bio-b'> Add/Edit Bio</button>
       <form action="" method="post" id ='bio-form' class='hidden' >
         {% csrf_token %}
