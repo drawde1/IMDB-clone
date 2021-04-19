@@ -4,12 +4,15 @@ from reviews.models import Review
 from IMDB_user.forms import ProfilePicForm, DisplaynameForm, BioForm
 from django.views.generic import View
 from IMDB_user.models import MyCustomUser
-# import requests
+
 from movies.helpers import ApiPaths
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 base_url = 'https://api.themoviedb.org/3'
 
 
+@login_required
 def profile_view(request, user_id):
     recomendations = []
     user = MyCustomUser.objects.get(id=user_id)
@@ -68,6 +71,3 @@ def profile_view(request, user_id):
         request,
         'profile.html',
         context)
-
-def edit_profile(request):
-    user = request.user
