@@ -12,7 +12,11 @@
             {% if result.poster_path %}
                 <div class="carousel-item">
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
+                        {% if result.poster_path %}
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>
+                        {% else %}
+                        <img src="/images/default.png" alt="{{result.name}}" width=220>
+                        {% endif %}
                     </a>
                     <h6><a href="{% url 'movie_detail' movie_id=result.id %}">{{ result.title }}</a></h6>
                 </div>
