@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+    <h4 class="movie-title" style="display: inline-block;">{{user.username}}'s Profile</h4>
+    
+    {% if user != request.user %}
+        {% if user in request.user.followed_list.all %}
+            <h6 class="profile-info follow"><a href = "/unfollow/{{user.id}}" data-unfollow-user="Unfollow User"><i class="fas fa-user-minus"></i></a></h6>
+        {% else %}
+            <h6 class="profile-info follow"><a href = "/follow/{{user.id}}" data-follow-user="Follow User"><i class="fas fa-user-plus"></i></a></h6>
+        {% endif %}
+        
+    {% endif %}
+
+    <div class="profile-container" id='about'>
+        <div class="cols photo-col" >
+            {% if user.profile_pic %}
+                <div class="image-container">
+                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                </div>
+            {% endif %}
+            {% if user == request.user %}
+                <a href="#" onclick="editPhoto()" class="edit-link">edit</a>
+            {% endif %}
+        </div>
+        <div class="cols info-col">
+            <h5 class="profile-info">{{user.displayname}}</h5>
+            {% if user == request.user %}
+                <a href="#" onclick="editDisplayname()">edit</a>
+            {% endif %}
+            <br>
+            <div>
+                <h6 class="profile-info">About Me: </h6>
+                {% if user == request.user %}
+                    <a href="#" onclick="editBio()" class="edit-link">edit</a>
+                {% endif %}
+                <div style="width: 300px;"><h6 style="line-height: 1.5;">{{user.bio}}</h6></div>
+            </div>
+        </div>
+
+        <div class="cols review-col">
+            <h6 class="profile-info">Reviews Posted: </h6>
+            <h6 class="prof-value">{{reviews.count}}</h6>
+            <br>
+            <h6 class="profile-info">Karma: </h6> 
+            <h6 class="prof-value">{{user.karma_score}} {{user.emoji}}</h6>
+            <br>
+            <h6 class="profile-info">Following: </h6>
+                <h6 class="prof-value"">
+                    <a href="#" onclick="followUser()" class="follow-link">{{ user.followed_list.count }} Users</a>
+                </h6>
+            <br>
+            <h6 class="profile-info">Followers:  </h6>
+                <h6 class="prof-value""><a href="#" onclick="unfollowUser()" class="follow-link">{{ user.followed.count }} Users </a></h6>
+        </div>
+    </div>
+
+    <div class="carousel-container">
+        <h5 class="list-title">Watch List</h5>
+        <div class="carousel">
+            <ul>
+                {% for movie in user.watch_list.all %}
+                    <div class="carousel-item">
+                        {% if request.user.is_authenticated %}
+                            {% if movie in request.user.watch_list %}
+                                <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
+                            {% endif %}
+                            {% if movie in user.favorites_list.all %}
+                                <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
+                            {% else %}
+                                <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
+                            {% endif %}
+                            {% if movie in reviewed_movies %}
+                                <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
+                            {% else %}
+                                <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
+                            {% endif %}
+                        {% endif %}
+                        <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                            <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% if user == request.user %}
+        {% if reviews %}  
+            <div class="carousel-container">
+                {% if reviews.count == 1 %}
+                    <h5 class="list-title">You Posted {{reviews.count}} Review</h5>
+                {% else %}
+                    <h5 class="list-title">You Posted {{reviews.count}} Reviews</h5>
+                {% endif %}
+                <div class="carousel">
+                    <ul>
+                        {% for review in reviews %}
+                            <div class="carousel-item">
+                                {% if request.user.is_authenticated %}
+                                    {% if review in request.user.watch_list %}
+                                        <a href="{% url 'remove_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'add_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
+                                    {% endif %}
+                                    {% if review in user.favorites_list.all %}
+                                        <a href="{% url 'remove_favorites' movie_id=review.movie.tmdb_id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'add_favorites' movie_id=review.movie.tmdb_id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
+                                    {% endif %}
+                                    {% if review in reviewed_movies %}
+                                        <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'post_review' tmdb_id=review.movie.tmdb_id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="review-overlay" data-after-content="{{review.creation_time}}   {{review.text}}">
+                                    <a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">
+                                        <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
+                                    </a>
+                                    <h6><a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">{{review.movie.name}}</a></h6>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+    
+
+    <div class="carousel-container">
+        <h5 class="list-title">Watch Again</h5>
+        <div class="carousel">
+            <ul>
+                {% for movie in user.favorites_list.all %}
+                    {% if movie.poster_url %}
+                        <div class="carousel-item">
+                            {% if request.user.is_authenticated %}
+                                {% if movie in request.user.watch_list %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
+                                {% endif %}
+                                {% if movie in user.favorites_list.all %}
+                                    <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
+                                {% endif %}
+                                {% if movie in reviewed_movies %}
+                                    <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
+                                {% else %}
+                                    <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
+                                {% endif %}
+                            {% endif %}
+                            <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                                <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% if recomendations %}
+        <div class="carousel-container">
+            <h5 class="list-title">You May Like</h5>
+            <div class="carousel">
+                <ul>
+                    {% for recommendation in recomendations %}
+                        <div class="carousel-item">
+                            {% if request.user.is_authenticated %}
+                                {% if recommendation in request.user.watch_list %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=recommendation.id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_watchlist' tmdb_id=recommendation.id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
+                                {% endif %}
+                                {% if recommendation in user.favorites_list.all %}
+                                    <a href="{% url 'remove_favorites' movie_id=recommendation.id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
+                                {% else %}
+                                    <a href="{% url 'add_favorites' movie_id=recommendation.id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
+                                {% endif %}
+                                {% if recommendation in reviewed_movies %}
+                                    <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
+                                {% else %}
+                                    <a href="{% url 'post_review' tmdb_id=recommendation.id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
+                                {% endif %}
+                            {% endif %}
+                            <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                                <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block popup %}
+    <div class="bio-scroll">
+        <form action="" method="post" enctype="multipart/form-data" class="edit-modal photo-form">
+            {% csrf_token %}
+            {{ pic_form.as_p }}
+            <input type="submit" class="more-bio submit" name='save_profile_pic'  value="Submit">
+            <a href="#" onclick="editPhoto()" id="photo-edit" class="more-bio">Close</a>
+        </form> 
+    </div>
+{% endblock %}
+
+{% block display %}
+    <div class="bio-scroll">
+        <form action="" method="post" class="edit-modal">
+            {% csrf_token %}
+            {{ displayname_form.as_p }}
+            <input type="submit" class="more-bio submit" name='save_displayname' value="Submit">
+            <a href="#" onclick="editDisplayname()" id="display-edit" class="more-bio">Close</a>
+        </form>   
+    </div>
+{% endblock %}
+
+{% block bio %}
+    <div class="bio-scroll">
+        <form action="" method="post" class="edit-modal bio-form">
+            {% csrf_token %}
+            {{ bio_form.as_p }}
+            <input type="submit" class="more-bio submit" name='save_bio' value="Submit">
+            <a href="#" onclick="editBio()" id="bio-edit" class="more-bio">Close</a>
+        </form>
+    </div>
+{% endblock %}
+
+{% block follow %}
+    <div class="bio-scroll">
+        {% for user in user.followed_list.all %}
+            {% if user.profile_pic %}
+                <div class="image-container" width=100>
+                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                </div>
+            {% endif %}
+            <h5 class="profile-info"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h5>
+        {% endfor %}
+        <a href="#" onclick="followUser()" id="bio-edit" class="more-bio">Close</a>
+    </div>
+{% endblock %}
+
+{% block unfollow %}
+    <div class="bio-scroll">
+        {% for user in user.followed.all %}
+            {% if user.profile_pic %}
+                <div class="image-container" width=100>
+                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                </div>
+            {% endif %}
+            <h5 class="profile-info"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h5>
+        {% endfor %}
+        <a href="#" onclick="unfollowUser()" id="bio-edit" class="more-bio">Close</a>
+    </div>
+{% endblock %}
+
+<!-- /followed/{{user.id}} -->

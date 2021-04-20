@@ -40,9 +40,10 @@
         <p><a href = "/followed/{{user.id}}">{{user}} is following {{ user.followed_list.count }} users </a></p>
         <p><a href = "/following/{{user.id}}">{{user}} is being followed by {{ following_num }} users </a></p>
         {% if user != request.user %}
-        <p><a href = "/follow/{{user.id}}"> Follow this user </a></p>
-        <p><a href = "/unfollow/{{user.id}}"> Unfollow this user </a></p>
+            <p><a href = "/follow/{{user.id}}"> Follow this user </a></p>
+            <p><a href = "/unfollow/{{user.id}}"> Unfollow this user </a></p>
         {% endif %}
+        
         {% if user == request.user %}
           <button id='bio-b'> Add/Edit Bio</button>
           {% endif %}

@@ -26,8 +26,8 @@ def add_watchlist(request, tmdb_id):
         if not current_user.watch_list.filter(tmdb_id=tmdb_id).exists():
             current_user.watch_list.add(movie)
             current_user.save()
-            return redirect(request.META.get(
-                'HTTP_REFERER', 'redirect_if_referer_not_found'))
+        return redirect(request.META.get(
+            'HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         movie_path = f'/movie/{tmdb_id}'
         movie_endpoint = f'{tmdb_base_url}{movie_path}?api_key={tmdb_key}'
@@ -62,8 +62,8 @@ def add_favorites(request, movie_id):
         if not current_user.favorites_list.filter(tmdb_id=movie_id).exists():
             current_user.favorites_list.add(movie)
             current_user.save()
-            return redirect(request.META.get(
-                'HTTP_REFERER', 'redirect_if_referer_not_found'))
+        return redirect(request.META.get(
+            'HTTP_REFERER', 'redirect_if_referer_not_found'))
     else:
         movie_path = f'/movie/{movie_id}'
         movie_endpoint = f'{tmdb_base_url}{movie_path}?api_key={tmdb_key}'

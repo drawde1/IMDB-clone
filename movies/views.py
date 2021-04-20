@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from movies.forms import MovieSearchForm, AllSearchForm
+from IMDB.settings import TMDB_KEY
 from IMDB_user.models import MyCustomUser
 from movies.models import Movie
 import random
+import requests
 from movies.helpers import ApiPaths
 
 # Create your views here.
@@ -17,16 +19,25 @@ def homepage(request):
     popular_data = ApiPaths.grab_data(ApiPaths.popular_path)
     top_data = ApiPaths.grab_data(ApiPaths.top_path)
     upcoming_data = ApiPaths.grab_data(ApiPaths.upcoming_path)
+    actors_path = f'/person/popular'
+    actors_endpoint = f'{tmdb_base_url}{actors_path}?api_key={TMDB_KEY}'
+    actors_request = requests.get(actors_endpoint)
+    actors_data = actors_request.json()
+    actors = actors_data['results']
 
     details.update({
         'latest': latest_data,
         'popular': popular_data,
         'top': top_data,
         'upcoming': upcoming_data,
+        'actors': actors
     })
-
+    
     if request.user.is_authenticated:
         current_user = MyCustomUser.objects.get(id=request.user.id)
+        posted_reviews = current_user.custom_user.all()
+        reviewed_movies = [ r.movie for r in posted_reviews ]
+        details.update({'reviewed_movies': reviewed_movies})
         if current_user.watch_list.all():
             watchlist = current_user.watch_list.all()
             details.update({'watchlist': watchlist})
@@ -46,6 +57,12 @@ def homepage(request):
 
 
 def search_all(request):
+    details = {}
+    if request.user.is_authenticated:
+        current_user = MyCustomUser.objects.get(id=request.user.id)
+        posted_reviews = current_user.custom_user.all()
+        reviewed_movies = [ r.movie for r in posted_reviews ]
+        details.update({'reviewed_movies': reviewed_movies})
     if request.method == 'POST':
         form = AllSearchForm(request.POST)
         if form.is_valid():
@@ -55,10 +72,12 @@ def search_all(request):
                 ApiPaths.search_path, query=search_keyword)
             if request_data:
                 results = request_data['results']
+                details.update({'results': results})
                 return render(
-                    request, 'movies/all_results.html', {'results': results})
+                    request, 'movies/all_results.html', details)
     form = AllSearchForm()
-    return render(request, 'homepage.html', {'form': form})
+    details.update({'form': form})
+    return render(request, 'homepage.html', details)
 
 
 def search_movie(request):

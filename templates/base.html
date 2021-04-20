@@ -16,13 +16,34 @@
             {% block content %}
                 {% block form %}
                 {% endblock %}
-            {% endblock%}   
+            {% endblock %}   
         </div>
+
         <div id="popup">
             {% block popup %}
             {% endblock %}
         </div>
+
+        <div id="display">
+            {% block display %}
+            {% endblock %}
+        </div>
         
+        <div id="bio">
+            {% block bio %}
+            {% endblock %}
+        </div>
+
+        <div id="follow-user">
+            {% block follow %}
+            {% endblock %}
+        </div>
+    
+        <div id="unfollow-user">
+            {% block unfollow %}
+            {% endblock %}
+        </div>
+
         <script src="https://kit.fontawesome.com/e15c5e5f47.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj
@@ -36,6 +57,15 @@
         <script src="{% static 'js/login_modal.js' %}"></script>
         <script src="{% static 'js/signup_form.js' %}"></script>
         <script src="{% static 'js/bio.js' %}"></script>
+        <script src="{% static 'js/edit.js' %}"></script>
+        <script>
+            function postReview() {
+                const blur = document.getElementById('main-container')
+                blur.classList.toggle('active')
+                const popup = document.getElementById('popup')
+                popup.classList.toggle('active')
+            }
+        </script>
     </body>
 </html>
 

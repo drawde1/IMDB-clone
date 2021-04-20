@@ -4,17 +4,17 @@
         <div class="form-container sign-up-container">
             <form action="/signup/" method="post" class="form-control">
                 {% csrf_token %}
-                <h1 class="form-title">Create Account</h1>
+                <h1 class="form-title" style="margin-bottom: 10px;">Create Account</h1>
                 <input type="text" name="username" placeholder="Username" />
                 <input type="text" name="displayname" placeholder="Displayname" />
                 <input type="password" name="password" placeholder="Password" />
-                <button class="form-button">Sign Up</button>
+                <button class="form-button" style="margin-bottom: 25px;">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
             <form action="/login/" method="post" class="form-control">
                 {% csrf_token %}
-                <h1 class="form-title">Sign In</h1>
+                <h1 class="form-title" style="margin-bottom: 10px;">Sign In</h1>
                 <input type="text" name="username" placeholder="Username" />
                 <input type="password" name="password" placeholder="Password" />
                 <button class="form-button">Sign In</button>
@@ -24,13 +24,13 @@
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
                     <h1 class="form-title">Welcome Back!</h1>
-                    <p class="form-p">To keep connected with us please login with your personal info</p>
+                    <p class="form-p">Log in to see what's new and discover highly recommended movies by our users.</p>
                     <button class="ghost form-button" id="signIn">Sign In</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1 class="form-title">Hello, Friend!</h1>
-                    <p class="form-p">Enter your personal details and start journey with us</p>
-                    <button class="ghost form-button" id="signUp">Sign Up</button>
+                    <h1 class="form-title" style="margin-bottom: 35px;">Welcome!</h1>
+                    <p class="form-p" style="margin-bottom: 25px; margin-top: -10px;">Track everything you want to watch and discover movies you'll love.</p>
+                    <button class="ghost form-button" id="signUp" style="margin-bottom: 25px;">Sign Up</button>
                 </div>
             </div>
         </div>

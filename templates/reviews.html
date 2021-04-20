@@ -46,7 +46,7 @@
           {% if review.user.profile_pic %}
         <img width = 20% src={{review.user.profile_pic.url}}/>
         {% endif %}
-          <span class="card-title yellow-font">{{review.user}}{{review.user.emoji}}</span>
+          <span class="card-title yellow-font"><a href="{% url 'profile' user_id=review.user.id %}">{{review.user}}</a> {{review.user.emoji}}</span>
           <p>{{review.text}}</p>
           <div class='right-text'>
           <p class="card-text yellow-font">{{review.creation_time}}</p>
@@ -88,7 +88,7 @@
         {% if review.user.profile_pic %}
         <img width = 20% src={{review.user.profile_pic.url}}/>
         {% endif %}
-          <span class="card-title yellow-font">{{review.user}}{{review.user.emoji}}</span>
+          <span class="card-title yellow-font"><a href="{% url 'profile' user_id=review.user.id %}">{{review.user}}</a> {{review.user.emoji}}</span>
           <p>{{review.text}}</p>
           <div class='right-text'>
           <p class="card-text yellow-font">{{review.creation_time}}</p>

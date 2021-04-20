@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect, reverse
 from actors.forms import ActorSearchForm
 from IMDB.settings import OMDB_KEY, TMDB_KEY, SECRET_KEY
 import requests
@@ -63,7 +63,7 @@ def actor_link(request, actor_name):
             actor_request = requests.get(actor_endpoint)
             if actor_request.status_code in range(200, 299):
                 actor_data = actor_request.json()
-            return render(request, 'actors/actor_detail.html', {'actor': actor_data})
+            return HttpResponseRedirect(reverse("actor_detail", args=[actor_id]))
 
 
     

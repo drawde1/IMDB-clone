@@ -11,6 +11,23 @@
         {% for result in results %} 
             {% if result.poster_path %}
                 <div class="carousel-item">
+                    {% if request.user.is_authenticated %}
+                        {% if result in request.user.watch_list %}
+                            <a href="{% url 'remove_watchlist' tmdb_id=result.id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_watchlist' tmdb_id=result.id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
+                        {% endif %}
+                        {% if result in user.favorites_list.all %}
+                            <a href="{% url 'remove_favorites' movie_id=result.id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
+                        {% else %}
+                            <a href="{% url 'add_favorites' movie_id=result.id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
+                        {% endif %}
+                        {% if result in reviewed_movies %}
+                            <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
+                        {% else %}
+                            <a href="{% url 'post_review' tmdb_id=result.id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
+                        {% endif %}
+                    {% endif %}
                     <a href="{% url 'movie_detail' movie_id=result.id %}">
                         {% if result.poster_path %}
                         <img src="https://image.tmdb.org/t/p/w154{{result.poster_path}}" alt="{{result.title}}" width=220>

@@ -67,12 +67,16 @@ def profile_view(request, user_id):
             'displayname_form': displayname_form,
 
             }
+    
+    posted_reviews = user.custom_user.all()
+    reviewed_movies = [ r.movie for r in posted_reviews ]
+    context.update({'reviewed_movies': reviewed_movies})
     return render(
         request,
-        'profile.html',
+        'user_profile.html',
         context)
 
-
+@login_required
 def followed_view(request, user_id):
     user = MyCustomUser.objects.get(id=user_id)
     follow_list = user.followed_list.all()
@@ -81,7 +85,7 @@ def followed_view(request, user_id):
         'followed.html',
         {'user': user, "followed_list": follow_list})
 
-
+@login_required
 def following_view(request, user_id):
     user = MyCustomUser.objects.get(id=user_id)
     follow_list = MyCustomUser.objects.filter(followed_list__in=[user])
@@ -90,7 +94,7 @@ def following_view(request, user_id):
         'followed.html',
         {'user': user, "followed_list": follow_list})
 
-
+@login_required
 def follow(request, user_id):
     user_followed = MyCustomUser.objects.get(id=user_id)
     user_obj = MyCustomUser.objects.get(id=request.user.id)
@@ -99,7 +103,7 @@ def follow(request, user_id):
     following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
     return redirect('profile', user_id=request.user.id)
 
-
+@login_required
 def unfollow(request, user_id):
     user_unfollowed = MyCustomUser.objects.get(id=user_id)
     user_obj = MyCustomUser.objects.get(id=request.user.id)
