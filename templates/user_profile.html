@@ -6,41 +6,57 @@
 
 {% block content %}
 
-    <h4 class="movie-title">{{user.username}}'s Profile</h4>
+    <h4 class="movie-title" style="display: inline-block;">{{user.username}}'s Profile</h4>
     
+    {% if user != request.user %}
+        {% if user in request.user.followed_list.all %}
+            <h6 class="profile-info follow"><a href = "/unfollow/{{user.id}}" data-unfollow-user="Unfollow User"><i class="fas fa-user-minus"></i></a></h6>
+        {% else %}
+            <h6 class="profile-info follow"><a href = "/follow/{{user.id}}" data-follow-user="Follow User"><i class="fas fa-user-plus"></i></a></h6>
+        {% endif %}
+        
+    {% endif %}
+
     <div class="profile-container" id='about'>
         <div class="cols photo-col" >
-            {% if request.user.profile_pic %}
+            {% if user.profile_pic %}
                 <div class="image-container">
                     <img class="profile-image" src ='{{user.profile_pic.url}}' />
                 </div>
             {% endif %}
-            <a href="#" onclick="editPhoto()" class="edit-link">edit</a>
+            {% if user == request.user %}
+                <a href="#" onclick="editPhoto()" class="edit-link">edit</a>
+            {% endif %}
         </div>
         <div class="cols info-col">
-            <h5 style="display: inline-block">{{user.displayname}}</h5>
-            <a href="#" onclick="editDisplayname()">edit</a>
-            <br>
-            {% if user.bio %}
-                <div style="display: inline-block">
-                    {% if user.bio %}
-                        <h6>About Me: <span class="edit-link"><a href="#" onclick="editBio()">edit</a></span></h6>
-                        <h6>{{request.user.bio}}</h6>
-                    {% endif %}
-                </div>
-            {% else %} 
-                <h6>Say Something About Yourself: <span class="edit-link"><a href="#" onclick="editBio()">add</a></span></h6></h5>
+            <h5 class="profile-info">{{user.displayname}}</h5>
+            {% if user == request.user %}
+                <a href="#" onclick="editDisplayname()">edit</a>
             {% endif %}
+            <br>
+            <div>
+                <h6 class="profile-info">About Me: </h6>
+                {% if user == request.user %}
+                    <a href="#" onclick="editBio()" class="edit-link">edit</a>
+                {% endif %}
+                <div style="width: 300px;"><h6 style="line-height: 1.5;">{{user.bio}}</h6></div>
+            </div>
         </div>
 
         <div class="cols review-col">
-            {% if reviews.count > 0 %}
-                <h6>Reviews Posted: {{reviews.count}}</h6>
-            {% else %}
-                <h6>Post your first review to get some karma points!</h6>
-            {% endif %}
+            <h6 class="profile-info">Reviews Posted: </h6>
+            <h6 class="prof-value">{{reviews.count}}</h6>
             <br>
-            <h6>Karma: {{request.user.karma_score}} {{request.user.emoji}}</h6> 
+            <h6 class="profile-info">Karma: </h6> 
+            <h6 class="prof-value">{{user.karma_score}} {{user.emoji}}</h6>
+            <br>
+            <h6 class="profile-info">Following: </h6>
+                <h6 class="prof-value"">
+                    <a href="/followed/{{user.id}}" class="follow-link">{{ user.followed_list.count }} Users</a>
+                </h6>
+            <br>
+            <h6 class="profile-info">Followers:  </h6>
+                <h6 class="prof-value""><a href="/following/{{user.id}}" class="follow-link">{{ user.followed.count }} Users </a></h6>
         </div>
     </div>
 
@@ -51,20 +67,20 @@
                 {% for movie in user.watch_list.all %}
                     <div class="carousel-item">
                         {% if request.user.is_authenticated %}
-                            {% if movie in request.user.watch_list.all %}
-                                <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                            {% if movie in request.user.watch_list %}
+                                <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
                             {% else %}
-                                <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                                <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
                             {% endif %}
                             {% if movie in user.favorites_list.all %}
-                                <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                                <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
                             {% else %}
-                                <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                                <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
                             {% endif %}
-                            {% if movie in review.movie.all %}
-                                <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                            {% if movie in reviewed_movies %}
+                                <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
                             {% else %}
-                                <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                                <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
                             {% endif %}
                         {% endif %}
                         <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
@@ -77,45 +93,48 @@
         </div>
     </div>
 
-    
-    <div class="carousel-container">
-        {% if reviews.count == 1 %}
-            <h5 class="list-title">You Posted {{reviews.count}} Review</h5>
-        {% else %}
-            <h5 class="list-title">You Posted {{reviews.count}} Reviews</h5>
+    {% if user == request.user %}
+        {% if reviews %}  
+            <div class="carousel-container">
+                {% if reviews.count == 1 %}
+                    <h5 class="list-title">You Posted {{reviews.count}} Review</h5>
+                {% else %}
+                    <h5 class="list-title">You Posted {{reviews.count}} Reviews</h5>
+                {% endif %}
+                <div class="carousel">
+                    <ul>
+                        {% for review in reviews %}
+                            <div class="carousel-item">
+                                {% if request.user.is_authenticated %}
+                                    {% if review in request.user.watch_list %}
+                                        <a href="{% url 'remove_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'add_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
+                                    {% endif %}
+                                    {% if review in user.favorites_list.all %}
+                                        <a href="{% url 'remove_favorites' movie_id=review.movie.tmdb_id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'add_favorites' movie_id=review.movie.tmdb_id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
+                                    {% endif %}
+                                    {% if review in reviewed_movies %}
+                                        <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
+                                    {% else %}
+                                        <a href="{% url 'post_review' tmdb_id=review.movie.tmdb_id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="review-overlay" data-after-content="{{review.creation_time}}   {{review.text}}">
+                                    <a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">
+                                        <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
+                                    </a>
+                                    <h6><a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">{{review.movie.name}}</a></h6>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         {% endif %}
-        <div class="carousel">
-            <ul>
-                {% for review in reviews %}
-                    <div class="carousel-item">
-                        {% if request.user.is_authenticated %}
-                            {% if review.movie in request.user.watch_list.all %}
-                                <a href="{% url 'remove_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
-                            {% else %}
-                                <a href="{% url 'add_watchlist' tmdb_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
-                            {% endif %}
-                            {% if review.movie in user.favorites_list.all %}
-                                <a href="{% url 'remove_favorites' movie_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
-                            {% else %}
-                                <a href="{% url 'add_favorites' movie_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
-                            {% endif %}
-                            {% if review.movie in review.movie.all %}
-                                <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
-                            {% else %}
-                                <a href="{% url 'post_review' tmdb_id=review.movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
-                            {% endif %}
-                        {% endif %}
-                        <div class="review-overlay" data-after-content="{{review.creation_time}}   {{review.text}}">
-                            <a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">
-                                <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
-                            </a>
-                            <h6><a href="{% url 'movie_detail' movie_id=review.movie.tmdb_id %}">{{review.movie.name}}</a></h6>
-                        </div>
-                    </div>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+    {% endif %}
     
 
     <div class="carousel-container">
@@ -126,20 +145,20 @@
                     {% if movie.poster_url %}
                         <div class="carousel-item">
                             {% if request.user.is_authenticated %}
-                                {% if movie in request.user.watch_list.all %}
-                                    <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-check-square"></i></a>
+                                {% if movie in request.user.watch_list %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
                                 {% else %}
-                                    <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                                    <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
                                 {% endif %}
                                 {% if movie in user.favorites_list.all %}
-                                    <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye"></i></a>
+                                    <a href="{% url 'remove_favorites' movie_id=movie.tmdb_id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
                                 {% else %}
-                                    <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                                    <a href="{% url 'add_favorites' movie_id=movie.tmdb_id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
                                 {% endif %}
-                                {% if movie in review.movie.all %}
-                                    <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                                {% if movie in reviewed_movies %}
+                                    <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
                                 {% else %}
-                                    <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon"><i class="far fa-edit"></i></a>
+                                    <a href="{% url 'post_review' tmdb_id=movie.tmdb_id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
                                 {% endif %}
                             {% endif %}
                             <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
@@ -161,20 +180,20 @@
                     {% for recommendation in recomendations %}
                         <div class="carousel-item">
                             {% if request.user.is_authenticated %}
-                                {% if recommendation in request.user.watch_list.all %}
-                                    <a href="{% url 'remove_watchlist' tmdb_id=recommendation.id %}" class="icon"><i class="far fa-check-square"></i></a>
+                                {% if recommendation in request.user.watch_list %}
+                                    <a href="{% url 'remove_watchlist' tmdb_id=recommendation.id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
                                 {% else %}
-                                    <a href="{% url 'add_watchlist' tmdb_id=recommendation.id %}" class="icon"><i class="far fa-plus-square"></i></a>
+                                    <a href="{% url 'add_watchlist' tmdb_id=recommendation.id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
                                 {% endif %}
                                 {% if recommendation in user.favorites_list.all %}
-                                    <a href="{% url 'remove_favorites' movie_id=recommendation.id %}" class="icon"><i class="far fa-eye"></i></a>
+                                    <a href="{% url 'remove_favorites' movie_id=recommendation.id %}" class="icon" data-remove-favorites="Remove from Seen List"><i class="far fa-eye"></i></a>
                                 {% else %}
-                                    <a href="{% url 'add_favorites' movie_id=recommendation.id %}" class="icon"><i class="far fa-eye-slash"></i></a>
+                                    <a href="{% url 'add_favorites' movie_id=recommendation.id %}" class="icon" data-add-favorites="Add to Seen List"><i class="far fa-eye-slash"></i></a>
                                 {% endif %}
-                                {% if recommendation in review.movie.all %}
-                                    <a href="#" class="icon"><i class="far fa-list-alt"></i></a>
+                                {% if recommendation in reviewed_movies %}
+                                    <a href="#" class="icon" data-posted-review="You Reviewed this Movie"><i class="far fa-list-alt"></i></a>
                                 {% else %}
-                                    <a href="{% url 'post_review' tmdb_id=recommendation.id %}" class="icon"><i class="far fa-edit"></i></a>
+                                    <a href="{% url 'post_review' tmdb_id=recommendation.id %}" class="icon" data-post-review="Post a Review"><i class="far fa-edit"></i></a>
                                 {% endif %}
                             {% endif %}
                             <a href="{% url 'movie_detail' movie_id=recommendation.id %}">

@@ -1,8 +1,9 @@
 from django.shortcuts import redirect
 from reviews.models import Vote, Review
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+@login_required
 def helpful_unhelpful(request, review_id, value):
     if value == 0:
         value = -1

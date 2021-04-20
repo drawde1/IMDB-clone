@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="profile-container" id='about'>
+  <div>
+    {% if user == request.user %}
+    <button id='displayname-b'>Add/Edit Displayname</button>
+    {% endif %}
+    <h1 id='curr-displayname'>{{user.displayname}}'s info</h1>
+   
+    <form action="" method="post" id ='displayname-form' class='hidden' >
+      {% csrf_token %}
+      {{ displayname_form.as_p }}
+      <input type="submit" name='save_displayname'  value="Submit">
+    </form>   
+      {% if user.profile_pic %}
+          <div class="image-container">
+              <img src ='{{user.profile_pic.url}}' width="300" />
+          </div>
+      {% endif %}
+      {% if user == request.user %}
+      <button id='profile-pic-b'> Add/Change Photo</button>
+      {% endif %}
+      <form action="" method="post" id ='profile-pic-form' class = 'hidden' enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{ pic_form.as_p }}
+        <input type="submit" name='save_profile_pic'  value="Submit">
+      </form> 
+      {% if user.bio %}
+          <h5>About Me:</h5>
+          <h6 id ='bio'>{{user.bio}}</h6>
+       {% endif %}
+
+        <p><a href = "/followed/{{user.id}}">{{user}} is following {{ user.followed_list.count }} users </a></p>
+        <p><a href = "/following/{{user.id}}">{{user}} is being followed by {{ following_num }} users </a></p>
+        {% if user != request.user %}
+            <p><a href = "/follow/{{user.id}}"> Follow this user </a></p>
+            <p><a href = "/unfollow/{{user.id}}"> Unfollow this user </a></p>
+        {% endif %}
+        
+        {% if user == request.user %}
+          <button id='bio-b'> Add/Edit Bio</button>
+          {% endif %}
+      <form action="" method="post" id ='bio-form' class='hidden' >
+        {% csrf_token %}
+        {{ bio_form.as_p }}
+        <input type="submit" name='save_bio'  value="Submit">
+      </form>
+      <br>
+      {% if reviews.count > 0 %}
+          <h6>Reviews Posted: {{reviews.count}}</h6>
+      {% else %}
+          <h6>Post your first review to get some karma points!</h6>
+      {% endif %}
+      <br>
+      <h6>Karma: {{user.karma_score}} {{user.emoji}}</h6> 
+  </div>
+
+  <div>
+      
+         
+      <br>   
+          
+  </div>
+</div>
+
+<style>
+  .hidden{
+    display: none;
+  }
+
+</style>
+<div class="carousel-container">
+  <h5 class="list-title">Watch List</h5>
+  <div class="carousel">
+      <ul>
+          {% for movie in user.watch_list.all %}
+              <div class="carousel-item">
+                  <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                      <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
+                  </a>
+                  <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
+              </div>
+          {% endfor %}
+      </ul>
+  </div>
+</div>
+{% if user == request.user %}
+<div class="carousel-container">
+  <h5 class="list-title">You've Left {{reviews.count}} Review(s) so Far</h5>
+  <div class="carousel">
+      <ul>
+          {% for review in reviews %}
+              <div class="carousel-item">
+                <div class="card-body">
+                  <a href=/movies/{{review.movie.tmdb_id}}/ ><img src="{{review.movie.poster_url}}" width="190" alt="..."></a>
+                <a href=/reviews/{{review.movie.tmdb_id}}/  class="btn btn-sm btn-black">
+                  <h5 class="card-title">{{review.movie.name}}</h5>
+                  <p class="card-text">{{review.text}}</p>
+                  <p class="card-text"><small class="text-muted">{{review.creation_time}}</small></p>
+                </a>
+                </div>
+              </div>
+          {% endfor %}
+      </ul>
+  </div>
+ {% endif %}
+
+<style>
+ textarea:focus, input:focus {
+    color: #e6ba41;
+}
+textarea, input{
+  color: white;
+}
+textarea{
+  width: 400px;
+  height: 400px;
+}
+</style>
+<script>
+
+
+  let editDisplayname = document.getElementById('displayname-b')
+  let editProfilePic = document.getElementById('profile-pic-b')
+  let editBio = document.getElementById('bio-b')
+
+  let displayname = document.getElementById('curr-displayname')
+  let bio = document.getElementById('bio')
+  
+  let displaynameForm = document.getElementById('displayname-form')
+  let profilePicForm = document.getElementById('profile-pic-form')
+  let bioForm = document.getElementById('bio-form')
+  
+  bioForm.classList.add('hidden')
+  displaynameForm.classList.add('hidden')
+  profilePicForm.classList.add('hidden')
+
+
+  editDisplayname.onclick = ()=>{
+    displaynameForm.classList.remove('hidden')
+    displayname.classList.add('hidden')
+    }
+  editProfilePic.onclick = ()=>{
+    profilePicForm.classList.remove('hidden')
+    }
+  editBio.onclick = ()=>{
+    bioForm.classList.remove('hidden')
+    bio.classList.add('hidden')
+    console.log('hello')
+    }
+</script>
+<!-- {% if reviews %}
+    <div class="carousel-container">
+        <h5 class="list-title">Reviews You Posted</h5>
+        <div class="carousel">
+            <ul>
+                {% for review in reviews %}
+                    <div class="carousel-item">
+                        <a href=/movies/{{review.movie.tmdb_id}}>
+                            <img src="{{review.movie.poster_url}}" alt="{{review.movie.name}}" width=220>
+                        </a>
+                        <h6><a href=/movies/{{review.movie.tmdb_id}}>{{review.movie.name}}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %} -->
+
+{% if watch_list %}
+    <div class="carousel-container">
+        <h5 class="list-title">Watch List</h5>
+        <div class="carousel">
+            <ul>
+                {% for movie in watch_list %}
+                    {% if movie.poster_path %}
+                        <div class="carousel-item">
+                            <a href="{% url 'movie_detail' movie_id=movie.id %}">
+                                <img src="https://image.tmdb.org/t/p/w154{{movie.poster_path}}" alt="{{movie.title}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=movie.id %}">{{ movie.title }}</a></h6>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+{% if seen_list %}
+    <div class="carousel-container">
+        <h5 class="list-title">Watch Again</h5>
+        <div class="carousel">
+            <ul>
+                {% for movie in seen_list %}
+                    {% if movie.poster_url %}
+                        <div class="carousel-item">
+                            <a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">
+                                <img src="{{movie.poster_url}}" alt="{{movie.name}}" width=220>
+                            </a>
+                            <h6><a href="{% url 'movie_detail' movie_id=movie.tmdb_id %}">{{ movie.name }}</a></h6>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+{% if recomendations %}
+    <div class="carousel-container">
+        <h5 class="list-title">You May Like</h5>
+        <div class="carousel">
+            <ul>
+                {% for recommendation in recomendations %}
+                    <div class="carousel-item">
+                        <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                        </a>
+                        <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock%}   

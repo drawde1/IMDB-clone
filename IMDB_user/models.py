@@ -19,7 +19,13 @@ class MyCustomUser(AbstractUser):
         blank=True,
         related_name='favorites'
     )
+    followed_list = models.ManyToManyField(
+        'self',
+        blank=True,
+        related_name='followed',
+        symmetrical=False
 
+    )
     REQUIRED_FIELDS = ['displayname']
 
     @property

@@ -21,10 +21,11 @@ from django.urls import path, include
 from movies.views import homepage, search_all
 from reviews.views import ReviewView
 # from IMDB_user.views import add_watchlist
-from user_profile.views import profile_view, edit_profile
+from user_profile.views import profile_view, followed_view, following_view, follow, unfollow
 from IMDB_user.views import add_watchlist, remove_watchlist
 from authentication.views import LoginView, logout_view, SignupView
 from karma.views import helpful_unhelpful
+# from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path('', homepage, name='homepage'),
     path('users/', include('IMDB_user.urls')),
@@ -36,7 +37,16 @@ urlpatterns = [
     path("signup/", SignupView.as_view(), name="signup"),
     path('movies/', include('movies.urls')),
     path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
+    path('admin/', admin.site.urls),
+    # path('reviews/<str:tmdb_id>/', login_required(ReviewView.as_view()), name="post_review"),
     path('watchlist/<str:tmdb_id>/', add_watchlist, name="add_watchlist"),
+    path("logout/", logout_view, name="logout"),
+    path("login/", LoginView.as_view(), name="login"),
+    path("signup/", SignupView.as_view(), name="signup"),
+    path('followed/<int:user_id>', followed_view, name='users_being_followed'),
+    path('following/<int:user_id>', following_view, name='users_following'),
+    path('follow/<int:user_id>', follow, name='follow'),
+    path('unfollow/<int:user_id>', unfollow, name='unfollow'),
     path(
         'watchlist/remove/<str:tmdb_id>/',
         remove_watchlist,

@@ -13,7 +13,10 @@
     <div>
         {% if data.poster_path %}
             <img src="https://image.tmdb.org/t/p/w342{{data.poster_path}}" alt="{{data.title}}">
-        {% endif %}
+            {% else %}
+            <img src="/images/default.png" alt="{{result.name}}" width=220>
+            {% endif %}
+
     </div>
     <div>
         {% if video %}
@@ -49,7 +52,7 @@
         
         
             <div class="review-container">
-                <a href="#" onclick="postReview()" class="review-text">✏️ <span style="margin-left: 5px;">Post a Review</span></a>
+                <a href="{% url 'post_review' tmdb_id=data.id %}" class="review-text">✏️ <span style="margin-left: 5px;">Post a Review</span></a>
             </div>
         {% endif %}
     </div>
@@ -95,7 +98,11 @@
                 {% for recommendation in recommendations.results %}
                     <div class="carousel-item">
                         <a href="{% url 'movie_detail' movie_id=recommendation.id %}">
+                            {% if recommendation.poster_path %}
                             <img src="https://image.tmdb.org/t/p/w154{{recommendation.poster_path}}" alt="{{recommendation.title}}" width=220>
+                            {% else %}
+                            <img src="/images/default.png" alt="{{result.name}}" width=220>
+                            {% endif %}
                         </a>
                         <h6><a href="{% url 'movie_detail' movie_id=recommendation.id %}">{{ recommendation.title }}</a></h6>
                     </div>
@@ -165,20 +172,5 @@
     </div>
 </div>
 
-{% endblock %}
-
-{% block popup %}
-    <div class="bio-scroll" style="display: flex; justify-content: space-between;">
-        <div style="width: 400; height: 400px;">
-            <img src="https://image.tmdb.org/t/p/w154{{data.id.poster_path}}" alt="{{data.id.title}}" style="height: 100%; width: 100%">
-        </div>
-        <form action="/reviews/{{data.id}}/" method="post" class="edit-modal bio-form" style="width: 200; height: 200px;">
-            {% csrf_token %}
-            <textarea name="text" cols="10" rows="10" placeholder="Write review here."></textarea>
-            <br>
-            <input type="submit" class="more-bio submit" value="Submit">
-            <a href="#" onclick="postReview()" id="photo-edit" class="more-bio">Close</a>
-        </form> 
-    </div>
 {% endblock %}
 

@@ -4,22 +4,24 @@ from reviews.models import Review
 from IMDB_user.forms import ProfilePicForm, DisplaynameForm, BioForm
 from django.views.generic import View
 from IMDB_user.models import MyCustomUser
-# import requests
+
 from movies.helpers import ApiPaths
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 base_url = 'https://api.themoviedb.org/3'
 
 
+@login_required
 def profile_view(request, user_id):
     recomendations = []
     user = MyCustomUser.objects.get(id=user_id)
-    can_edit=False
+    can_edit = False
     if request.user == user:
         can_edit = True
     pic_form = ProfilePicForm(
             initial={'profile_pic': user.profile_pic},)
-    displayname_form = DisplaynameForm(
-        initial={'displayname': user.displayname})
+    displayname_form = DisplaynameForm()
     bio_form = BioForm(
         initial={'bio': user.bio})
 
@@ -65,10 +67,47 @@ def profile_view(request, user_id):
             'displayname_form': displayname_form,
 
             }
+    
+    posted_reviews = user.custom_user.all()
+    reviewed_movies = [ r.movie for r in posted_reviews ]
+    context.update({'reviewed_movies': reviewed_movies})
     return render(
         request,
         'user_profile.html',
         context)
 
-def edit_profile(request):
-    user = request.user
+@login_required
+def followed_view(request, user_id):
+    user = MyCustomUser.objects.get(id=user_id)
+    follow_list = user.followed_list.all()
+    return render(
+        request,
+        'followed.html',
+        {'user': user, "followed_list": follow_list})
+
+@login_required
+def following_view(request, user_id):
+    user = MyCustomUser.objects.get(id=user_id)
+    follow_list = MyCustomUser.objects.filter(followed_list__in=[user])
+    return render(
+        request,
+        'followed.html',
+        {'user': user, "followed_list": follow_list})
+
+@login_required
+def follow(request, user_id):
+    user_followed = MyCustomUser.objects.get(id=user_id)
+    user_obj = MyCustomUser.objects.get(id=request.user.id)
+    user_obj.followed_list.add(user_followed)
+    user_obj.save()
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
+    return redirect('profile', user_id=request.user.id)
+
+@login_required
+def unfollow(request, user_id):
+    user_unfollowed = MyCustomUser.objects.get(id=user_id)
+    user_obj = MyCustomUser.objects.get(id=request.user.id)
+    user_obj.followed_list.remove(user_unfollowed)
+    user_obj.save()
+    following_num = MyCustomUser.objects.filter(followed_list__in=[user_obj]).count
+    return redirect('profile', user_id=request.user.id)
