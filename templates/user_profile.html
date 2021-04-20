@@ -52,11 +52,11 @@
             <br>
             <h6 class="profile-info">Following: </h6>
                 <h6 class="prof-value"">
-                    <a href="/followed/{{user.id}}" class="follow-link">{{ user.followed_list.count }} Users</a>
+                    <a href="#" onclick="followUser()" class="follow-link">{{ user.followed_list.count }} Users</a>
                 </h6>
             <br>
             <h6 class="profile-info">Followers:  </h6>
-                <h6 class="prof-value""><a href="/following/{{user.id}}" class="follow-link">{{ user.followed.count }} Users </a></h6>
+                <h6 class="prof-value""><a href="#" onclick="unfollowUser()" class="follow-link">{{ user.followed.count }} Users </a></h6>
         </div>
     </div>
 
@@ -241,3 +241,33 @@
         </form>
     </div>
 {% endblock %}
+
+{% block follow %}
+    <div class="bio-scroll">
+        {% for user in user.followed_list.all %}
+            {% if user.profile_pic %}
+                <div class="image-container" width=100>
+                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                </div>
+            {% endif %}
+            <h5 class="profile-info"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h5>
+        {% endfor %}
+        <a href="#" onclick="followUser()" id="bio-edit" class="more-bio">Close</a>
+    </div>
+{% endblock %}
+
+{% block unfollow %}
+    <div class="bio-scroll">
+        {% for user in user.followed.all %}
+            {% if user.profile_pic %}
+                <div class="image-container" width=100>
+                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                </div>
+            {% endif %}
+            <h5 class="profile-info"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h5>
+        {% endfor %}
+        <a href="#" onclick="unfollowUser()" id="bio-edit" class="more-bio">Close</a>
+    </div>
+{% endblock %}
+
+<!-- /followed/{{user.id}} -->

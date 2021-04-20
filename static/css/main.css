@@ -633,8 +633,8 @@ a[data-posted-review]:hover::after {
 
 .form-button {
 	border-radius: 20px;
-	border: 1px solid #FF4B2B;
-	background-color: #FF4B2B;
+	border: 1px solid #eeb926;
+	background-color: #eeb926;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -646,12 +646,12 @@ a[data-posted-review]:hover::after {
 
 button:active {
 	transform: scale(0.95);
-    background-color: #FF4B2B;
+    background-color: #df8d09;
 }
 
 button:focus {
 	outline: none;
-    background-color: #FF4B2B;
+    background-color: #df8d09;
 }
 
 button.ghost {
@@ -660,7 +660,8 @@ button.ghost {
 }
 
 .form-control {
-	background-color: #FFFFFF;
+	background-color: #191919;
+    color: #e6ba41;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -671,15 +672,19 @@ button.ghost {
 }
 
 .form-control input {
-	background-color: #eee;
+	background-color: #191919;
+    color: #FFFFFF;
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
 }
 
+.form-control input:focus {
+    color: #e6ba41;
+}
+
 .auth-container {
-	background-color: #fff;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
 			0 10px 10px rgba(0,0,0,0.22);
@@ -751,9 +756,9 @@ button.ghost {
 }
 
 .overlay {
-	background: #FF416C;
-	background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-	background: linear-gradient(to right, #FF4B2B, #FF416C);
+	background: #f3bd28;
+	background: -webkit-linear-gradient(to right, #df8d09, #f3bd28);
+	background: linear-gradient(to right, #df8d09, #f3bd28);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
@@ -1088,7 +1093,7 @@ a[data-unfollow-user]:hover::after {
     user-select: none;
 }
 
-#popup, #display, #bio {
+#popup, #display, #bio, #follow-user, #unfollow-user {
     position: fixed;
     top: 40%;
     left: 50%;
@@ -1105,7 +1110,7 @@ a[data-unfollow-user]:hover::after {
     transition: 0.5s;
 }
 
-#popup.active, #display.active, #bio.active {
+#popup.active, #display.active, #bio.active, #follow-user.active, #unfollow-user.active {
     top: 50%;
     visibility: visible;
     opacity: 1;
@@ -1135,7 +1140,7 @@ a[data-unfollow-user]:hover::after {
     display: none;
 }
 
-textarea:focus, input:focus {
+/* textarea:focus, input:focus {
     color: #e6ba41;
 }
 
@@ -1146,4 +1151,4 @@ color: white;
 textarea{
 width: 400px;
 height: 400px;
-}
+} */

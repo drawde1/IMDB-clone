@@ -18,3 +18,17 @@ function editBio() {
     const bio = document.getElementById('bio')
     bio.classList.toggle('active')
 }
+
+function followUser() {
+    const blur = document.getElementById('main-container')
+    blur.classList.toggle('active')
+    const follow = document.getElementById('follow-user')
+    follow.classList.toggle('active')
+}
+
+function unfollowUser() {
+    const blur = document.getElementById('main-container')
+    blur.classList.toggle('active')
+    const unfollow = document.getElementById('unfollow-user')
+    unfollow.classList.toggle('active')
+}
