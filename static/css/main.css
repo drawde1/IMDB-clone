@@ -680,8 +680,9 @@ button.ghost {
 	width: 100%;
 }
 
-.form-control input:focus {
+.form-control input:focus, .form-control input:active {
     color: #e6ba41;
+    background-color: #191919;
 }
 
 .auth-container {
@@ -890,6 +891,14 @@ button.ghost {
     bottom: 3px;
     left: 13px;
     font-size: 25px;
+}
+
+.following-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: inline-block;
 }
 
 a[data-follow-user]::after {

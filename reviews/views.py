@@ -4,6 +4,7 @@ from reviews.forms import ReviewForm
 from reviews.models import Review
 from movies.models import Movie
 from django.views.generic import View
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 
@@ -47,6 +48,7 @@ class ReviewView(LoginRequiredMixin, View):
             request, 'reviews.html',
             {'reviews': reviews, 'form': form, 'movie': movie})
 
+@login_required
 def user_reviews(request, tmdb_id):
     movie_api_path = f'/movie/{tmdb_id}'
     movie_api_endpoint = f'{tmdb_base_url}{movie_api_path}?api_key={TMDB_KEY}'

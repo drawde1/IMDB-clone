@@ -26,7 +26,7 @@
                 {% if user.is_authenticated %}
                     <!-- <li><a href="/profile/{{user.id}}" class="page-custom">{{user.displayname}}</a></li> -->
                     {% if request.user.profile_pic %}
-                        <a href="/profile/{{user.id}}">    
+                        <a href="/profile/{{request.user.id}}">    
                             <div class="navbar-image">
                                 <img src ='{{request.user.profile_pic.url}}' class="profile-image" />
                             </div>
