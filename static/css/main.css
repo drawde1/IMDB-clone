@@ -680,8 +680,9 @@ button.ghost {
 	width: 100%;
 }
 
-.form-control input:focus {
+.form-control input:focus, .form-control input:active {
     color: #e6ba41;
+    background-color: #191919;
 }
 
 .auth-container {
@@ -890,6 +891,14 @@ button.ghost {
     bottom: 3px;
     left: 13px;
     font-size: 25px;
+}
+
+.following-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: inline-block;
 }
 
 a[data-follow-user]::after {
@@ -1152,3 +1161,29 @@ textarea{
 width: 400px;
 height: 400px;
 } */
+
+/* User Reviews Page */
+
+.user-reviews-container {
+    height: 450px;
+}
+
+.cast-container {
+    position: relative;
+    top: 0px;
+    left: 77px;
+    padding: 40px 50px;
+    background-color: #191919;
+    width: 800px;
+    height: 377px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.user-reviews {
+    margin-left: 80px;
+    width: 1132px;
+    min-height: 280px;
+    padding: 50px;
+    background-color: #191919;
+    margin-bottom: 40px;
+}

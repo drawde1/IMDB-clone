@@ -18,15 +18,20 @@
     {% endif %}
 
     <div class="profile-container" id='about'>
-        <div class="cols photo-col" >
+        <div class="cols photo-col">
             {% if user.profile_pic %}
                 <div class="image-container">
                     <img class="profile-image" src ='{{user.profile_pic.url}}' />
                 </div>
+                {% if user == request.user %}
+                    <a href="#" onclick="editPhoto()" class="edit-link">edit</a>
+                {% endif %}
+            {% else %}
+                {% if user == request.user %}
+                    <a href="#" onclick="editPhoto()" class="edit-link" style="position: relative; top: 20px;">add profile photo</a>
+                {% endif %}
             {% endif %}
-            {% if user == request.user %}
-                <a href="#" onclick="editPhoto()" class="edit-link">edit</a>
-            {% endif %}
+            
         </div>
         <div class="cols info-col">
             <h5 class="profile-info">{{user.displayname}}</h5>
@@ -67,7 +72,7 @@
                 {% for movie in user.watch_list.all %}
                     <div class="carousel-item">
                         {% if request.user.is_authenticated %}
-                            {% if movie in request.user.watch_list %}
+                            {% if movie in request.user.watch_list.all %}
                                 <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
                             {% else %}
                                 <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
@@ -243,31 +248,31 @@
 {% endblock %}
 
 {% block follow %}
-    <div class="bio-scroll">
+    <div class="bio-scroll" style="width: 170px;">
         {% for user in user.followed_list.all %}
             {% if user.profile_pic %}
-                <div class="image-container" width=100>
-                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                <div class="following-container">
+                    <a href="{% url 'profile' user_id=user.id %}"><img class="profile-image" src ='{{user.profile_pic.url}}'/></a>
                 </div>
             {% endif %}
-            <h5 class="profile-info"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h5>
+            <h6 class="profile-info" style="display: inline-block; position:relative; bottom: 30px; left: 10px;"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h6>
+            <br>
         {% endfor %}
-        <a href="#" onclick="followUser()" id="bio-edit" class="more-bio">Close</a>
+        <a href="#" onclick="followUser()" class="more-bio">Close</a>
     </div>
 {% endblock %}
 
 {% block unfollow %}
-    <div class="bio-scroll">
+    <div class="bio-scroll" style="width: 170px;">
         {% for user in user.followed.all %}
             {% if user.profile_pic %}
-                <div class="image-container" width=100>
-                    <img class="profile-image" src ='{{user.profile_pic.url}}' />
+                <div class="following-container">
+                    <a href="{% url 'profile' user_id=user.id %}"><img class="profile-image" src ='{{user.profile_pic.url}}'/></a>
                 </div>
             {% endif %}
-            <h5 class="profile-info"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h5>
+            <h6 class="profile-info" style="display: inline-block; position:relative; bottom: 30px; left: 10px;"><a href="{% url 'profile' user_id=user.id %}">{{user.displayname}}</a></h6>
+            <br>
         {% endfor %}
-        <a href="#" onclick="unfollowUser()" id="bio-edit" class="more-bio">Close</a>
+        <a href="#" onclick="unfollowUser()" class="more-bio">Close</a>
     </div>
 {% endblock %}
-
-<!-- /followed/{{user.id}} -->

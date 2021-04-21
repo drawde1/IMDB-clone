@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <h5 class="list-title">User Reviews for {{ movie }}</h5>
+
+    <div class="poster-container user-reviews-container">
+        <div>
+            {% if movie_api.poster_path %}
+                <img src="https://image.tmdb.org/t/p/w342{{movie_api.poster_path}}" alt="{{movie_api.title}}" width=250>
+            {% else %}
+                <img src="/images/default.png" width=220>
+            {% endif %}
+
+        </div>
+        <div class="cast-container">
+            {% if movie_api.overview %}
+                <h6 class="summary">{{ movie_api.overview }}</h6>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- <div id='by-date' class='waves-effect waves-light btn-large hidden'> By Date</div>
+    <button id='by-vote' class='waves-effect waves-light btn-large'> By Vote</button> -->
+
+   
+    {% for review in reviews_by_time %}
+        <div class='scroll user-reviews' id = 'date-list'>
+            <div style="display: flex;">
+                <div style="position: relative; left: 10px; top: 15px;">
+                    {% if review.user.profile_pic %}
+                        <a href="{% url 'profile' user_id=review.user.id %}">
+                            <img width=80 src={{review.user.profile_pic.url}}/>
+                        </a>
+                    {% endif %}
+            
+                    <br>
+                    <h6><a href="{% url 'profile' user_id=review.user.id %}">{{review.user.displayname}}</a> {{review.user.emoji}}</h6>
+                </div>
+                <div style="position: relative; left: 100px;">
+                    <h6 style="line-height: 1.6; font-style: italic; color: #e6ba41;">{{review.creation_time}}</h6>
+                    <h6 style="line-height: 1.6; margin-left: 20px;">{{review.text}}</h6>
+                    {% if review.vote_total > 0 %}
+                        {% if review.vote_total == 1  %}
+                            <h6 style="line-height: 1.6; font-style: italic; color: #e6ba41;">{{review.vote_total}} user has found this helpful</h6>
+                        {% else %}
+                            <h6 style="line-height: 1.6; font-style: italic; color: #e6ba41;">{{review.vote_total}} users have found this helpful</h6>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if request.user in review.likedby.all %}
+                        <h6 style="line-height: 1; font-style: italic; color: #e6ba41;">You voted on this post</h6>
+                    {% else %}
+                        <h6 style="display: inline-block; margin-top: 20px;"><a href='/vote/{{review.id}}/{{1}}/' style="background-color:#e6ba41; color: black; font-size: 15px; padding: 10px; border-radius: 10px;">helpful</a></h6>
+                        <h6 style="display: inline-block; margin-top: 20px; margin-left: 20px;"><a href='/vote/{{review.id}}/{{0}}/' style="background-color:#e6ba41; color: black; font-size: 15px; padding: 10px; border-radius: 10px;">unhelpful</a></h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <!-- <script>
+        let dateButton = document.getElementById('by-date')
+        let voteButton = document.getElementById('by-vote')
+        let voteList = document.getElementById('vote-list')
+        let dateList = document.getElementById('date-list')
+      
+        dateButton.onclick= () =>{
+          dateList.classList.remove('hidden')
+          voteButton.classList.remove('hidden')
+          dateButton.classList.add('hidden')
+          voteList.classList.add('hidden')
+        }
+        voteButton.onclick= () =>{
+          dateList.classList.add('hidden')
+          voteButton.classList.add('hidden')
+          dateButton.classList.remove('hidden')
+          voteList.classList.remove('hidden')
+        }
+      
+      </script> -->
+{% endblock %}

@@ -4,6 +4,7 @@ from movies.forms import MovieSearchForm, AllSearchForm
 from IMDB.settings import TMDB_KEY
 from IMDB_user.models import MyCustomUser
 from movies.models import Movie
+from reviews.models import Review
 import random
 import requests
 from movies.helpers import ApiPaths
@@ -144,6 +145,11 @@ def movie_detail(request, movie_id):
             tmdb_id=movie_id).exists()
         details.update(
             {'is_favorited': is_favorited, 'in_watchlist': in_watchlist})
+    
+    movie = Movie.objects.get(tmdb_id=movie_id)
+    if Review.objects.filter(movie=movie).exists():    
+        user_reviews = Review.objects.filter(movie=movie)
+        details.update({'user_reviews': user_reviews})
     details.update({
         'data': movie_data,
         'reviews': reviews_data,
