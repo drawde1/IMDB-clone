@@ -19,7 +19,7 @@ from django.conf import settings
 from django.urls import path, include
 # from reviews.views import reviews
 from movies.views import homepage, search_all
-from reviews.views import ReviewView
+from reviews.views import ReviewView, user_reviews
 # from IMDB_user.views import add_watchlist
 from user_profile.views import profile_view, followed_view, following_view, follow, unfollow
 from IMDB_user.views import add_watchlist, remove_watchlist
@@ -37,8 +37,8 @@ urlpatterns = [
     path("signup/", SignupView.as_view(), name="signup"),
     path('movies/', include('movies.urls')),
     path('reviews/<str:tmdb_id>/', ReviewView.as_view(), name="post_review"),
+    path('users/reviews/<str:tmdb_id>/', user_reviews, name="user_reviews"),
     path('admin/', admin.site.urls),
-    # path('reviews/<str:tmdb_id>/', login_required(ReviewView.as_view()), name="post_review"),
     path('watchlist/<str:tmdb_id>/', add_watchlist, name="add_watchlist"),
     path("logout/", logout_view, name="logout"),
     path("login/", LoginView.as_view(), name="login"),

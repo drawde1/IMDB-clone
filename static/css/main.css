@@ -1152,3 +1152,29 @@ textarea{
 width: 400px;
 height: 400px;
 } */
+
+/* User Reviews Page */
+
+.user-reviews-container {
+    height: 450px;
+}
+
+.cast-container {
+    position: relative;
+    top: 0px;
+    left: 77px;
+    padding: 40px 50px;
+    background-color: #191919;
+    width: 800px;
+    height: 377px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.user-reviews {
+    margin-left: 80px;
+    width: 1132px;
+    min-height: 280px;
+    padding: 50px;
+    background-color: #191919;
+    margin-bottom: 40px;
+}

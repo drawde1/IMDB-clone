@@ -67,7 +67,7 @@
                 {% for movie in user.watch_list.all %}
                     <div class="carousel-item">
                         {% if request.user.is_authenticated %}
-                            {% if movie in request.user.watch_list %}
+                            {% if movie in request.user.watch_list.all %}
                                 <a href="{% url 'remove_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-remove-watchlist="Remove from Watchlist"><i class="far fa-check-square"></i></a>
                             {% else %}
                                 <a href="{% url 'add_watchlist' tmdb_id=movie.tmdb_id %}" class="icon" data-add-watchlist="Add to Watchlist"><i class="far fa-plus-square"></i></a>
